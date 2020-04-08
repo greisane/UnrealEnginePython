@@ -96,57 +96,40 @@ public class UnrealEnginePython : ModuleRules
 
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
         string enableUnityBuild = System.Environment.GetEnvironmentVariable("UEP_ENABLE_UNITY_BUILD");
-        bFasterWithoutUnity = string.IsNullOrEmpty(enableUnityBuild);
+        bUseUnity = string.IsNullOrEmpty(enableUnityBuild);
 
-        PublicIncludePaths.AddRange(
-            new string[] {
-				// ... add public include paths required here ...
-            }
-            );
+        PublicIncludePaths.AddRange(new string[] {
+        });
 
-
-        PrivateIncludePaths.AddRange(
-            new string[] {
-				// ... add other private include paths required here ...
-			}
-            );
+        PrivateIncludePaths.AddRange(new string[] {
+		});
 
 
-        PublicDependencyModuleNames.AddRange(
-            new string[]
-            {
-                "Core",
-                "Sockets",
-                "Networking"
-				// ... add other public dependencies that you statically link with here ...
-			}
-            );
+        PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "Sockets",
+            "Networking"
+		});
 
-
-        PrivateDependencyModuleNames.AddRange(
-            new string[]
-            {
-                "CoreUObject",
-                "Engine",
-                "InputCore",
-                "Slate",
-                "SlateCore",
-                "MovieScene",
-                "LevelSequence",
-                "HTTP",
-                "UMG",
-                "AppFramework",
-                "RHI",
-                "Voice",
-                "RenderCore",
-                "MovieSceneCapture",
-                "Landscape",
-                "Foliage",
-                "AIModule"
-				// ... add private dependencies that you statically link with here ...
-			}
-            );
-
+        PrivateDependencyModuleNames.AddRange(new string[] {
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "Slate",
+            "SlateCore",
+            "MovieScene",
+            "LevelSequence",
+            "HTTP",
+            "UMG",
+            "AppFramework",
+            "RHI",
+            "Voice",
+            "RenderCore",
+            "MovieSceneCapture",
+            "Landscape",
+            "Foliage",
+            "AIModule"
+		});
 
 #if WITH_FORWARDED_MODULE_RULES_CTOR
         BuildVersion Version;
@@ -159,21 +142,13 @@ public class UnrealEnginePython : ModuleRules
         }
 #endif
 
-
-        DynamicallyLoadedModuleNames.AddRange(
-            new string[]
-            {
-				// ... add any modules that your module loads dynamically here ...
-			}
-            );
-
 #if WITH_FORWARDED_MODULE_RULES_CTOR
         if (Target.bBuildEditor)
 #else
         if (UEBuildConfiguration.bBuildEditor)
 #endif
         {
-            PrivateDependencyModuleNames.AddRange(new string[]{
+            PrivateDependencyModuleNames.AddRange(new string[] {
                 "UnrealEd",
                 "LevelEditor",
                 "BlueprintGraph",
@@ -269,15 +244,13 @@ public class UnrealEnginePython : ModuleRules
             AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", RelAPLPath));
         }
 #endif
-
     }
 
     private bool IsPathRelative(string Path)
     {
-        bool IsRooted = Path.StartsWith("\\", System.StringComparison.Ordinal) || // Root of the current directory on Windows. Also covers "\\" for UNC or "network" paths.
-                        Path.StartsWith("/", System.StringComparison.Ordinal) ||  // Root of the current directory on Windows, root on UNIX-likes.
-                                                                                  // Also covers "\\", considering normalization replaces "\\" with "//".
-                        (Path.Length >= 2 && char.IsLetter(Path[0]) && Path[1] == ':'); // Starts with "<DriveLetter>:"
+        bool IsRooted = Path.StartsWith("\\", System.StringComparison.Ordinal) // Root of the current directory on Windows. Also covers "\\" for UNC or "network" paths.
+            || Path.StartsWith("/", System.StringComparison.Ordinal)  // Root of the current directory on Windows, root on UNIX-likes. Normalization replaces "\\" with "//".
+            || (Path.Length >= 2 && char.IsLetter(Path[0]) && Path[1] == ':'); // Starts with "<DriveLetter>:"
         return !IsRooted;
     }
 
@@ -316,6 +289,7 @@ public class UnrealEnginePython : ModuleRules
                 return actualPath;
             }
         }
+
         return "";
     }
 
