@@ -649,7 +649,7 @@ PyObject *py_ue_actor_create_default_subobject(ue_PyUObject * self, PyObject * a
 	UObject *ret_obj = nullptr;
 
 	Py_BEGIN_ALLOW_THREADS;
-	ret_obj = actor->CreateDefaultSubobject(FName(UTF8_TO_TCHAR(name)), UObject::StaticClass(), u_class, false, false, true);
+	ret_obj = actor->CreateDefaultSubobject(FName(UTF8_TO_TCHAR(name)), UObject::StaticClass(), u_class, false, true);
 	Py_END_ALLOW_THREADS;
 
 	if (!ret_obj)
@@ -795,7 +795,10 @@ PyObject *py_ue_get_actor_components_by_type(ue_PyUObject * self, PyObject * arg
 
 	PyObject *components = PyList_New(0);
 
-	for (UActorComponent *component : actor->GetComponentsByClass(u_class))
+	TSubclassOf<UActorComponent> u_subclass(u_class);
+	TArray<UActorComponent*> actor_components;
+	actor->GetComponents(u_subclass, actor_components);
+	for (UActorComponent* component : actor_components)
 	{
 		ue_PyUObject *item = ue_get_python_uobject(component);
 		if (item)
