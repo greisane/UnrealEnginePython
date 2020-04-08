@@ -196,6 +196,90 @@ static void setup_stdout_stderr()
 	PyRun_SimpleString(code);
 }
 
+static void setup_importlib()
+{
+	char const* code = "import sys\n"
+		"import importlib\n"
+		"import importlib.machinery\n"
+		"import importlib.util\n"
+		"import unreal_engine\n"
+		"\n"
+		"class UFSFileFinder:\n"
+		"    def __init__(self, path, *loader_details):\n"
+		"        loaders = []\n"
+		"        for loader, suffixes in loader_details:\n"
+		"            loaders.extend((suffix, loader) for suffix in suffixes)\n"
+		"        self._loaders = loaders\n"
+		"        self.path = path or '.' # Base (directory) path\n"
+		"        self._path_cache = None\n"
+		"    def invalidate_caches(self):\n"
+		"        self._path_cache = None\n"
+		"    def _get_spec(self, loader_class, fullname, path, smsl, target):\n"
+		"        loader = loader_class(fullname, path)\n"
+		"        return importlib.util.spec_from_file_location(fullname, path, loader=loader, submodule_search_locations=smsl)\n"
+		"    def find_spec(self, fullname, target=None):\n"
+		"        print(f'UFSFileFinder.find_spec: {fullname} {target}')\n"
+		"        is_namespace = False\n"
+		"        tail_module = fullname.rpartition('.')[2]\n"
+		"        if self._path_cache == None:\n"
+		"            self._fill_cache()\n"
+		"        # Check if the module is the name of a directory (and thus a package)\n"
+		"        if tail_module in self._path_cache:\n"
+		"            base_path = self.path + '/' + tail_module\n"
+		"            for suffix, loader_class in self._loaders:\n"
+		"                full_path = base_path + '/__init__' + suffix\n"
+		"                if unreal_engine.file_exists(full_path):\n"
+		"                    return self._get_spec(loader_class, fullname, full_path, [base_path], target)\n"
+		"            else:\n"
+		"                # If a namespace package, return the path if we don't find a module in the next section\n"
+		"                is_namespace = unreal_engine.directory_exists(base_path)\n"
+		"        # Check for a file w/ a proper suffix exists\n"
+		"        for suffix, loader_class in self._loaders:\n"
+		"            full_path = self.path + '/' + tail_module + suffix\n"
+		"            unreal_engine.log(f'trying {full_path}')\n"
+		"            if tail_module + suffix in self._path_cache:\n"
+		"                if unreal_engine.file_exists(full_path):\n"
+		"                    return self._get_spec(loader_class, fullname, full_path, None, target)\n"
+		"        if is_namespace:\n"
+		"            unreal_engine.log(f'possible namespace for {base_path}')\n"
+		"            spec = importlib.machinery.ModuleSpec(fullname, None)\n"
+		"            spec.submodule_search_locations = [base_path]\n"
+		"            return spec\n"
+		"        return None\n"
+		"    def _fill_cache(self):\n"
+		"        self._path_cache = set(unreal_engine.find_files(self.path + '/*'))\n"
+		"    @classmethod\n"
+		"    def path_hook(cls, *loader_details):\n"
+		"        def path_hook_for_UFSFileFinder(path):\n"
+		"            # if not _path_isdir(path):\n"
+		"            #     raise ImportError('only directories are supported', path=path)\n"
+		"            return cls(path, *loader_details)\n"
+		"        return path_hook_for_UFSFileFinder\n"
+		"    def __repr__(self):\n"
+		"        return 'UFSFileFinder({!r})'.format(self.path)\n"
+		"\n"
+		"class UFSFileLoader:\n"
+		"    def path_mtime(self, path):\n"
+		"        raise OSError\n"
+		"    def get_data(self, path):\n"
+		"        unreal_engine.log(f'{self.__class__.__name__}.get_data: {path}')\n"
+		"        return unreal_engine.load_bytes(path)\n"
+		"\n"
+		"class UFSSourceFileLoader(UFSFileLoader, importlib.machinery.SourceFileLoader):\n"
+		"    pass\n"
+		"\n"
+		"class UFSSourcelessFileLoader(UFSFileLoader, importlib.machinery.SourcelessFileLoader):\n"
+		"    pass\n"
+		"\n"
+		"def _get_supported_file_loaders():\n"
+		"    source = UFSSourceFileLoader, importlib.machinery.SOURCE_SUFFIXES\n"
+		"    bytecode = UFSSourcelessFileLoader, importlib.machinery.BYTECODE_SUFFIXES\n"
+		"    return [source, bytecode]\n"
+		"sys.path_hooks = [UFSFileFinder.path_hook(*_get_supported_file_loaders())]\n"
+		"sys.path.append(unreal_engine.get_content_dir() + 'Scripts')\n";
+	PyRun_SimpleString(code);
+}
+
 namespace
 {
 	static void consoleExecScript(const TArray<FString>& Args)
@@ -463,6 +547,9 @@ void FUnrealEnginePythonModule::StartupModule()
 	FString SavedLocale(setlocale(LC_CTYPE, nullptr));
 
 	Py_Initialize();
+
+	// importlib machinery to load scripts from uassets
+	setup_importlib();
 
 #if PLATFORM_WINDOWS
 	// Restore stdio state after Py_Initialize set it to O_BINARY, otherwise
