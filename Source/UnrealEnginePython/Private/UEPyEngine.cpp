@@ -334,7 +334,7 @@ PyObject* py_unreal_engine_load_bytes(PyObject* self, PyObject* args)
 	TArray<uint8> bytes;
 	if (!FFileHelper::LoadFileToArray(bytes, UTF8_TO_TCHAR(name)))
 	{
-		return PyErr_Format(PyExc_Exception, "unable to load file %s", name);
+		return PyErr_Format(PyExc_OSError, "unable to load file %s", name);
 	}
 
 	PyObject* py_bytes = PyBytes_FromStringAndSize((char*)bytes.GetData(), bytes.Num());
