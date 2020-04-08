@@ -1140,7 +1140,7 @@ PyObject *py_unreal_engine_get_selected_assets(PyObject * self, PyObject * args)
 
 PyObject *py_unreal_engine_get_all_edited_assets(PyObject * self, PyObject * args)
 {
-	TArray<UObject *> assets = FAssetEditorManager::Get().GetAllEditedAssets();
+	TArray<UObject*> assets = GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->GetAllEditedAssets();
 	PyObject *assets_list = PyList_New(0);
 
 	for (UObject *asset : assets)
@@ -1168,7 +1168,7 @@ PyObject *py_unreal_engine_open_editor_for_asset(PyObject * self, PyObject * arg
 	if (!u_obj)
 		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
 
-	if (FAssetEditorManager::Get().OpenEditorForAsset(u_obj))
+	if (GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->OpenEditorForAsset(u_obj))
 	{
 		Py_RETURN_TRUE;
 	}
@@ -1193,7 +1193,7 @@ PyObject *py_unreal_engine_find_editor_for_asset(PyObject * self, PyObject * arg
 	if (py_bool && PyObject_IsTrue(py_bool))
 		bFocus = true;
 
-	IAssetEditorInstance *instance = FAssetEditorManager::Get().FindEditorForAsset(u_obj, bFocus);
+	IAssetEditorInstance* instance = GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->FindEditorForAsset(u_obj, bFocus);
 	if (!instance)
 		return PyErr_Format(PyExc_Exception, "no editor found for asset");
 
@@ -1212,14 +1212,14 @@ PyObject *py_unreal_engine_close_editor_for_asset(PyObject * self, PyObject * ar
 	UObject *u_obj = ue_py_check_type<UObject>(py_obj);
 	if (!u_obj)
 		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
-	FAssetEditorManager::Get().CloseAllEditorsForAsset(u_obj);
+	GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->CloseAllEditorsForAsset(u_obj);
 
 	Py_RETURN_NONE;
 }
 
 PyObject *py_unreal_engine_close_all_asset_editors(PyObject * self, PyObject * args)
 {
-	FAssetEditorManager::Get().CloseAllAssetEditors();
+	GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->CloseAllAssetEditors();
 
 	Py_RETURN_NONE;
 }
@@ -1355,7 +1355,7 @@ PyObject *py_unreal_engine_reload_blueprint(PyObject * self, PyObject * args)
 	UBlueprint *reloaded_bp = nullptr;
 
 	Py_BEGIN_ALLOW_THREADS
-		reloaded_bp = FKismetEditorUtilities::ReloadBlueprint(bp);
+		reloaded_bp = FKismetEditorUtilities::ReplaceBlueprint(bp, bp);
 	Py_END_ALLOW_THREADS
 
 		Py_RETURN_UOBJECT(reloaded_bp);

@@ -209,7 +209,7 @@ void FPythonProjectEditor::RegisterToolbarTab(const TSharedRef<class FTabManager
 
 void FPythonProjectEditor::InitPythonEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, class UPythonProject* PythonProject)
 {
-	FAssetEditorManager::Get().CloseOtherEditors(PythonProject, this);
+	GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->CloseOtherEditors(PythonProject, this);
 	PythonProjectBeingEdited = PythonProject;
 
 	TSharedPtr<FPythonProjectEditor> ThisPtr(SharedThis(this));

@@ -35,7 +35,8 @@ const char *ue4_module_options = "linux_global_symbols";
 #include "Runtime/Core/Public/Misc/ConfigCacheIni.h"
 #include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
 #include "Runtime/Core/Public/GenericPlatform/GenericPlatformMisc.h"
-
+#include "Runtime/Projects/Public/Interfaces/IPluginManager.h"
+#include <locale.h>
 #include "Runtime/Core/Public/HAL/FileManagerGeneric.h"
 
 #if PLATFORM_WINDOWS
@@ -458,6 +459,9 @@ void FUnrealEnginePythonModule::StartupModule()
 #endif
 #endif
 
+	// Save the current locale (should be "C") to restore later. TCharTest::RunTest will fail otherwise
+	FString SavedLocale(setlocale(LC_CTYPE, nullptr));
+
 	Py_Initialize();
 
 #if PLATFORM_WINDOWS
@@ -475,6 +479,8 @@ void FUnrealEnginePythonModule::StartupModule()
 		FPlatformMisc::SetUTF8Output();
 	}
 #endif
+
+	setlocale(LC_CTYPE, TCHAR_TO_UTF8(*SavedLocale));
 
 	PyEval_InitThreads();
 
