@@ -246,6 +246,7 @@ static PyMethodDef unreal_engine_methods[] = {
 	{ "find_object", py_unreal_engine_find_object, METH_VARARGS, "" },
 	{ "load_object", py_unreal_engine_load_object, METH_VARARGS, "" },
 
+	{ "load_bytes", py_unreal_engine_load_bytes, METH_VARARGS, "" },
 	{ "load_package", py_unreal_engine_load_package, METH_VARARGS, "" },
 #if WITH_EDITOR
 	{ "unload_package", py_unreal_engine_unload_package, METH_VARARGS, "" },
@@ -262,6 +263,9 @@ static PyMethodDef unreal_engine_methods[] = {
 
 	{ "get_path", py_unreal_engine_get_path, METH_VARARGS, "" },
 	{ "get_base_filename", py_unreal_engine_get_base_filename, METH_VARARGS, "" },
+	{ "find_files", py_unreal_engine_find_files, METH_VARARGS, "" },
+	{ "file_exists", py_unreal_engine_file_exists, METH_VARARGS, "" },
+	{ "directory_exists", py_unreal_engine_directory_exists, METH_VARARGS, "" },
 	{ "object_path_to_package_name", py_unreal_engine_object_path_to_package_name, METH_VARARGS, "" },
 
 	{ "compress_image_array", py_unreal_engine_compress_image_array, METH_VARARGS, "" },

@@ -34,6 +34,7 @@ PyObject *py_unreal_engine_load_object(PyObject *, PyObject *);
 PyObject *py_unreal_engine_load_class(PyObject *, PyObject *);
 PyObject *py_unreal_engine_load_struct(PyObject *, PyObject *);
 PyObject *py_unreal_engine_load_enum(PyObject *, PyObject *);
+PyObject* py_unreal_engine_load_bytes(PyObject*, PyObject*);
 PyObject *py_unreal_engine_load_package(PyObject *, PyObject *);
 #if WITH_EDITOR
 PyObject *py_unreal_engine_unload_package(PyObject *, PyObject *);
@@ -78,6 +79,10 @@ PyObject *py_unreal_engine_get_transient_package(PyObject *, PyObject *);
 
 PyObject *py_unreal_engine_object_path_to_package_name(PyObject *, PyObject *);
 PyObject *py_unreal_engine_get_path(PyObject *, PyObject *);
+PyObject* py_unreal_engine_get_base_filename(PyObject*, PyObject*);
+PyObject* py_unreal_engine_find_files(PyObject*, PyObject*);
+PyObject* py_unreal_engine_file_exists(PyObject*, PyObject*);
+PyObject* py_unreal_engine_directory_exists(PyObject*, PyObject*);
 PyObject *py_unreal_engine_get_base_filename(PyObject *, PyObject *);
 
 PyObject *py_unreal_engine_open_file_dialog(PyObject *, PyObject *);

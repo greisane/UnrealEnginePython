@@ -14,6 +14,7 @@
 
 #include "UnrealEngine.h"
 #include "Runtime/Engine/Classes/Engine/GameViewportClient.h"
+#include "Misc/FileHelper.h"
 
 #if ENGINE_MINOR_VERSION >= 18
 #include "HAL/PlatformApplicationMisc.h"
@@ -238,6 +239,45 @@ PyObject *py_unreal_engine_get_base_filename(PyObject * self, PyObject * args)
 	return PyUnicode_FromString(TCHAR_TO_UTF8(*FPaths::GetBaseFilename(UTF8_TO_TCHAR(path))));
 }
 
+PyObject* py_unreal_engine_find_files(PyObject* self, PyObject* args)
+{
+	char* path;
+	if (!PyArg_ParseTuple(args, "s:find_files", &path))
+	{
+		return NULL;
+	}
+
+	TArray<FString> files;
+	IFileManager::Get().FindFiles(files, UTF8_TO_TCHAR(path), true, true);
+
+	PyObject* py_list = PyList_New(0);
+	for (FString file : files)
+	{
+		PyList_Append(py_list, PyUnicode_FromString(TCHAR_TO_UTF8(*file)));
+	}
+	return py_list;
+}
+
+PyObject* py_unreal_engine_file_exists(PyObject* self, PyObject* args)
+{
+	char* path;
+	if (!PyArg_ParseTuple(args, "s:file_exists", &path))
+	{
+		return NULL;
+	}
+	return IFileManager::Get().FileExists(UTF8_TO_TCHAR(path)) ? Py_True : Py_False;
+}
+
+PyObject* py_unreal_engine_directory_exists(PyObject* self, PyObject* args)
+{
+	char* path;
+	if (!PyArg_ParseTuple(args, "s:directory_exists", &path))
+	{
+		return NULL;
+	}
+	return IFileManager::Get().DirectoryExists(UTF8_TO_TCHAR(path)) ? Py_True : Py_False;
+}
+
 PyObject *py_unreal_engine_create_world(PyObject * self, PyObject * args)
 {
 	int world_type = 0;
@@ -281,6 +321,25 @@ PyObject *py_unreal_engine_find_enum(PyObject * self, PyObject * args)
 		return PyErr_Format(PyExc_Exception, "unable to find enum %s", name);
 
 	Py_RETURN_UOBJECT(u_enum);
+}
+
+PyObject* py_unreal_engine_load_bytes(PyObject* self, PyObject* args)
+{
+	char* name;
+	if (!PyArg_ParseTuple(args, "s:load_bytes", &name))
+	{
+		return nullptr;
+	}
+
+	TArray<uint8> bytes;
+	if (!FFileHelper::LoadFileToArray(bytes, UTF8_TO_TCHAR(name)))
+	{
+		return PyErr_Format(PyExc_Exception, "unable to load file %s", name);
+	}
+
+	PyObject* py_bytes = PyBytes_FromStringAndSize((char*)bytes.GetData(), bytes.Num());
+
+	return py_bytes;
 }
 
 PyObject *py_unreal_engine_load_package(PyObject * self, PyObject * args)
