@@ -108,8 +108,9 @@ public class UnrealEnginePython : ModuleRules
         PublicDependencyModuleNames.AddRange(new string[] {
             "Core",
             "Sockets",
-            "Networking"
-		});
+            "Networking",
+            "Projects",
+        });
 
         PrivateDependencyModuleNames.AddRange(new string[] {
             "CoreUObject",
@@ -128,7 +129,7 @@ public class UnrealEnginePython : ModuleRules
             "MovieSceneCapture",
             "Landscape",
             "Foliage",
-            "AIModule"
+            "AIModule",
 		});
 
 #if WITH_FORWARDED_MODULE_RULES_CTOR
@@ -241,7 +242,7 @@ public class UnrealEnginePython : ModuleRules
 
             string APLName = "UnrealEnginePython_APL.xml";
             string RelAPLPath = Utils.MakePathRelativeTo(System.IO.Path.Combine(ModuleDirectory, APLName), Target.RelativeEnginePath);
-            AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", RelAPLPath));
+            AdditionalPropertiesForReceipt.Add("AndroidPlugin", RelAPLPath);
         }
 #endif
     }
