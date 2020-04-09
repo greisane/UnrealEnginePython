@@ -1,20 +1,26 @@
-// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
-
 using UnrealBuildTool;
 using System.IO;
 using System.Collections.Generic;
 
 public class UnrealEnginePython : ModuleRules
 {
-	protected int PythonVersionMajor = 3;
-	protected int PythonVersionMinor = 8;
+	public static readonly int PythonVersionMajor = 3;
+	public static readonly int PythonVersionMinor = 8;
+
+	public static string PythonRelativeDir
+	{
+		get
+		{
+			string folderName = string.Format("Python{0}{1}", PythonVersionMajor, PythonVersionMinor);
+			return Path.Combine("../../ThirdParty", folderName);
+		}
+	}
 
 	public string PythonDir
 	{
 		get
 		{
-			string folderName = string.Format("Python{0}{1}", PythonVersionMajor, PythonVersionMinor);
-			return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../ThirdParty/", folderName));
+			return Path.GetFullPath(Path.Combine(ModuleDirectory, PythonRelativeDir));
 		}
 	}
 

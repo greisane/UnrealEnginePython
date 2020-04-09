@@ -11,9 +11,7 @@
 #endif
 
 #include "Styling/SlateStyleRegistry.h"
-#if WITH_EDITOR
 #include "Interfaces/IPluginManager.h"
-#endif
 
 #if ENGINE_MINOR_VERSION >= 18
 #define PROJECT_CONTENT_DIR FPaths::ProjectContentDir()
@@ -307,30 +305,12 @@ void FUnrealEnginePythonModule::StartupModule()
 	// Save the current locale (should be "C") to restore later. TCharTest::RunTest will fail otherwise
 	FString SavedLocale(setlocale(LC_CTYPE, nullptr));
 
-	// Load python library
-	FString PluginDir = IPluginManager::Get().FindPlugin(TEXT("UnrealEnginePython"))->GetBaseDir();
-	FString PythonDir = FString::Printf(TEXT("Python%d%d"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
-
-	auto LoadDll([](const FString& Path) -> void*
-		{
-			void* Handle = FPlatformProcess::GetDllHandle(*Path);
-			if (Handle == nullptr)
-			{
-				UE_LOG(LogPython, Fatal, TEXT("Failed to load module '%s'."), *Path);
-			}
-			return Handle;
-		});
-
-#if PLATFORM_WINDOWS
-	FString DllFilename = FString::Printf(TEXT("python%d%d.dll"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
-	FString DllPath = PythonDir / TEXT("bin/win64") / DllFilename;
-	PythonHandle = LoadDll(DllPath);
-#endif
-	
 	// Manual import of data symbols that would prevent delay loading of python dll
-	LoadPythonSymbols(PythonHandle);
+	//LoadPythonSymbols(PythonHandle);
 
 	// Point sys.path to the embedded python zip. Extraneous python installations are also cleared out
+	FString PluginDir = IPluginManager::Get().FindPlugin(TEXT("UnrealEnginePython"))->GetBaseDir();
+	FString PythonDir = FString::Printf(TEXT("Python%d%d"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
 	FString ZipFilename = FString::Printf(TEXT("python%d%d.zip"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
 	FString ZipPath = FPaths::ConvertRelativePathToFull(FPaths::Combine(PluginDir, TEXT("ThirdParty"), PythonDir, ZipFilename));
 #if PY_MAJOR_VERSION >= 3
@@ -489,8 +469,6 @@ void FUnrealEnginePythonModule::ShutdownModule()
 		PyGILState_Ensure();
 		Py_Finalize();
 	}
-
-	FPlatformProcess::FreeDllHandle(PythonHandle);
 }
 
 void FUnrealEnginePythonModule::RunString(char *str)

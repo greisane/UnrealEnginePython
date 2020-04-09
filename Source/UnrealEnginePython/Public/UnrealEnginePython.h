@@ -124,7 +124,6 @@ public:
 
 private:
 	FString ScriptsPath;
-	void* PythonHandle = nullptr;
 	void *ue_python_gil;
 	// used by console
 	void *main_dict;
