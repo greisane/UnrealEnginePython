@@ -74,7 +74,7 @@ public:
 				return FReply::Unhandled();
 			}
 
-			if (ret == ue_Py_False)
+			if (ret == Py_False)
 			{
 				Py_DECREF(ret);
 				return FReply::Unhandled();

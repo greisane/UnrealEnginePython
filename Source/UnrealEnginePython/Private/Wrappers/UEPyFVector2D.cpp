@@ -284,21 +284,21 @@ static PyObject *ue_py_fvector2d_richcompare(ue_PyFVector2D *vec1, PyObject *b, 
 		if (vec1->vec.X == vec2->vec.X &&
 			vec1->vec.Y == vec2->vec.Y)
 		{
-			Py_INCREF(ue_Py_True);
-			return ue_Py_True;
+			Py_INCREF(Py_True);
+			return Py_True;
 		}
-		Py_INCREF(ue_Py_False);
-		return ue_Py_False;
+		Py_INCREF(Py_False);
+		return Py_False;
 	}
 
 	if (vec1->vec.X == vec2->vec.X &&
 		vec1->vec.Y == vec2->vec.Y)
 	{
-		Py_INCREF(ue_Py_False);
-		return ue_Py_False;
+		Py_INCREF(Py_False);
+		return Py_False;
 	}
-	Py_INCREF(ue_Py_True);
-	return ue_Py_True;
+	Py_INCREF(Py_True);
+	return Py_True;
 }
 
 void ue_python_init_fvector2d(PyObject *ue_module)

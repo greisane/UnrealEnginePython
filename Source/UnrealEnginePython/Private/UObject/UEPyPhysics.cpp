@@ -43,8 +43,8 @@ PyObject *py_ue_set_simulate_physics(ue_PyUObject * self, PyObject * args)
 
 	primitive->SetSimulatePhysics(enabled);
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 
@@ -93,8 +93,8 @@ PyObject *py_ue_add_impulse(ue_PyUObject * self, PyObject * args)
 
 	primitive->AddImpulse(impulse, f_bone_name, b_vel_change);
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 
@@ -196,8 +196,8 @@ PyObject *py_ue_add_force(ue_PyUObject * self, PyObject * args)
 
 	primitive->AddForce(force, f_bone_name, b_accel_change);
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 
@@ -299,8 +299,8 @@ PyObject *py_ue_set_physics_linear_velocity(ue_PyUObject * self, PyObject * args
 
 	primitive->SetPhysicsLinearVelocity(new_vel, add_to_current, f_bone_name);
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 

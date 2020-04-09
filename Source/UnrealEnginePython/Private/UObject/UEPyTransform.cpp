@@ -247,7 +247,7 @@ PyObject *py_ue_set_actor_location(ue_PyUObject *self, PyObject * args)
 		Py_RETURN_FALSE;
 	}
 
-	return Py_BuildValue("(OO)", success ? ue_Py_True : ue_Py_False, py_ue_new_fhitresult(hit));
+	return Py_BuildValue("(OO)", success ? Py_True : Py_False, py_ue_new_fhitresult(hit));
 }
 
 PyObject *py_ue_add_actor_world_offset(ue_PyUObject *self, PyObject * args)

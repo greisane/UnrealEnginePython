@@ -13,8 +13,8 @@ static PyObject *py_ue_fsocket_start_receiver(ue_PyFSocket *self, PyObject * arg
 	self->udp_receiver->OnDataReceived().BindRaw(self, &ue_PyFSocket::udp_recv);
 	self->udp_receiver->Start();
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static void sock_close(ue_PyFSocket *self)
@@ -46,8 +46,8 @@ static PyObject *py_ue_fsocket_stop_receiver(ue_PyFSocket *self, PyObject * args
 
 	sock_stop_receiver(self);
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *py_ue_fsocket_close(ue_PyFSocket *self, PyObject * args)
@@ -60,8 +60,8 @@ static PyObject *py_ue_fsocket_close(ue_PyFSocket *self, PyObject * args)
 
 	sock_close(self);
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 

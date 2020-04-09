@@ -154,7 +154,7 @@ void FPythonSmartHttpDelegate::OnRequestComplete(FHttpRequestPtr request, FHttpR
 		return;
 	}
 
-	PyObject *ret = PyObject_CallFunction(py_callable, (char *)"ONO", py_http_request, py_ue_new_ihttp_response(response.Get()), successful ? ue_Py_True : ue_Py_False);
+	PyObject *ret = PyObject_CallFunction(py_callable, (char *)"ONO", py_http_request, py_ue_new_ihttp_response(response.Get()), successful ? Py_True : Py_False);
 	if (!ret)
 	{
 		unreal_engine_py_log_error();

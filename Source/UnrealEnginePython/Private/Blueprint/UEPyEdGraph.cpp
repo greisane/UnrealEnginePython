@@ -209,7 +209,7 @@ PyObject *py_ue_graph_add_node_variable_get(ue_PyUObject * self, PyObject * args
 	UEdGraph *graph = (UEdGraph *)self->ue_object;
 	UStruct *u_struct = nullptr;
 
-	if (py_struct && py_struct != ue_Py_None)
+	if (py_struct && py_struct != Py_None)
 	{
 		if (!ue_is_pyuobject(py_struct))
 		{
@@ -257,7 +257,7 @@ PyObject *py_ue_graph_add_node_variable_set(ue_PyUObject * self, PyObject * args
 	UEdGraph *graph = (UEdGraph *)self->ue_object;
 	UStruct *u_struct = nullptr;
 
-	if (py_struct && py_struct != ue_Py_None)
+	if (py_struct && py_struct != Py_None)
 	{
 		if (!ue_is_pyuobject(py_struct))
 		{

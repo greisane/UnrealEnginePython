@@ -1,5 +1,4 @@
 #include "UEPyFARFilter.h"
-#include "PythonInterface.h"
 
 #if WITH_EDITOR
 

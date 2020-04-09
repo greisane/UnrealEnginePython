@@ -27,12 +27,12 @@ PyObject *py_ue_is_input_key_down(ue_PyUObject *self, PyObject * args)
 
 	if (controller->IsInputKeyDown(key))
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 PyObject *py_ue_was_input_key_just_pressed(ue_PyUObject *self, PyObject * args)
@@ -57,12 +57,12 @@ PyObject *py_ue_was_input_key_just_pressed(ue_PyUObject *self, PyObject * args)
 
 	if (controller->WasInputKeyJustPressed(key))
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 PyObject *py_ue_is_action_pressed(ue_PyUObject *self, PyObject * args)
@@ -92,14 +92,14 @@ PyObject *py_ue_is_action_pressed(ue_PyUObject *self, PyObject * args)
 	{
 		if (controller->WasInputKeyJustPressed(mapping.Key))
 		{
-			Py_INCREF(ue_Py_True);
-			return ue_Py_True;
+			Py_INCREF(Py_True);
+			return Py_True;
 		}
 	}
 
 end:
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 PyObject *py_ue_was_input_key_just_released(ue_PyUObject *self, PyObject * args)
@@ -124,12 +124,12 @@ PyObject *py_ue_was_input_key_just_released(ue_PyUObject *self, PyObject * args)
 
 	if (controller->WasInputKeyJustReleased(key))
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 PyObject *py_ue_is_action_released(ue_PyUObject *self, PyObject * args)
@@ -159,14 +159,14 @@ PyObject *py_ue_is_action_released(ue_PyUObject *self, PyObject * args)
 	{
 		if (controller->WasInputKeyJustReleased(mapping.Key))
 		{
-			Py_INCREF(ue_Py_True);
-			return ue_Py_True;
+			Py_INCREF(Py_True);
+			return Py_True;
 		}
 	}
 
 end:
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 PyObject *py_ue_enable_input(ue_PyUObject *self, PyObject * args)
@@ -201,8 +201,8 @@ PyObject *py_ue_enable_input(ue_PyUObject *self, PyObject * args)
 		return PyErr_Format(ue_PyExc_Exception, "uobject is not an actor or a component");
 	}
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 
 }
 
@@ -274,8 +274,8 @@ PyObject *py_ue_bind_input_axis(ue_PyUObject *self, PyObject * args)
 
 	input->BindAxis(FName(UTF8_TO_TCHAR(axis_name)));
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 
 }
 
@@ -306,8 +306,8 @@ PyObject *py_ue_show_mouse_cursor(ue_PyUObject * self, PyObject * args)
 
 	controller->bShowMouseCursor = enabled;
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 PyObject *py_ue_enable_click_events(ue_PyUObject * self, PyObject * args)
@@ -337,8 +337,8 @@ PyObject *py_ue_enable_click_events(ue_PyUObject * self, PyObject * args)
 
 	controller->bEnableClickEvents = enabled;
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 PyObject *py_ue_enable_mouse_over_events(ue_PyUObject * self, PyObject * args)
@@ -367,8 +367,8 @@ PyObject *py_ue_enable_mouse_over_events(ue_PyUObject * self, PyObject * args)
 	if (controller)
 		controller->bEnableMouseOverEvents = enabled;
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 PyObject *py_ue_bind_action(ue_PyUObject *self, PyObject * args)
@@ -551,10 +551,10 @@ PyObject *py_unreal_engine_get_engine_defined_action_mappings(PyObject * self, P
 		PyObject *py_mapping = PyDict_New();
 		PyDict_SetItemString(py_mapping, (char *)"action_name", PyUnicode_FromString(TCHAR_TO_UTF8(*mapping.ActionName.ToString())));
 		PyDict_SetItemString(py_mapping, (char *)"key", PyUnicode_FromString(TCHAR_TO_UTF8(*mapping.Key.ToString())));
-		PyDict_SetItemString(py_mapping, (char *)"alt", mapping.bAlt ? ue_Py_True : ue_Py_False);
-		PyDict_SetItemString(py_mapping, (char *)"cmd", mapping.bCmd ? ue_Py_True : ue_Py_False);
-		PyDict_SetItemString(py_mapping, (char *)"ctrl", mapping.bCtrl ? ue_Py_True : ue_Py_False);
-		PyDict_SetItemString(py_mapping, (char *)"shift", mapping.bShift ? ue_Py_True : ue_Py_False);
+		PyDict_SetItemString(py_mapping, (char *)"alt", mapping.bAlt ? Py_True : Py_False);
+		PyDict_SetItemString(py_mapping, (char *)"cmd", mapping.bCmd ? Py_True : Py_False);
+		PyDict_SetItemString(py_mapping, (char *)"ctrl", mapping.bCtrl ? Py_True : Py_False);
+		PyDict_SetItemString(py_mapping, (char *)"shift", mapping.bShift ? Py_True : Py_False);
 		PyList_Append(py_list, py_mapping);
 	}
 	return py_list;

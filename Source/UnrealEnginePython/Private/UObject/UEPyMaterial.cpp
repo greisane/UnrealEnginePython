@@ -515,8 +515,8 @@ PyObject *py_ue_static_mesh_set_collision_for_lod(ue_PyUObject *self, PyObject *
 
 	mesh->MarkPackageDirty();
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 PyObject *py_ue_static_mesh_set_shadow_for_lod(ue_PyUObject *self, PyObject * args)

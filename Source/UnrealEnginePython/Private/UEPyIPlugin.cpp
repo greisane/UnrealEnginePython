@@ -34,24 +34,24 @@ static PyObject *py_ue_iplugin_can_contain_content(ue_PyIPlugin *self, PyObject 
 {
 	if (self->plugin->CanContainContent())
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 static PyObject *py_ue_iplugin_is_enabled(ue_PyIPlugin *self, PyObject * args)
 {
 	if (self->plugin->IsEnabled())
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 static PyObject *py_ue_iplugin_to_json(ue_PyIPlugin *self, PyObject * args)
@@ -113,8 +113,8 @@ static PyObject *py_ue_iplugin_from_json(ue_PyIPlugin *self, PyObject * args)
 		return PyErr_Format(ue_PyExc_Exception, "unable to update descriptor from json");
 	}
 
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyMethodDef ue_PyIPlugin_methods[] = {
@@ -139,12 +139,12 @@ static PyObject *py_ue_iplugin_get_can_contain_content(ue_PyIPlugin *self, void 
 {
 	if (self->plugin->GetDescriptor().bCanContainContent)
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 static PyObject *py_ue_iplugin_get_enabled_by_default(ue_PyIPlugin *self, void *closure)
@@ -155,36 +155,36 @@ static PyObject *py_ue_iplugin_get_enabled_by_default(ue_PyIPlugin *self, void *
 	if (self->plugin->GetDescriptor().EnabledByDefault == EPluginEnabledByDefault::Enabled)
 #endif
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 static PyObject *py_ue_iplugin_get_installed(ue_PyIPlugin *self, void *closure)
 {
 	if (self->plugin->GetDescriptor().bInstalled)
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 static PyObject *py_ue_iplugin_get_is_beta_version(ue_PyIPlugin *self, void *closure)
 {
 	if (self->plugin->GetDescriptor().bIsBetaVersion)
 	{
-		Py_INCREF(ue_Py_True);
-		return ue_Py_True;
+		Py_INCREF(Py_True);
+		return Py_True;
 	}
 
-	Py_INCREF(ue_Py_False);
-	return ue_Py_False;
+	Py_INCREF(Py_False);
+	return Py_False;
 }
 
 static PyObject *py_ue_iplugin_created_by(ue_PyIPlugin *self, void *closure)

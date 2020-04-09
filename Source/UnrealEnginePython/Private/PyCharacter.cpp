@@ -302,10 +302,10 @@ void APyCharacter::SetPythonAttrBool(FString attr, bool b)
 
 	FScopePythonGIL gil;
 
-	PyObject *py_bool = ue_Py_False;
+	PyObject *py_bool = Py_False;
 	if (b)
 	{
-		py_bool = ue_Py_True;
+		py_bool = Py_True;
 	}
 
 	if (PyObject_SetAttrString(py_character_instance, TCHAR_TO_UTF8(*attr), py_bool) < 0)

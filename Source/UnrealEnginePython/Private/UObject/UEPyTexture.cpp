@@ -434,7 +434,7 @@ PyObject *py_unreal_engine_create_texture(PyObject * self, PyObject * args)
 	}
 
 	UPackage *u_package = nullptr;
-	if (py_package == ue_Py_None)
+	if (py_package == Py_None)
 	{
 		u_package = GetTransientPackage();
 	}

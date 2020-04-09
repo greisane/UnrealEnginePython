@@ -14,8 +14,8 @@ static PyObject *py_ue_frandomstream_frand_range(ue_PyFRandomStream *self, PyObj
 
 static PyObject *py_ue_frandomstream_generate_new_seed(ue_PyFRandomStream *self, PyObject * args) {
 	self->rstream.GenerateNewSeed();
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *py_ue_frandomstream_get_current_seed(ue_PyFRandomStream *self, PyObject * args) {
@@ -43,8 +43,8 @@ static PyObject *py_ue_frandomstream_initialize(ue_PyFRandomStream *self, PyObje
 	if (!PyArg_ParseTuple(args, "i:initialize", &seed))
 		return NULL;
 	self->rstream.Initialize(seed);
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *py_ue_frandomstream_rand_helper(ue_PyFRandomStream *self, PyObject * args) {
@@ -64,8 +64,8 @@ static PyObject *py_ue_frandomstream_rand_range(ue_PyFRandomStream *self, PyObje
 
 static PyObject *py_ue_frandomstream_reset(ue_PyFRandomStream *self, PyObject * args) {
 	self->rstream.Reset();
-	Py_INCREF(ue_Py_None);
-	return ue_Py_None;
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *py_ue_frandomstream_vrand(ue_PyFRandomStream *self, PyObject * args) {
