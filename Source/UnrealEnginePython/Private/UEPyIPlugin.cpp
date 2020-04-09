@@ -110,7 +110,7 @@ static PyObject *py_ue_iplugin_from_json(ue_PyIPlugin *self, PyObject * args)
 	if (!descriptor.Read(text, error))
 #endif
 	{
-		return PyErr_Format(PyExc_Exception, "unable to update descriptor from json");
+		return PyErr_Format(ue_PyExc_Exception, "unable to update descriptor from json");
 	}
 
 	Py_INCREF(Py_None);

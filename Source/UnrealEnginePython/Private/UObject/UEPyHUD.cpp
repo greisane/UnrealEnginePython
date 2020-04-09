@@ -17,12 +17,12 @@ PyObject *py_ue_hud_draw_2d_line(ue_PyUObject *self, PyObject * args)
 
 	AHUD *hud = ue_py_check_type<AHUD>(self);
 	if (!hud)
-		return PyErr_Format(PyExc_Exception, "UObject is not a AHUD.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a AHUD.");
 
 	FColor color;
 	if (!py_ue_get_fcolor(py_fcolor, color))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FColor or FLinearColor.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FColor or FLinearColor.");
 	}
 
 	hud->Draw2DLine(x1, y1, x2, y2, color);
@@ -46,12 +46,12 @@ PyObject *py_ue_hud_draw_line(ue_PyUObject *self, PyObject * args)
 
 	AHUD *hud = ue_py_check_type<AHUD>(self);
 	if (!hud)
-		return PyErr_Format(PyExc_Exception, "UObject is not a AHUD.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a AHUD.");
 
 	FLinearColor color;
 	if (!py_ue_get_flinearcolor(py_fcolor, color))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 	}
 
 	hud->DrawLine(x1, y1, x2, y2, color, thickness);
@@ -74,12 +74,12 @@ PyObject *py_ue_hud_draw_rect(ue_PyUObject *self, PyObject * args)
 
 	AHUD *hud = ue_py_check_type<AHUD>(self);
 	if (!hud)
-		return PyErr_Format(PyExc_Exception, "UObject is not a AHUD.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a AHUD.");
 
 	FLinearColor color;
 	if (!py_ue_get_flinearcolor(py_fcolor, color))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 	}
 
 	hud->DrawRect(color, x, y, w, h);
@@ -105,12 +105,12 @@ PyObject *py_ue_hud_draw_text(ue_PyUObject *self, PyObject * args)
 
 	AHUD *hud = ue_py_check_type<AHUD>(self);
 	if (!hud)
-		return PyErr_Format(PyExc_Exception, "UObject is not a AHUD.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a AHUD.");
 
 	FLinearColor color;
 	if (!py_ue_get_flinearcolor(py_fcolor, color))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 	}
 
 	hud->DrawText(FString(UTF8_TO_TCHAR(text)), color, x, y, nullptr, scale);
@@ -141,11 +141,11 @@ PyObject *py_ue_hud_draw_texture(ue_PyUObject *self, PyObject * args)
 
 	AHUD *hud = ue_py_check_type<AHUD>(self);
 	if (!hud)
-		return PyErr_Format(PyExc_Exception, "UObject is not a AHUD.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a AHUD.");
 
 	UTexture *texture = ue_py_check_type<UTexture>(py_texture);
 	if (!texture)
-		return PyErr_Format(PyExc_Exception, "argument is not a UTexture.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UTexture.");
 
 	FLinearColor tint = FLinearColor::White;
 
@@ -153,7 +153,7 @@ PyObject *py_ue_hud_draw_texture(ue_PyUObject *self, PyObject * args)
 	{
 		if (!py_ue_get_flinearcolor(py_flinear_color, tint))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 		}
 	}
 

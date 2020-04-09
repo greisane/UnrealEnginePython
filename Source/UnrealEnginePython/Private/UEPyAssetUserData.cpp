@@ -11,7 +11,7 @@ PyObject *py_ue_asset_import_data(ue_PyUObject * self, PyObject * args)
 	UClassProperty *u_property = (UClassProperty *)u_struct->FindPropertyByName(TEXT("AssetImportData"));
 	if (!u_property)
 	{
-		return PyErr_Format(PyExc_Exception, "UObject does not have asset import data.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject does not have asset import data.");
 
 	}
 	UAssetImportData *import_data = (UAssetImportData *)u_property->GetPropertyValue_InContainer(self->ue_object);
@@ -50,7 +50,7 @@ PyObject *py_ue_asset_import_data_set_sources(ue_PyUObject * self, PyObject * ar
 	UClassProperty *u_property = (UClassProperty *)u_struct->FindPropertyByName(TEXT("AssetImportData"));
 	if (!u_property)
 	{
-		return PyErr_Format(PyExc_Exception, "UObject does not have asset import data.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject does not have asset import data.");
 	}
 
 	if (PyUnicodeOrString_Check(py_files))
@@ -62,7 +62,7 @@ PyObject *py_ue_asset_import_data_set_sources(ue_PyUObject * self, PyObject * ar
 		PyObject *py_iter = PyObject_GetIter(py_files);
 		if (!py_iter)
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a string or an interable of strings");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a string or an interable of strings");
 		}
 
 		while (PyObject *py_item = PyIter_Next(py_iter))
@@ -70,7 +70,7 @@ PyObject *py_ue_asset_import_data_set_sources(ue_PyUObject * self, PyObject * ar
 			if (!PyUnicodeOrString_Check(py_item))
 			{
 				Py_DECREF(py_iter);
-				return PyErr_Format(PyExc_Exception, "argument is not a string or an interable of strings");
+				return PyErr_Format(ue_PyExc_Exception, "argument is not a string or an interable of strings");
 			}
 			filenames.Add(FString(UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(py_item))));
 		}

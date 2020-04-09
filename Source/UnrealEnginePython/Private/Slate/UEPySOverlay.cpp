@@ -43,7 +43,7 @@ static PyObject *py_ue_soverlay_add_slot(ue_PySOverlay *self, PyObject * args, P
 			FMargin margin;
 			if (!PyArg_ParseTuple(padding, "f|fff", &margin.Left, &margin.Top, &margin.Right, &margin.Bottom))
 			{
-				return PyErr_Format(PyExc_Exception, "invalid padding value");
+				return PyErr_Format(ue_PyExc_Exception, "invalid padding value");
 			}
 			fslot.Padding(margin);
 		}
@@ -55,7 +55,7 @@ static PyObject *py_ue_soverlay_add_slot(ue_PySOverlay *self, PyObject * args, P
 		}
 		else
 		{
-			return PyErr_Format(PyExc_Exception, "invalid padding value");
+			return PyErr_Format(ue_PyExc_Exception, "invalid padding value");
 		}
 	}
 	fslot.VAlign((EVerticalAlignment)v_align);

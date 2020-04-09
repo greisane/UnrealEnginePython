@@ -14,7 +14,7 @@ static PyObject *py_ue_sheader_row_add_column(ue_PySHeaderRow *self, PyObject *a
 		PyObject *py_columnid = ue_py_dict_get_item(kwargs, "column_id");
 		if (!py_columnid)
 		{
-			PyErr_SetString(PyExc_TypeError, "you must specify the column_id");
+			PyErr_SetString(ue_PyExc_TypeError, "you must specify the column_id");
 			return -1;
 		}
 
@@ -60,7 +60,7 @@ static PyObject *py_ue_sheader_row_add_column(ue_PySHeaderRow *self, PyObject *a
 
 	if (retCode != 0)
 	{
-		return PyErr_Format(PyExc_Exception, "could not add column slot");
+		return PyErr_Format(ue_PyExc_Exception, "could not add column slot");
 	}
 
 	Py_RETURN_SLATE_SELF;

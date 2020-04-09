@@ -44,7 +44,7 @@ static PyObject *py_ue_sborder_set_padding(ue_PySBorder *self, PyObject * args)
 	{
 		if (!PyNumber_Check(py_padding))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FMargin or a number");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FMargin or a number");
 		}
 		PyObject *py_float = PyNumber_Float(py_padding);
 		FMargin new_margin(PyFloat_AsDouble(py_float));
@@ -96,7 +96,7 @@ static PyObject *py_ue_sborder_set_border_image(ue_PySBorder *self, PyObject * a
 
 	FSlateBrush *brush = ue_py_check_struct<FSlateBrush>(py_brush);
 	if (!brush)
-		return PyErr_Format(PyExc_Exception, "argument is not a FSlateBrush");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FSlateBrush");
 
 	py_SBorder->SetBorderImage(brush);
 

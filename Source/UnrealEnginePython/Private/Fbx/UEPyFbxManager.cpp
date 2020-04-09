@@ -17,7 +17,7 @@ static PyObject *py_ue_fbx_manager_set_io_settings(ue_PyFbxManager *self, PyObje
 	ue_PyFbxIOSettings *py_fbx_io_settings = py_ue_is_fbx_io_settings(py_object);
 	if (!py_fbx_io_settings)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FbxIOSettings");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FbxIOSettings");
 	}
 
 	self->fbx_manager->SetIOSettings(py_fbx_io_settings->fbx_io_settings);
@@ -36,7 +36,7 @@ static PyObject *py_ue_fbx_manager_create_missing_bind_poses(ue_PyFbxManager *se
 	ue_PyFbxScene *py_fbx_scene = py_ue_is_fbx_scene(py_object);
 	if (!py_fbx_scene)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FbxScene");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FbxScene");
 	}
 
 	self->fbx_manager->CreateMissingBindPoses(py_fbx_scene->fbx_scene);

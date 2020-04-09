@@ -7,7 +7,7 @@
 static PyObject *py_ue_ftimerhandle_clear(ue_PyFTimerHandle *self, PyObject * args)
 {
 	if (!self->world.IsValid())
-		return PyErr_Format(PyExc_Exception, "World's timer is invalid");
+		return PyErr_Format(ue_PyExc_Exception, "World's timer is invalid");
 	self->world.Get()->GetTimerManager().ClearTimer(self->thandle);
 	Py_RETURN_NONE;
 }
@@ -15,7 +15,7 @@ static PyObject *py_ue_ftimerhandle_clear(ue_PyFTimerHandle *self, PyObject * ar
 static PyObject *py_ue_ftimerhandle_pause(ue_PyFTimerHandle *self, PyObject * args)
 {
 	if (!self->world.IsValid())
-		return PyErr_Format(PyExc_Exception, "World's timer is invalid");
+		return PyErr_Format(ue_PyExc_Exception, "World's timer is invalid");
 	self->world.Get()->GetTimerManager().PauseTimer(self->thandle);
 	Py_RETURN_NONE;
 }
@@ -23,7 +23,7 @@ static PyObject *py_ue_ftimerhandle_pause(ue_PyFTimerHandle *self, PyObject * ar
 static PyObject *py_ue_ftimerhandle_unpause(ue_PyFTimerHandle *self, PyObject * args)
 {
 	if (!self->world.IsValid())
-		return PyErr_Format(PyExc_Exception, "World's timer is invalid");
+		return PyErr_Format(ue_PyExc_Exception, "World's timer is invalid");
 	self->world.Get()->GetTimerManager().UnPauseTimer(self->thandle);
 	Py_RETURN_NONE;
 }
@@ -109,7 +109,7 @@ PyObject *py_ue_set_timer(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(PyExc_Exception, "object is not a callable");
+		return PyErr_Format(ue_PyExc_Exception, "object is not a callable");
 
 	bool loop = false;
 	if (py_loop && PyObject_IsTrue(py_loop))
@@ -117,14 +117,14 @@ PyObject *py_ue_set_timer(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 
 
 	ue_PyFTimerHandle *ret = (ue_PyFTimerHandle *)PyObject_New(ue_PyFTimerHandle, &ue_PyFTimerHandleType);
 	if (!ret)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to allocate FTimerHandle python object");
+		return PyErr_Format(ue_PyExc_Exception, "unable to allocate FTimerHandle python object");
 	}
 
 	new(&ret->thandle) FTimerHandle;

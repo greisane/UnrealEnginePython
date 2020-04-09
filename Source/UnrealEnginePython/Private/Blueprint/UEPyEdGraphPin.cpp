@@ -16,7 +16,7 @@ static PyObject *py_ue_edgraphpin_make_link_to(ue_PyEdGraphPin *self, PyObject *
 	ue_PyEdGraphPin *py_other_pin = py_ue_is_edgraphpin(other_pin);
 	if (!py_other_pin)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UEdGraphPin");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UEdGraphPin");
 	}
 
 	self->pin->MakeLinkTo(py_other_pin->pin);
@@ -40,12 +40,12 @@ static PyObject *py_ue_edgraphpin_connect(ue_PyEdGraphPin *self, PyObject * args
 	ue_PyEdGraphPin *py_other_pin = py_ue_is_edgraphpin(other_pin);
 	if (!py_other_pin)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UEdGraphPin");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UEdGraphPin");
 	}
 
 	if (!self->pin->GetSchema()->TryCreateConnection(self->pin, py_other_pin->pin))
 	{
-		return PyErr_Format(PyExc_Exception, "unable to connect pins");
+		return PyErr_Format(ue_PyExc_Exception, "unable to connect pins");
 	}
 
 	if (UBlueprint *bp = Cast<UBlueprint>(self->pin->GetOwningNode()->GetGraph()->GetOuter()))
@@ -67,7 +67,7 @@ static PyObject *py_ue_edgraphpin_break_link_to(ue_PyEdGraphPin *self, PyObject 
 	ue_PyEdGraphPin *py_other_pin = py_ue_is_edgraphpin(other_pin);
 	if (!py_other_pin)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UEdGraphPin");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UEdGraphPin");
 	}
 
 	self->pin->BreakLinkTo(py_other_pin->pin);
@@ -167,7 +167,7 @@ static int py_ue_edgraphpin_set_default_value(ue_PyEdGraphPin *self, PyObject *v
 		self->pin->DefaultValue = UTF8_TO_TCHAR(str);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a string");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a string");
 	return -1;
 }
 
@@ -184,7 +184,7 @@ static int py_ue_edgraphpin_set_default_text_value(ue_PyEdGraphPin *self, PyObje
 		self->pin->DefaultTextValue = FText::FromString(UTF8_TO_TCHAR(str));
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a string");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a string");
 	return -1;
 }
 
@@ -208,7 +208,7 @@ static int py_ue_edgraphpin_set_default_object(ue_PyEdGraphPin *self, PyObject *
 		self->pin->DefaultObject = py_obj->ue_object;
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a UObject");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a UObject");
 	return -1;
 }
 
@@ -224,7 +224,7 @@ static int py_ue_edgraphpin_set_category(ue_PyEdGraphPin *self, PyObject *value,
 #endif
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a string");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a string");
 	return -1;
 }
 
@@ -249,7 +249,7 @@ static int py_ue_edgraphpin_set_sub_category(ue_PyEdGraphPin *self, PyObject *va
 			return 0;
 		}
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a UObject");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a UObject");
 	return -1;
 }
 

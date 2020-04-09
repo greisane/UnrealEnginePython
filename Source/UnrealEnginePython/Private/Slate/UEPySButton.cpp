@@ -26,7 +26,7 @@ static PyObject *py_ue_sbutton_bind_on_clicked(ue_PySButton *self, PyObject * ar
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not callable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
 	}
 
 	FOnClicked handler;

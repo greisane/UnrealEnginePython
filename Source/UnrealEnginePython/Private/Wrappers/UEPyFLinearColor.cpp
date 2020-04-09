@@ -30,7 +30,7 @@ static int py_ue_flinearcolor_set_r(ue_PyFLinearColor *self, PyObject *value, vo
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -48,7 +48,7 @@ static int py_ue_flinearcolor_set_g(ue_PyFLinearColor *self, PyObject *value, vo
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -66,7 +66,7 @@ static int py_ue_flinearcolor_set_b(ue_PyFLinearColor *self, PyObject *value, vo
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -84,7 +84,7 @@ static int py_ue_flinearcolor_set_a(ue_PyFLinearColor *self, PyObject *value, vo
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -181,7 +181,7 @@ static PyObject *ue_py_flinearcolor_seq_item(ue_PyFLinearColor *self, Py_ssize_t
 	case 3:
 		return PyFloat_FromDouble(self->color.A);
 	}
-	return PyErr_Format(PyExc_IndexError, "FLinearColor has only 4 items");
+	return PyErr_Format(ue_PyExc_IndexError, "FLinearColor has only 4 items");
 }
 
 PySequenceMethods ue_PyFLinearColor_sequence_methods;
@@ -288,7 +288,7 @@ bool py_ue_color_arg(PyObject *args, FLinearColor &color)
 		ue_PyFLinearColor *py_color = py_ue_is_flinearcolor(arg);
 		if (!py_color)
 		{
-			PyErr_Format(PyExc_TypeError, "argument is not a FLinearColor");
+			PyErr_Format(ue_PyExc_TypeError, "argument is not a FLinearColor");
 			return false;
 		}
 		color = py_color->color;

@@ -17,7 +17,7 @@ static PyObject *py_ue_paste_nodes_here(PyObject *cls, PyObject * args)
 	UEdGraph *Graph = ue_py_check_type<UEdGraph>(py_graph);
 	if (!Graph)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UEdGraph");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UEdGraph");
 	}
 
 	FMaterialEditorUtilities::PasteNodesHere(Graph, FVector2D(x, y));
@@ -34,7 +34,7 @@ static PyObject *py_ue_update_material_after_graph_change(PyObject *cls, PyObjec
 	UEdGraph *Graph = ue_py_check_type<UEdGraph>(py_graph);
 	if (!Graph)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UEdGraph");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UEdGraph");
 	}
 
 	FMaterialEditorUtilities::UpdateMaterialAfterGraphChange(Graph);
@@ -51,13 +51,13 @@ static PyObject *py_ue_command_apply(PyObject *cls, PyObject * args)
 	UMaterial *Material = ue_py_check_type<UMaterial>(py_material);
 	if (!Material)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UMaterial");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UMaterial");
 	}
 
 	IAssetEditorInstance* Instance = GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->FindEditorForAsset(Material, false);
 	if (!Instance)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to retrieve editor for UMaterial");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve editor for UMaterial");
 	}
 
 	IMaterialEditor *MaterialEditor = (IMaterialEditor *)Instance;
@@ -112,7 +112,7 @@ static PyTypeObject ue_PyFMaterialEditorUtilitiesType = {
 
 static int py_ue_fmaterial_editor_utilities_init(ue_PyFMaterialEditorUtilities *self, PyObject * args)
 {
-	PyErr_SetString(PyExc_Exception, "FMaterialEditorUtilities is a singleton");
+	PyErr_SetString(ue_PyExc_Exception, "FMaterialEditorUtilities is a singleton");
 	return -1;
 }
 

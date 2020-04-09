@@ -33,12 +33,12 @@ PyObject *py_ue_set_simulate_physics(ue_PyUObject * self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	if (!primitive)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to set physics for the object");
+		return PyErr_Format(ue_PyExc_Exception, "unable to set physics for the object");
 	}
 
 	primitive->SetSimulatePhysics(enabled);
@@ -69,7 +69,7 @@ PyObject *py_ue_add_impulse(ue_PyUObject * self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	FVector impulse = FVector(0, 0, 0);
@@ -77,7 +77,7 @@ PyObject *py_ue_add_impulse(ue_PyUObject * self, PyObject * args)
 	{
 		ue_PyFVector *py_impulse = py_ue_is_fvector(py_obj_impulse);
 		if (!py_impulse)
-			return PyErr_Format(PyExc_Exception, "impulse must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "impulse must be a FVector");
 		impulse = py_impulse->vec;
 	}
 
@@ -119,7 +119,7 @@ PyObject *py_ue_add_angular_impulse(ue_PyUObject * self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	FVector impulse = FVector(0, 0, 0);
@@ -127,7 +127,7 @@ PyObject *py_ue_add_angular_impulse(ue_PyUObject * self, PyObject * args)
 	{
 		ue_PyFVector *py_impulse = py_ue_is_fvector(py_obj_impulse);
 		if (!py_impulse)
-			return PyErr_Format(PyExc_Exception, "impulse must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "impulse must be a FVector");
 		impulse = py_impulse->vec;
 	}
 
@@ -172,7 +172,7 @@ PyObject *py_ue_add_force(ue_PyUObject * self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	FVector force = FVector(0, 0, 0);
@@ -180,7 +180,7 @@ PyObject *py_ue_add_force(ue_PyUObject * self, PyObject * args)
 	{
 		ue_PyFVector *py_force = py_ue_is_fvector(py_obj_force);
 		if (!py_force)
-			return PyErr_Format(PyExc_Exception, "force must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "force must be a FVector");
 		force = py_force->vec;
 	}
 
@@ -222,7 +222,7 @@ PyObject *py_ue_add_torque(ue_PyUObject * self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	FVector torque = FVector(0, 0, 0);
@@ -230,7 +230,7 @@ PyObject *py_ue_add_torque(ue_PyUObject * self, PyObject * args)
 	{
 		ue_PyFVector *py_torque = py_ue_is_fvector(py_obj_torque);
 		if (!py_torque)
-			return PyErr_Format(PyExc_Exception, "torque must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "torque must be a FVector");
 		torque = py_torque->vec;
 	}
 
@@ -267,7 +267,7 @@ PyObject *py_ue_set_physics_linear_velocity(ue_PyUObject * self, PyObject * args
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	PyObject *py_obj_new_vel = nullptr;
@@ -283,7 +283,7 @@ PyObject *py_ue_set_physics_linear_velocity(ue_PyUObject * self, PyObject * args
 	{
 		ue_PyFVector *py_new_vel = py_ue_is_fvector(py_obj_new_vel);
 		if (!py_new_vel)
-			return PyErr_Format(PyExc_Exception, "torque must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "torque must be a FVector");
 		new_vel = py_new_vel->vec;
 	}
 
@@ -317,7 +317,7 @@ PyObject *py_ue_get_physics_linear_velocity(ue_PyUObject * self, PyObject * args
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	char *bone_name = nullptr;
@@ -349,7 +349,7 @@ PyObject *py_ue_set_physics_angular_velocity(ue_PyUObject * self, PyObject * arg
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	PyObject *py_obj_new_ang_vel = nullptr;
@@ -365,7 +365,7 @@ PyObject *py_ue_set_physics_angular_velocity(ue_PyUObject * self, PyObject * arg
 	{
 		ue_PyFVector *py_new_ang_vel = py_ue_is_fvector(py_obj_new_ang_vel);
 		if (!py_new_ang_vel)
-			return PyErr_Format(PyExc_Exception, "torque must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "torque must be a FVector");
 		new_ang_vel = py_new_ang_vel->vec;
 	}
 
@@ -401,7 +401,7 @@ PyObject *py_ue_get_physics_angular_velocity(ue_PyUObject * self, PyObject * arg
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not an UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an UPrimitiveComponent");
 	}
 
 	char *bone_name = nullptr;
@@ -491,7 +491,7 @@ PyObject *py_ue_destructible_apply_damage(ue_PyUObject * self, PyObject * args)
 	{
 		ue_PyFVector *py_location = py_ue_is_fvector(py_obj_location);
 		if (!py_location)
-			return PyErr_Format(PyExc_Exception, "location must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "location must be a FVector");
 		location = py_location->vec;
 	}
 
@@ -499,7 +499,7 @@ PyObject *py_ue_destructible_apply_damage(ue_PyUObject * self, PyObject * args)
 	{
 		ue_PyFVector *py_impulse = py_ue_is_fvector(py_obj_impulse);
 		if (!py_impulse)
-			return PyErr_Format(PyExc_Exception, "impulse must be a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "impulse must be a FVector");
 		impulse = py_impulse->vec;
 	}
 
@@ -509,7 +509,7 @@ PyObject *py_ue_destructible_apply_damage(ue_PyUObject * self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "UObject is not a destructible");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a destructible");
 	}
 
 	Py_RETURN_NONE;

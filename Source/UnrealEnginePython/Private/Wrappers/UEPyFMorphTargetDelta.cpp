@@ -13,7 +13,7 @@ static int py_ue_fmorph_target_delta_set_position_delta(ue_PyFMorphTargetDelta *
 		self->morph_target_delta.PositionDelta = py_vec->vec;
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a FVector");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a FVector");
 	return -1;
 }
 
@@ -30,7 +30,7 @@ static int py_ue_fmorph_target_delta_set_tangent_z_delta(ue_PyFMorphTargetDelta 
 		self->morph_target_delta.TangentZDelta = py_vec->vec;
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a FVector");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a FVector");
 	return -1;
 }
 
@@ -45,7 +45,7 @@ static int py_ue_fmorph_target_delta_set_source_idx(ue_PyFMorphTargetDelta *self
 		Py_DECREF(py_num);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a number");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a number");
 	return -1;
 }
 

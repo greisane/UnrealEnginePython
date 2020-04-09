@@ -43,7 +43,7 @@ PyObject *py_ue_add_controller_yaw_input(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!pawn)
-		return PyErr_Format(PyExc_Exception, "uobject is not a Pawn or a PlayerController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a Pawn or a PlayerController");
 
 	pawn->AddControllerYawInput(val);
 
@@ -86,7 +86,7 @@ PyObject *py_ue_add_controller_pitch_input(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!pawn)
-		return PyErr_Format(PyExc_Exception, "uobject is not a Pawn or a PlayerController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a Pawn or a PlayerController");
 
 	pawn->AddControllerPitchInput(val);
 
@@ -128,7 +128,7 @@ PyObject *py_ue_add_controller_roll_input(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!pawn)
-		return PyErr_Format(PyExc_Exception, "uobject is not a Pawn or a PlayerController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a Pawn or a PlayerController");
 
 	pawn->AddControllerRollInput(val);
 
@@ -174,12 +174,12 @@ PyObject *py_ue_add_movement_input(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!pawn)
-		return PyErr_Format(PyExc_Exception, "uobject is not a pawn");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a pawn");
 
 	ue_PyFVector *movement = py_ue_is_fvector(py_obj_movement);
 
 	if (!movement)
-		return PyErr_Format(PyExc_Exception, "movement input must be a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "movement input must be a FVector");
 
 	pawn->AddMovementInput(movement->vec, scale, force);
 
@@ -212,7 +212,7 @@ PyObject *py_ue_get_control_rotation(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!pawn)
-		return PyErr_Format(PyExc_Exception, "uobject is not a pawn");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a pawn");
 
 	FRotator rot = pawn->GetControlRotation();
 	return py_ue_new_frotator(rot);
@@ -243,7 +243,7 @@ PyObject *py_ue_jump(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	character->Jump();
 
@@ -276,7 +276,7 @@ PyObject *py_ue_crouch(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	character->Crouch();
 
@@ -309,7 +309,7 @@ PyObject *py_ue_stop_jumping(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	character->StopJumping();
 
@@ -342,7 +342,7 @@ PyObject *py_ue_uncrouch(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	character->UnCrouch();
 
@@ -386,7 +386,7 @@ PyObject *py_ue_launch(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	if (py_xy_override && PyObject_IsTrue(py_xy_override))
 	{
@@ -401,7 +401,7 @@ PyObject *py_ue_launch(ue_PyUObject *self, PyObject * args)
 	ue_PyFVector *force = py_ue_is_fvector(py_obj_force);
 
 	if (!force)
-		return PyErr_Format(PyExc_Exception, "launch force must be a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "launch force must be a FVector");
 
 	character->LaunchCharacter(force->vec, xy_override, z_override);
 
@@ -434,7 +434,7 @@ PyObject *py_ue_is_jumping(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	if (character->IsJumpProvidingForce())
 	{
@@ -471,7 +471,7 @@ PyObject *py_ue_is_crouched(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	if (character->bIsCrouched)
 	{
@@ -508,7 +508,7 @@ PyObject *py_ue_is_falling(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	UMovementComponent *movement = character->GetMovementComponent();
 	if (movement && movement->IsA<UCharacterMovementComponent>())
@@ -550,7 +550,7 @@ PyObject *py_ue_is_flying(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	UMovementComponent *movement = character->GetMovementComponent();
 	if (movement && movement->IsA<UCharacterMovementComponent>())
@@ -592,7 +592,7 @@ PyObject *py_ue_can_jump(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	if (character->CanJump())
 	{
@@ -629,7 +629,7 @@ PyObject *py_ue_can_crouch(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!character)
-		return PyErr_Format(PyExc_Exception, "uobject is not a character");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a character");
 
 	if (character->CanCrouch())
 	{

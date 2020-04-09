@@ -74,14 +74,14 @@ static int ue_py_spython_tree_view_init(ue_PySPythonTreeView *self, PyObject *ar
 	PyObject *values = ue_py_dict_get_item(kwargs, "tree_items_source");
 	if (!values)
 	{
-		PyErr_SetString(PyExc_Exception, "you must specify tree items");
+		PyErr_SetString(ue_PyExc_Exception, "you must specify tree items");
 		return -1;
 	}
 
 	values = PyObject_GetIter(values);
 	if (!values)
 	{
-		PyErr_SetString(PyExc_Exception, "values field is not an iterable");
+		PyErr_SetString(ue_PyExc_Exception, "values field is not an iterable");
 		return -1;
 	}
 

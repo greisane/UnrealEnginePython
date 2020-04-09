@@ -51,7 +51,7 @@ static int ue_py_spython_multicolumn_table_row_init(ue_PySPythonMultiColumnTable
 	ue_PySTableViewBase* py_owner_table_view_base = py_ue_is_stable_view_base(py_object);
 	if (!py_owner_table_view_base)
 	{
-		PyErr_SetString(PyExc_Exception, "Argument is not a STableViewBase");
+		PyErr_SetString(ue_PyExc_Exception, "Argument is not a STableViewBase");
 		return -1;
 	}
 

@@ -402,7 +402,7 @@ void FUnrealEnginePythonModule::StartupModule()
 #endif
 #endif
 
-#ifdef UEPY_OUTPUT_DEBUG
+#ifdef UEPY_INITIALIZE_DEBUG
 	freopen("cout.log", "w", stdout);
 	freopen("cerr.log", "w", stderr);
 	fflush(stdout);
@@ -457,7 +457,7 @@ void FUnrealEnginePythonModule::StartupModule()
 	else
 	{
 #if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 6
-		if (PyErr_ExceptionMatches(PyExc_ModuleNotFoundError))
+		if (PyErr_ExceptionMatches(ue_PyExc_ModuleNotFoundError))
 		{
 			UE_LOG(LogPython, Log, TEXT("ue_site Python module not found"));
 			PyErr_Clear();
@@ -489,6 +489,8 @@ void FUnrealEnginePythonModule::ShutdownModule()
 		PyGILState_Ensure();
 		Py_Finalize();
 	}
+
+	FPlatformProcess::FreeDllHandle(PythonHandle);
 }
 
 void FUnrealEnginePythonModule::RunString(char *str)
@@ -498,7 +500,7 @@ void FUnrealEnginePythonModule::RunString(char *str)
 	PyObject *eval_ret = PyRun_String(str, Py_file_input, (PyObject *)main_dict, (PyObject *)local_dict);
 	if (!eval_ret)
 	{
-		if (PyErr_ExceptionMatches(PyExc_SystemExit))
+		if (PyErr_ExceptionMatches(ue_PyExc_SystemExit))
 		{
 			PyErr_Clear();
 			return;
@@ -609,7 +611,7 @@ void FUnrealEnginePythonModule::RunFile(char *filename)
 	fclose(fd);
 	if (!eval_ret)
 	{
-		if (PyErr_ExceptionMatches(PyExc_SystemExit))
+		if (PyErr_ExceptionMatches(ue_PyExc_SystemExit))
 		{
 			PyErr_Clear();
 			return;
@@ -624,7 +626,7 @@ void FUnrealEnginePythonModule::RunFile(char *filename)
 	PyObject *eval_ret = PyRun_String(TCHAR_TO_UTF8(*command), Py_file_input, (PyObject *)main_dict, (PyObject *)local_dict);
 	if (!eval_ret)
 	{
-		if (PyErr_ExceptionMatches(PyExc_SystemExit))
+		if (PyErr_ExceptionMatches(ue_PyExc_SystemExit))
 		{
 			PyErr_Clear();
 			return;

@@ -21,7 +21,7 @@ PyObject *py_ue_set_slate_widget(ue_PyUObject * self, PyObject * args)
 	UWidgetComponent *widget_component = ue_py_check_type<UWidgetComponent>(self);
 	UPyUserWidget *py_user_widget = ue_py_check_type<UPyUserWidget>(self);
 	if (!widget_component && !py_user_widget)
-		return PyErr_Format(PyExc_Exception, "uobject is not a UWidgetComponent or UPyUserWidget");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UWidgetComponent or UPyUserWidget");
 
 	TSharedPtr<SWidget> Widget = py_ue_is_swidget<SWidget>(py_widget);
 	if (!Widget.IsValid())

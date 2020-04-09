@@ -271,7 +271,7 @@ public:
 
 	void SetPyObject(PyObject *py_obj)
 	{
-		Py_XDECREF(self);
+		ue_Py_XDECREF(self);
 		Py_INCREF(py_obj);
 		self = py_obj;
 	}

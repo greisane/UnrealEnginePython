@@ -398,14 +398,14 @@ UPyUserWidget::~UPyUserWidget()
 {
 	FScopePythonGIL gil;
 
-	Py_XDECREF(py_user_widget_instance);
+	ue_Py_XDECREF(py_user_widget_instance);
 
 #if defined(UEPY_MEMORY_DEBUG)
 	UE_LOG(LogPython, Warning, TEXT("Python UUserWidget %p (mapped to %p) wrapper XDECREF'ed"), this, py_uobject ? py_uobject->py_proxy : nullptr);
 #endif
 
 	// this could trigger the distruction of the python/uobject mapper
-	Py_XDECREF(py_uobject);
+	ue_Py_XDECREF(py_uobject);
 	FUnrealEnginePythonHouseKeeper::Get()->UnregisterPyUObject(this);
 }
 

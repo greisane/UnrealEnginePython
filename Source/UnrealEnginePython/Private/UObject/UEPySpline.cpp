@@ -17,12 +17,12 @@ PyObject *py_ue_get_spline_length(ue_PyUObject * self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a USplineComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a USplineComponent");
 	}
 
 	if (!spline)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to get spline object");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get spline object");
 	}
 
 	return PyFloat_FromDouble(spline->GetSplineLength());
@@ -48,12 +48,12 @@ PyObject *py_ue_get_world_location_at_distance_along_spline(ue_PyUObject * self,
 	}
 	else
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a USplineComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a USplineComponent");
 	}
 
 	if (!spline)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to get spline object");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get spline object");
 	}
 
 

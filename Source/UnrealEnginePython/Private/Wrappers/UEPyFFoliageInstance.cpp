@@ -22,13 +22,13 @@ static FFoliageInstance* get_foliage_instance(ue_PyFFoliageInstance* self)
 {
 	if (!self->foliage_actor.IsValid())
 	{
-		PyErr_SetString(PyExc_Exception, "AInstancedFoliageActor is in invalid state");
+		PyErr_SetString(ue_PyExc_Exception, "AInstancedFoliageActor is in invalid state");
 		return nullptr;
 	}
 
 	if (!self->foliage_type.IsValid())
 	{
-		PyErr_SetString(PyExc_Exception, "UFoliageType is in invalid state");
+		PyErr_SetString(ue_PyExc_Exception, "UFoliageType is in invalid state");
 		return nullptr;
 	}
 
@@ -44,7 +44,7 @@ static FFoliageInstance* get_foliage_instance(ue_PyFFoliageInstance* self)
 		return &info.Instances[self->instance_id];
 	}
 
-	PyErr_SetString(PyExc_Exception, "invalid foliage instance id");
+	PyErr_SetString(ue_PyExc_Exception, "invalid foliage instance id");
 	return nullptr;
 }
 
@@ -82,7 +82,7 @@ static int py_ue_ffoliage_instance_set_location(ue_PyFFoliageInstance* self, PyO
 			return 0;
 		}
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not an FVector");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not an FVector");
 	return -1;
 }
 
@@ -107,7 +107,7 @@ static int py_ue_ffoliage_instance_set_rotation(ue_PyFFoliageInstance* self, PyO
 			return 0;
 		}
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not an FRotator");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not an FRotator");
 	return -1;
 }
 
@@ -205,7 +205,7 @@ static PyObject* py_ue_ffoliage_instance_align_to_normal(ue_PyFFoliageInstance* 
 	ue_PyFVector* vec = py_ue_is_fvector(py_vec);
 	if (!vec)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not an FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not an FVector");
 	}
 
 	instance->AlignToNormal(vec->vec, align_max_angle);

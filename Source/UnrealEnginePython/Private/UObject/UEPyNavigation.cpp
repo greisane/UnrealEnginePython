@@ -19,7 +19,7 @@ PyObject *py_ue_simple_move_to_location(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APawn *pawn = nullptr;
 
@@ -41,11 +41,11 @@ PyObject *py_ue_simple_move_to_location(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!pawn)
-		return PyErr_Format(PyExc_Exception, "uobject is not a pawn");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a pawn");
 
 	AController *controller = pawn->GetController();
 	if (!controller)
-		return PyErr_Format(PyExc_Exception, "Pawn has no controller");
+		return PyErr_Format(ue_PyExc_Exception, "Pawn has no controller");
 
 #if ENGINE_MINOR_VERSION < 20
 	world->GetNavigationSystem()->SimpleMoveToLocation(controller, vec);

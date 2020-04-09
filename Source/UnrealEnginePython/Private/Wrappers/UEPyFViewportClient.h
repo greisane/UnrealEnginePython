@@ -2,6 +2,7 @@
 
 #include "UEPyModule.h"
 #include "UnrealClient.h"
+#include "UnrealEnginePython.h"
 
 extern PyTypeObject ue_PyFViewportClientType;
 

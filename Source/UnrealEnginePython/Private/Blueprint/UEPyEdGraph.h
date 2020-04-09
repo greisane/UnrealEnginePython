@@ -2,6 +2,7 @@
 
 
 
+#include "UnrealEnginePython.h"
 #include "UEPyModule.h"
 #include "UEPyCallable.h"
 

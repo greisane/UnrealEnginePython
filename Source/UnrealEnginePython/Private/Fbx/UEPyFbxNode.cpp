@@ -44,7 +44,7 @@ static PyObject *py_ue_fbx_node_get_child(ue_PyFbxNode *self, PyObject *args)
 	FbxNode *fbx_node = self->fbx_node->GetChild(index);
 	if (!fbx_node)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to retrieve FbxNode at index %d", index);
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve FbxNode at index %d", index);
 	}
 	return py_ue_new_fbx_node(fbx_node);
 }
@@ -54,7 +54,7 @@ static PyObject *py_ue_fbx_node_get_parent(ue_PyFbxNode *self, PyObject *args)
 	FbxNode *fbx_node = self->fbx_node->GetParent();
 	if (!fbx_node)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to retrieve FbxNode parent");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve FbxNode parent");
 	}
 	return py_ue_new_fbx_node(fbx_node);
 }
@@ -65,7 +65,7 @@ static PyObject *py_ue_fbx_node_get_node_attribute(ue_PyFbxNode *self, PyObject 
 	FbxNodeAttribute *fbx_node_attribute = self->fbx_node->GetNodeAttribute();
 	if (!fbx_node_attribute)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to retrieve FbxNodeAttribute");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve FbxNodeAttribute");
 	}
 	return py_ue_new_fbx_object(fbx_node_attribute);
 }
@@ -85,7 +85,7 @@ static PyObject *py_ue_fbx_node_get_node_attribute_by_index(ue_PyFbxNode *self, 
 	FbxNodeAttribute *fbx_node_attribute = self->fbx_node->GetNodeAttributeByIndex(index);
 	if (!fbx_node_attribute)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to retrieve FbxNodeAttribute at index %d", index);
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve FbxNodeAttribute at index %d", index);
 	}
 	return py_ue_new_fbx_object(fbx_node_attribute);
 }
@@ -96,7 +96,7 @@ static PyObject *py_ue_fbx_node_get_mesh(ue_PyFbxNode *self, PyObject *args)
 	FbxMesh *fbx_mesh = self->fbx_node->GetMesh();
 	if (!fbx_mesh)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to retrieve FbxMesh from FbxNode");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve FbxMesh from FbxNode");
 	}
 	return py_ue_new_fbx_mesh(fbx_mesh);
 }
@@ -203,7 +203,7 @@ static int py_ue_fbx_node_init(ue_PyFbxNode *self, PyObject * args)
 	ue_PyFbxManager *py_fbx_manager = py_ue_is_fbx_manager(py_object);
 	if (!py_fbx_manager)
 	{
-		PyErr_SetString(PyExc_Exception, "argument is not a FbxManager");
+		PyErr_SetString(ue_PyExc_Exception, "argument is not a FbxManager");
 		return -1;
 	}
 

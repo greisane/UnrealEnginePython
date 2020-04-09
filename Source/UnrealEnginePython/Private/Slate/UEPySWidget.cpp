@@ -39,7 +39,7 @@ static PyObject *py_ue_swidget_set_visibility(ue_PySWidget *self, PyObject * arg
 
 	if (!PyNumber_Check(py_object))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a ESlateVisibility");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a ESlateVisibility");
 	}
 
 	PyObject *py_value = PyNumber_Long(py_object);
@@ -122,7 +122,7 @@ static PyObject *py_ue_swidget_bind_on_mouse_button_down(ue_PySWidget *self, PyO
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not callable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
 	}
 
 	FPointerEventHandler handler;
@@ -144,7 +144,7 @@ static PyObject *py_ue_swidget_bind_on_mouse_button_up(ue_PySWidget *self, PyObj
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not callable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
 	}
 
 	FPointerEventHandler handler;
@@ -166,7 +166,7 @@ static PyObject *py_ue_swidget_bind_on_mouse_double_click(ue_PySWidget *self, Py
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not callable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
 	}
 
 	FPointerEventHandler handler;
@@ -188,7 +188,7 @@ static PyObject *py_ue_swidget_bind_on_mouse_move(ue_PySWidget *self, PyObject *
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not callable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
 	}
 
 	FPointerEventHandler handler;
@@ -257,13 +257,13 @@ static PyObject *py_ue_swidget_on_mouse_button_down(ue_PySWidget *self, PyObject
 	ue_PyFGeometry *geometry = py_ue_is_fgeometry(py_geometry);
 	if (!geometry)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FGeomtry");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FGeomtry");
 	}
 
 	ue_PyFPointerEvent *pointer = py_ue_is_fpointer_event(py_pointer_event);
 	if (!pointer)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FPointerEvent");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FPointerEvent");
 	}
 
 	FReply reply = self->Widget->OnMouseButtonDown(geometry->geometry, pointer->pointer);
@@ -288,13 +288,13 @@ static PyObject *py_ue_swidget_on_mouse_button_up(ue_PySWidget *self, PyObject *
 	ue_PyFGeometry *geometry = py_ue_is_fgeometry(py_geometry);
 	if (!geometry)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FGeomtry");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FGeomtry");
 	}
 
 	ue_PyFPointerEvent *pointer = py_ue_is_fpointer_event(py_pointer_event);
 	if (!pointer)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FPointerEvent");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FPointerEvent");
 	}
 
 	FReply reply = self->Widget->OnMouseButtonUp(geometry->geometry, pointer->pointer);
@@ -334,18 +334,18 @@ static PyObject *py_ue_swidget_assign(ue_PySWidget *self, PyObject * args)
 	PyObject *py_globals = PyEval_GetGlobals();
 	if (!py_globals)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to retrieve globals");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve globals");
 	}
 
 	if (!PyDict_GetItemString(py_globals, global_name))
 	{
 		PyErr_Clear();
-		return PyErr_Format(PyExc_Exception, "global \"%s\" not found", global_name);
+		return PyErr_Format(ue_PyExc_Exception, "global \"%s\" not found", global_name);
 	}
 
 	if (PyDict_SetItemString(py_globals, global_name, (PyObject *)self) < 0)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to assign global \"%s\" to SWidget", global_name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to assign global \"%s\" to SWidget", global_name);
 	}
 
 	Py_RETURN_SLATE_SELF;

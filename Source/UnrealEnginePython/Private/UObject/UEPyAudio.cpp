@@ -20,7 +20,7 @@ PyObject *py_ue_queue_audio(ue_PyUObject *self, PyObject * args)
 	{
 		// Clean up
 		PyBuffer_Release(&sound_buffer);
-		return PyErr_Format(PyExc_Exception, "UObject is not a USoundWaveProcedural.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a USoundWaveProcedural.");
 	}
 	// Convert the buffer
 	uint8 *buffer = (uint8 *)sound_buffer.buf;
@@ -28,7 +28,7 @@ PyObject *py_ue_queue_audio(ue_PyUObject *self, PyObject * args)
 	{
 		// Clean up
 		PyBuffer_Release(&sound_buffer);
-		return PyErr_Format(PyExc_Exception, "Invalid sound buffer.");
+		return PyErr_Format(ue_PyExc_Exception, "Invalid sound buffer.");
 	}
 
 	// Add the audio to the Sound Wave's audio buffer
@@ -48,7 +48,7 @@ PyObject *py_ue_get_available_audio_byte_count(ue_PyUObject *self, PyObject * ar
 	USoundWaveProcedural *sound_wave_procedural = ue_py_check_type<USoundWaveProcedural>(self);
 	if (!sound_wave_procedural)
 	{
-		return PyErr_Format(PyExc_Exception, "UObject is not a USoundWaveProcedural.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a USoundWaveProcedural.");
 	}
 
 	return PyLong_FromLong(sound_wave_procedural->GetAvailableAudioByteCount());
@@ -62,7 +62,7 @@ PyObject *py_ue_reset_audio(ue_PyUObject *self, PyObject * args)
 	USoundWaveProcedural *sound_wave_procedural = ue_py_check_type<USoundWaveProcedural>(self);
 	if (!sound_wave_procedural)
 	{
-		return PyErr_Format(PyExc_Exception, "UObject is not a USoundWaveProcedural.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a USoundWaveProcedural.");
 	}
 
 	sound_wave_procedural->ResetAudio();
@@ -76,7 +76,7 @@ PyObject *py_ue_sound_get_data(ue_PyUObject *self, PyObject * args)
 
 	USoundWave *sound = ue_py_check_type<USoundWave>(self);
 	if (!sound)
-		return PyErr_Format(PyExc_Exception, "UObject is not a USoundWave.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a USoundWave.");
 
 	FByteBulkData raw_data = sound->RawData;
 
@@ -100,7 +100,7 @@ PyObject *py_ue_sound_set_data(ue_PyUObject *self, PyObject * args)
 
 	USoundWave *sound = ue_py_check_type<USoundWave>(self);
 	if (!sound)
-		return PyErr_Format(PyExc_Exception, "UObject is not a USoundWave.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a USoundWave.");
 
 	sound->FreeResources();
 	sound->InvalidateCompressedData();
@@ -140,11 +140,11 @@ PyObject *py_ue_play_sound_at_location(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!sound_object)
-		return PyErr_Format(PyExc_Exception, "invalid sound object");
+		return PyErr_Format(ue_PyExc_Exception, "invalid sound object");
 
 	ue_PyFVector *location = py_ue_is_fvector(py_location);
 	if (!location)
-		return PyErr_Format(PyExc_TypeError, "sound location must be a FVector");
+		return PyErr_Format(ue_PyExc_TypeError, "sound location must be a FVector");
 
 	UGameplayStatics::PlaySoundAtLocation(self->ue_object, sound_object, location->vec, volume, pitch, start);
 

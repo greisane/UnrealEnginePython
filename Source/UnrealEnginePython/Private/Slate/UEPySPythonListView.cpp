@@ -70,7 +70,7 @@ static PyObject *py_spython_list_view_update_item_source_list(ue_PySPythonListVi
 	values = PyObject_GetIter(values);
 	if (!values)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not an iterable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not an iterable");
 	}
 
 	//NOTE: ikrimae: Increment first so we don't decrement and destroy python objects that 
@@ -85,7 +85,7 @@ static PyObject *py_spython_list_view_update_item_source_list(ue_PySPythonListVi
 
 	for (TSharedPtr<struct FPythonItem>& item : self->item_source_list)
 	{
-		Py_XDECREF(item->py_object);
+		ue_Py_XDECREF(item->py_object);
 	}
 	self->item_source_list.Empty();
 
@@ -110,7 +110,7 @@ static void ue_PySPythonListView_dealloc(ue_PySPythonListView *self)
 
 	for (TSharedPtr<struct FPythonItem>& item : self->item_source_list)
 	{
-		Py_XDECREF(item->py_object);
+		ue_Py_XDECREF(item->py_object);
 	}
 	self->item_source_list.Empty();
 
@@ -157,7 +157,7 @@ static int ue_py_spython_list_view_init(ue_PySPythonListView *self, PyObject *ar
 	PyObject *values = ue_py_dict_get_item(kwargs, "list_items_source");
 	if (!values)
 	{
-		PyErr_SetString(PyExc_Exception, "you must specify list items");
+		PyErr_SetString(ue_PyExc_Exception, "you must specify list items");
 		return -1;
 	}
 
@@ -186,7 +186,7 @@ static int ue_py_spython_list_view_init(ue_PySPythonListView *self, PyObject *ar
 			}
 			else
 			{
-				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " "header_row");
+				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " "header_row");
 				return -1;
 			}
 		}

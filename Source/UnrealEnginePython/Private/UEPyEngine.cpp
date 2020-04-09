@@ -39,7 +39,7 @@ PyObject *py_unreal_engine_log(PyObject * self, PyObject * args)
 
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
-		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
+		return PyErr_Format(ue_PyExc_Exception, "argument cannot be casted to string");
 	const char *message = UEPyUnicode_AsUTF8(stringified);
 	UE_LOG(LogPython, Log, TEXT("%s"), UTF8_TO_TCHAR(message));
 	Py_DECREF(stringified);
@@ -57,7 +57,7 @@ PyObject *py_unreal_engine_log_warning(PyObject * self, PyObject * args)
 
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
-		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
+		return PyErr_Format(ue_PyExc_Exception, "argument cannot be casted to string");
 	const char *message = UEPyUnicode_AsUTF8(stringified);
 	UE_LOG(LogPython, Warning, TEXT("%s"), UTF8_TO_TCHAR(message));
 	Py_DECREF(stringified);
@@ -75,7 +75,7 @@ PyObject *py_unreal_engine_log_error(PyObject * self, PyObject * args)
 
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
-		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
+		return PyErr_Format(ue_PyExc_Exception, "argument cannot be casted to string");
 	const char *message = UEPyUnicode_AsUTF8(stringified);
 	UE_LOG(LogPython, Error, TEXT("%s"), UTF8_TO_TCHAR(message));
 	Py_DECREF(stringified);
@@ -101,7 +101,7 @@ PyObject *py_unreal_engine_add_on_screen_debug_message(PyObject * self, PyObject
 
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
-		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
+		return PyErr_Format(ue_PyExc_Exception, "argument cannot be casted to string");
 	const char *message = UEPyUnicode_AsUTF8(stringified);
 
 	GEngine->AddOnScreenDebugMessage(key, time_to_display, FColor::Green, FString::Printf(TEXT("%s"), UTF8_TO_TCHAR(message)));
@@ -133,13 +133,13 @@ PyObject *py_unreal_engine_print_string(PyObject * self, PyObject * args)
 	{
 		ue_PyFColor *f_color = py_ue_is_fcolor(py_color);
 		if (!f_color)
-			return PyErr_Format(PyExc_Exception, "argument is not a FColor");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FColor");
 		color = f_color->color;
 	}
 
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
-		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
+		return PyErr_Format(ue_PyExc_Exception, "argument cannot be casted to string");
 	const char *message = UEPyUnicode_AsUTF8(stringified);
 
 	GEngine->AddOnScreenDebugMessage(-1, timeout, color, FString(UTF8_TO_TCHAR(message)));
@@ -265,7 +265,15 @@ PyObject* py_unreal_engine_file_exists(PyObject* self, PyObject* args)
 	{
 		return NULL;
 	}
-	return IFileManager::Get().FileExists(UTF8_TO_TCHAR(path)) ? Py_True : Py_False;
+
+	if (IFileManager::Get().FileExists(UTF8_TO_TCHAR(path)))
+	{
+		Py_RETURN_TRUE;
+	}
+	else
+	{
+		Py_RETURN_FALSE;
+	}
 }
 
 PyObject* py_unreal_engine_directory_exists(PyObject* self, PyObject* args)
@@ -275,7 +283,15 @@ PyObject* py_unreal_engine_directory_exists(PyObject* self, PyObject* args)
 	{
 		return NULL;
 	}
-	return IFileManager::Get().DirectoryExists(UTF8_TO_TCHAR(path)) ? Py_True : Py_False;
+
+	if (IFileManager::Get().DirectoryExists(UTF8_TO_TCHAR(path)))
+	{
+		Py_RETURN_TRUE;
+	}
+	else
+	{
+		Py_RETURN_FALSE;
+	}
 }
 
 PyObject *py_unreal_engine_create_world(PyObject * self, PyObject * args)
@@ -302,7 +318,7 @@ PyObject *py_unreal_engine_find_class(PyObject * self, PyObject * args)
 	UClass *u_class = FindObject<UClass>(ANY_PACKAGE, UTF8_TO_TCHAR(name));
 
 	if (!u_class)
-		return PyErr_Format(PyExc_Exception, "unable to find class %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find class %s", name);
 
 	Py_RETURN_UOBJECT(u_class);
 }
@@ -318,7 +334,7 @@ PyObject *py_unreal_engine_find_enum(PyObject * self, PyObject * args)
 	UEnum *u_enum = FindObject<UEnum>(ANY_PACKAGE, UTF8_TO_TCHAR(name));
 
 	if (!u_enum)
-		return PyErr_Format(PyExc_Exception, "unable to find enum %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find enum %s", name);
 
 	Py_RETURN_UOBJECT(u_enum);
 }
@@ -328,13 +344,13 @@ PyObject* py_unreal_engine_load_bytes(PyObject* self, PyObject* args)
 	char* name;
 	if (!PyArg_ParseTuple(args, "s:load_bytes", &name))
 	{
-		return nullptr;
+		return NULL;
 	}
 
 	TArray<uint8> bytes;
 	if (!FFileHelper::LoadFileToArray(bytes, UTF8_TO_TCHAR(name)))
 	{
-		return PyErr_Format(PyExc_OSError, "unable to load file %s", name);
+		return PyErr_Format(ue_PyExc_OSError, "unable to load file %s", name);
 	}
 
 	PyObject* py_bytes = PyBytes_FromStringAndSize((char*)bytes.GetData(), bytes.Num());
@@ -347,13 +363,13 @@ PyObject *py_unreal_engine_load_package(PyObject * self, PyObject * args)
 	char *name;
 	if (!PyArg_ParseTuple(args, "s:load_package", &name))
 	{
-		return nullptr;
+		return NULL;
 	}
 
 	UPackage *u_package = LoadPackage(nullptr, UTF8_TO_TCHAR(name), LOAD_None);
 
 	if (!u_package)
-		return PyErr_Format(PyExc_Exception, "unable to load package %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to load package %s", name);
 
 	Py_RETURN_UOBJECT(u_package);
 }
@@ -370,13 +386,13 @@ PyObject *py_unreal_engine_unload_package(PyObject * self, PyObject * args)
 	UPackage* packageToUnload = ue_py_check_type<UPackage>(obj);
 	if (!packageToUnload)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UPackage");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UPackage");
 	}
 
 	FText outErrorMsg;
 	if (!PackageTools::UnloadPackages({ packageToUnload }, outErrorMsg))
 	{
-		return PyErr_Format(PyExc_Exception, "%s", TCHAR_TO_UTF8(*outErrorMsg.ToString()));
+		return PyErr_Format(ue_PyExc_Exception, "%s", TCHAR_TO_UTF8(*outErrorMsg.ToString()));
 	}
 
 	Py_RETURN_NONE;
@@ -392,7 +408,7 @@ PyObject *py_unreal_engine_get_package_filename(PyObject * self, PyObject * args
 
 	FString Filename;
 	if (!FPackageName::DoesPackageExist(FString(UTF8_TO_TCHAR(name)), nullptr, &Filename))
-		return PyErr_Format(PyExc_Exception, "package does not exist");
+		return PyErr_Format(ue_PyExc_Exception, "package does not exist");
 
 	return PyUnicode_FromString(TCHAR_TO_UTF8(*Filename));
 }
@@ -414,7 +430,7 @@ PyObject *py_unreal_engine_load_class(PyObject * self, PyObject * args)
 	UObject *u_class = StaticLoadObject(UClass::StaticClass(), NULL, UTF8_TO_TCHAR(name), t_filename);
 
 	if (!u_class)
-		return PyErr_Format(PyExc_Exception, "unable to find class %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find class %s", name);
 
 	Py_RETURN_UOBJECT(u_class);
 }
@@ -435,7 +451,7 @@ PyObject *py_unreal_engine_load_enum(PyObject * self, PyObject * args)
 	UObject *u_enum = StaticLoadObject(UEnum::StaticClass(), NULL, UTF8_TO_TCHAR(name), t_filename);
 
 	if (!u_enum)
-		return PyErr_Format(PyExc_Exception, "unable to find enum %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find enum %s", name);
 
 	Py_RETURN_UOBJECT(u_enum);
 }
@@ -451,7 +467,7 @@ PyObject *py_unreal_engine_find_struct(PyObject * self, PyObject * args)
 	UScriptStruct *u_struct = FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR(name));
 
 	if (!u_struct)
-		return PyErr_Format(PyExc_Exception, "unable to find struct %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find struct %s", name);
 
 	Py_RETURN_UOBJECT(u_struct);
 }
@@ -472,7 +488,7 @@ PyObject *py_unreal_engine_load_struct(PyObject * self, PyObject * args)
 	UObject *u_struct = StaticLoadObject(UScriptStruct::StaticClass(), NULL, UTF8_TO_TCHAR(name), t_filename);
 
 	if (!u_struct)
-		return PyErr_Format(PyExc_Exception, "unable to find struct %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find struct %s", name);
 
 	Py_RETURN_UOBJECT(u_struct);
 }
@@ -490,13 +506,13 @@ PyObject *py_unreal_engine_load_object(PyObject * self, PyObject * args)
 
 	if (!ue_is_pyuobject(obj))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 	}
 
 	ue_PyUObject *py_obj = (ue_PyUObject *)obj;
 	if (!py_obj->ue_object->IsA<UClass>())
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UClass");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UClass");
 	}
 
 	UClass *u_class = (UClass *)py_obj->ue_object;
@@ -508,7 +524,7 @@ PyObject *py_unreal_engine_load_object(PyObject * self, PyObject * args)
 	UObject *u_object = StaticLoadObject(u_class, NULL, UTF8_TO_TCHAR(name), t_filename);
 
 	if (!u_object)
-		return PyErr_Format(PyExc_Exception, "unable to load object %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to load object %s", name);
 
 	Py_RETURN_UOBJECT(u_object);
 
@@ -529,7 +545,7 @@ PyObject *py_unreal_engine_string_to_guid(PyObject * self, PyObject * args)
 		return py_ue_new_owned_uscriptstruct(FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR((char *)"Guid")), (uint8 *)&guid);
 	}
 
-	return PyErr_Format(PyExc_Exception, "unable to build FGuid");
+	return PyErr_Format(ue_PyExc_Exception, "unable to build FGuid");
 }
 
 PyObject *py_unreal_engine_new_guid(PyObject * self, PyObject * args)
@@ -550,7 +566,7 @@ PyObject *py_unreal_engine_guid_to_string(PyObject * self, PyObject * args)
 
 	FGuid *guid = ue_py_check_fguid(py_guid);
 	if (!guid)
-		return PyErr_Format(PyExc_Exception, "object is not a FGuid");
+		return PyErr_Format(ue_PyExc_Exception, "object is not a FGuid");
 
 	return PyUnicode_FromString(TCHAR_TO_UTF8(*guid->ToString()));
 }
@@ -612,7 +628,7 @@ PyObject *py_unreal_engine_find_object(PyObject * self, PyObject * args)
 	UObject *u_object = FindObject<UObject>(ANY_PACKAGE, UTF8_TO_TCHAR(name));
 
 	if (!u_object)
-		return PyErr_Format(PyExc_Exception, "unable to find object %s", name);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find object %s", name);
 
 	Py_RETURN_UOBJECT(u_object);
 }
@@ -632,7 +648,7 @@ PyObject *py_unreal_engine_new_object(PyObject * self, PyObject * args)
 
 	UClass *obj_class = ue_py_check_type<UClass>(obj);
 	if (!obj_class)
-		return PyErr_Format(PyExc_Exception, "uobject is not a UClass");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UClass");
 
 	FName f_name = NAME_None;
 
@@ -647,7 +663,7 @@ PyObject *py_unreal_engine_new_object(PyObject * self, PyObject * args)
 	{
 		outer = ue_py_check_type<UObject>(py_outer);
 		if (!outer)
-			return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 	}
 
 	UObject *new_object = nullptr;
@@ -658,7 +674,7 @@ PyObject *py_unreal_engine_new_object(PyObject * self, PyObject * args)
 	Py_END_ALLOW_THREADS;
 
 	if (!new_object)
-		return PyErr_Format(PyExc_Exception, "unable to create object");
+		return PyErr_Format(ue_PyExc_Exception, "unable to create object");
 
 	Py_RETURN_UOBJECT(new_object);
 }
@@ -674,19 +690,19 @@ PyObject *py_unreal_engine_get_mutable_default(PyObject * self, PyObject * args)
 
 	if (!ue_is_pyuobject(obj))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 	}
 
 	ue_PyUObject *py_obj = (ue_PyUObject *)obj;
 
 	if (!py_obj->ue_object->IsA<UClass>())
-		return PyErr_Format(PyExc_Exception, "uobject is not a UClass");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UClass");
 
 	UClass *obj_class = (UClass *)py_obj->ue_object;
 
 	UObject *mutable_object = GetMutableDefault<UObject>(obj_class);
 	if (!mutable_object)
-		return PyErr_Format(PyExc_Exception, "unable to create object");
+		return PyErr_Format(ue_PyExc_Exception, "unable to create object");
 
 	Py_RETURN_UOBJECT(mutable_object);
 }
@@ -708,17 +724,17 @@ PyObject *py_unreal_engine_new_class(PyObject * self, PyObject * args)
 	{
 		if (!ue_is_pyuobject(py_parent))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 		}
 		ue_PyUObject *py_obj = (ue_PyUObject *)py_parent;
 		if (!py_obj->ue_object->IsA<UClass>())
-			return PyErr_Format(PyExc_Exception, "uobject is not a UClass");
+			return PyErr_Format(ue_PyExc_Exception, "uobject is not a UClass");
 		parent = (UClass *)py_obj->ue_object;
 	}
 
 	UClass *new_object = unreal_engine_new_uclass(name, parent);
 	if (!new_object)
-		return PyErr_Format(PyExc_Exception, "unable to create UClass");
+		return PyErr_Format(ue_PyExc_Exception, "unable to create UClass");
 
 	Py_RETURN_UOBJECT(new_object);
 }
@@ -762,7 +778,7 @@ PyObject *py_unreal_engine_tobject_iterator(PyObject * self, PyObject * args)
 	UClass *u_class = ue_py_check_type<UClass>(py_class);
 	if (!u_class)
 	{
-		return PyErr_Format(PyExc_TypeError, "argument is not a UClass");
+		return PyErr_Format(ue_PyExc_TypeError, "argument is not a UClass");
 	}
 
 	PyObject *ret = PyList_New(0);
@@ -812,7 +828,7 @@ PyObject* py_unreal_engine_create_and_dispatch_when_ready(PyObject* self, PyObje
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(PyExc_TypeError, "argument is not callable");
+		return PyErr_Format(ue_PyExc_TypeError, "argument is not callable");
 	}
 
 	Py_INCREF(py_callable);
@@ -875,7 +891,7 @@ PyObject *py_unreal_engine_main_thread_call(PyObject * self, PyObject * args)
 	}
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(PyExc_TypeError, "argument is not callable");
+		return PyErr_Format(ue_PyExc_TypeError, "argument is not callable");
 
 	Py_INCREF(py_callable);
 
@@ -907,7 +923,7 @@ PyObject *py_unreal_engine_get_game_viewport_size(PyObject *self, PyObject * arg
 
 	if (!GEngine->GameViewport)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to get GameViewport");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get GameViewport");
 	}
 
 	FVector2D size;
@@ -1153,11 +1169,11 @@ PyObject *py_unreal_engine_create_package(PyObject *self, PyObject * args)
 	// create a new package if it does not exist
 	if (u_package)
 	{
-		return PyErr_Format(PyExc_Exception, "package %s already exists", TCHAR_TO_UTF8(*u_package->GetPathName()));
+		return PyErr_Format(ue_PyExc_Exception, "package %s already exists", TCHAR_TO_UTF8(*u_package->GetPathName()));
 	}
 	u_package = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
 	if (!u_package)
-		return PyErr_Format(PyExc_Exception, "unable to create package");
+		return PyErr_Format(ue_PyExc_Exception, "unable to create package");
 	u_package->FileName = *FPackageName::LongPackageNameToFilename(UTF8_TO_TCHAR(name), FPackageName::GetAssetPackageExtension());
 
 	u_package->FullyLoad();
@@ -1182,7 +1198,7 @@ PyObject *py_unreal_engine_get_or_create_package(PyObject *self, PyObject * args
 	{
 		u_package = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
 		if (!u_package)
-			return PyErr_Format(PyExc_Exception, "unable to create package");
+			return PyErr_Format(ue_PyExc_Exception, "unable to create package");
 		u_package->FileName = *FPackageName::LongPackageNameToFilename(UTF8_TO_TCHAR(name), FPackageName::GetAssetPackageExtension());
 
 		u_package->FullyLoad();
@@ -1210,14 +1226,14 @@ PyObject *py_unreal_engine_open_file_dialog(PyObject *self, PyObject * args)
 
 	IDesktopPlatform *DesktopPlatform = FDesktopPlatformModule::Get();
 	if (!DesktopPlatform)
-		return PyErr_Format(PyExc_Exception, "unable to get reference to DesktopPlatform module");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get reference to DesktopPlatform module");
 
 	TSharedPtr<SWindow> ParentWindow = FGlobalTabmanager::Get()->GetRootWindow();
 	if (!ParentWindow.IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get the Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get the Root Window");
 
 	if (!ParentWindow->GetNativeWindow().IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get Native Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get Native Root Window");
 
 	TArray<FString> files;
 
@@ -1249,14 +1265,14 @@ PyObject *py_unreal_engine_open_directory_dialog(PyObject *self, PyObject * args
 
 	IDesktopPlatform *DesktopPlatform = FDesktopPlatformModule::Get();
 	if (!DesktopPlatform)
-		return PyErr_Format(PyExc_Exception, "unable to get reference to DesktopPlatform module");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get reference to DesktopPlatform module");
 
 	TSharedPtr<SWindow> ParentWindow = FGlobalTabmanager::Get()->GetRootWindow();
 	if (!ParentWindow.IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get the Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get the Root Window");
 
 	if (!ParentWindow->GetNativeWindow().IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get Native Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get Native Root Window");
 
 	FString choosen_dir;
 
@@ -1275,14 +1291,14 @@ PyObject *py_unreal_engine_open_font_dialog(PyObject *self, PyObject * args)
 
 	IDesktopPlatform *DesktopPlatform = FDesktopPlatformModule::Get();
 	if (!DesktopPlatform)
-		return PyErr_Format(PyExc_Exception, "unable to get reference to DesktopPlatform module");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get reference to DesktopPlatform module");
 
 	TSharedPtr<SWindow> ParentWindow = FGlobalTabmanager::Get()->GetRootWindow();
 	if (!ParentWindow.IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get the Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get the Root Window");
 
 	if (!ParentWindow->GetNativeWindow().IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get Native Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get Native Root Window");
 
 	FString font_name;
 	float height;
@@ -1309,14 +1325,14 @@ PyObject *py_unreal_engine_save_file_dialog(PyObject *self, PyObject * args)
 
 	IDesktopPlatform *DesktopPlatform = FDesktopPlatformModule::Get();
 	if (!DesktopPlatform)
-		return PyErr_Format(PyExc_Exception, "unable to get reference to DesktopPlatform module");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get reference to DesktopPlatform module");
 
 	TSharedPtr<SWindow> ParentWindow = FGlobalTabmanager::Get()->GetRootWindow();
 	if (!ParentWindow.IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get the Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get the Root Window");
 
 	if (!ParentWindow->GetNativeWindow().IsValid())
-		return PyErr_Format(PyExc_Exception, "unable to get Native Root Window");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get Native Root Window");
 
 	TArray<FString> files;
 
@@ -1381,11 +1397,11 @@ PyObject *py_unreal_engine_copy_properties_for_unrelated_objects(PyObject * self
 
 	UObject *old_object = ue_py_check_type<UObject>(old_py_object);
 	if (!old_object)
-		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 
 	UObject *new_object = ue_py_check_type<UObject>(new_py_object);
 	if (!new_object)
-		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 
 	UEngine::FCopyPropertiesForUnrelatedObjectsParams params;
 	params.bAggressiveDefaultSubobjectReplacement = (py_aggressive_default_subobject_replacement && PyObject_IsTrue(py_aggressive_default_subobject_replacement));

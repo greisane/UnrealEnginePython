@@ -64,59 +64,60 @@ void LoadPythonSymbols(void* DllHandle);
 //
 //    Wrap Exception variables as function calls
 //
-PyObject* _Exc_Exception();
-PyObject* _Exc_StandardError();
-PyObject* _Exc_ArithmeticError();
-PyObject* _Exc_LookupError();
+UNREALENGINEPYTHON_API PyObject* _Exc_StandardError();
+UNREALENGINEPYTHON_API PyObject* _Exc_ArithmeticError();
+UNREALENGINEPYTHON_API PyObject* _Exc_LookupError();
 
-PyObject* _Exc_AssertionError();
-PyObject* _Exc_AttributeError();
-PyObject* _Exc_EOFError();
-PyObject* _Exc_FloatingPointError();
-PyObject* _Exc_EnvironmentError();
-PyObject* _Exc_IOError();
-PyObject* _Exc_OSError();
-PyObject* _Exc_ImportError();
-PyObject* _Exc_IndexError();
-PyObject* _Exc_KeyError();
-PyObject* _Exc_KeyboardInterrupt();
-PyObject* _Exc_MemoryError();
-PyObject* _Exc_NameError();
-PyObject* _Exc_OverflowError();
-PyObject* _Exc_RuntimeError();
-PyObject* _Exc_NotImplementedError();
-PyObject* _Exc_SyntaxError();
-PyObject* _Exc_SystemError();
-PyObject* _Exc_SystemExit();
-PyObject* _Exc_TypeError();
-PyObject* _Exc_ValueError();
-PyObject* _Exc_ZeroDivisionError();
+UNREALENGINEPYTHON_API PyObject* _Exc_AssertionError();
+UNREALENGINEPYTHON_API PyObject* _Exc_AttributeError();
+UNREALENGINEPYTHON_API PyObject* _Exc_EOFError();
+UNREALENGINEPYTHON_API PyObject* _Exc_Exception();
+UNREALENGINEPYTHON_API PyObject* _Exc_FloatingPointError();
+UNREALENGINEPYTHON_API PyObject* _Exc_EnvironmentError();
+UNREALENGINEPYTHON_API PyObject* _Exc_IOError();
+UNREALENGINEPYTHON_API PyObject* _Exc_OSError();
+UNREALENGINEPYTHON_API PyObject* _Exc_ImportError();
+UNREALENGINEPYTHON_API PyObject* _Exc_IndexError();
+UNREALENGINEPYTHON_API PyObject* _Exc_KeyError();
+UNREALENGINEPYTHON_API PyObject* _Exc_KeyboardInterrupt();
+UNREALENGINEPYTHON_API PyObject* _Exc_MemoryError();
+UNREALENGINEPYTHON_API PyObject* _Exc_ModuleNotFoundError();
+UNREALENGINEPYTHON_API PyObject* _Exc_NameError();
+UNREALENGINEPYTHON_API PyObject* _Exc_OverflowError();
+UNREALENGINEPYTHON_API PyObject* _Exc_RuntimeError();
+UNREALENGINEPYTHON_API PyObject* _Exc_NotImplementedError();
+UNREALENGINEPYTHON_API PyObject* _Exc_SyntaxError();
+UNREALENGINEPYTHON_API PyObject* _Exc_SystemError();
+UNREALENGINEPYTHON_API PyObject* _Exc_SystemExit();
+UNREALENGINEPYTHON_API PyObject* _Exc_TypeError();
+UNREALENGINEPYTHON_API PyObject* _Exc_ValueError();
+UNREALENGINEPYTHON_API PyObject* _Exc_ZeroDivisionError();
 
-PyObject* _Exc_MemoryErrorInst();
+UNREALENGINEPYTHON_API PyObject* _Exc_MemoryErrorInst();
 
-PyObject* _Exc_IndentationError();
-PyObject* _Exc_TabError();
-PyObject* _Exc_UnboundLocalError();
-PyObject* _Exc_UnicodeError();
+UNREALENGINEPYTHON_API PyObject* _Exc_IndentationError();
+UNREALENGINEPYTHON_API PyObject* _Exc_TabError();
+UNREALENGINEPYTHON_API PyObject* _Exc_UnboundLocalError();
+UNREALENGINEPYTHON_API PyObject* _Exc_UnicodeError();
 
 //
 //    Wrap Object variables as function calls
 //
-PyObject* _None();
+UNREALENGINEPYTHON_API PyObject* _None();
 
-PyObject* _False();
-PyObject* _True();
+UNREALENGINEPYTHON_API PyObject* _False();
+UNREALENGINEPYTHON_API PyObject* _True();
 
 //
 //    Macros for the above
 //
-#define ue_PyExc_Exception _Exc_Exception()
 #define ue_PyExc_StandardError _Exc_StandardError()
 #define ue_PyExc_ArithmeticError _Exc_ArithmeticError()
 #define ue_PyExc_LookupError _Exc_LookupError()
 #define ue_PyExc_AssertionError _Exc_AssertionError()
 #define ue_PyExc_AttributeError _Exc_AttributeError()
 #define ue_PyExc_EOFError _Exc_EOFError()
+#define ue_PyExc_Exception _Exc_Exception()
 #define ue_PyExc_FloatingPointError _Exc_FloatingPointError()
 #define ue_PyExc_EnvironmentError _Exc_EnvironmentError()
 #define ue_PyExc_IOError _Exc_IOError()
@@ -126,6 +127,7 @@ PyObject* _True();
 #define ue_PyExc_KeyError _Exc_KeyError()
 #define ue_PyExc_KeyboardInterrupt _Exc_KeyboardInterrupt()
 #define ue_PyExc_MemoryError _Exc_MemoryError()
+#define ue_PyExc_ModuleNotFoundError _Exc_ModuleNotFoundError()
 #define ue_PyExc_NameError _Exc_NameError()
 #define ue_PyExc_OverflowError _Exc_OverflowError()
 #define ue_PyExc_RuntimeError _Exc_RuntimeError()
@@ -136,7 +138,6 @@ PyObject* _True();
 #define ue_PyExc_TypeError _Exc_TypeError()
 #define ue_PyExc_ValueError _Exc_ValueError()
 #define ue_PyExc_ZeroDivisionError _Exc_ZeroDivisionError()
-#define ue_PyExc_WindowsError _Exc_WindowsError()
 #define ue_PyExc_MemoryErrorInst _Exc_MemoryErrorInst()
 #define ue_PyExc_IndentationError _Exc_IndentationError()
 #define ue_PyExc_TabError _Exc_TabError()
@@ -149,90 +150,119 @@ PyObject* _True();
 //
 //    Wrap Type variables as function calls
 //
-PyTypeObject* _List_Type();
-bool _List_Check(PyObject* o);
+UNREALENGINEPYTHON_API PyTypeObject* _List_Type();
+UNREALENGINEPYTHON_API bool _List_Check(PyObject* o);
 
-PyTypeObject* _Buffer_Type();
-bool _Buffer_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Buffer_Type();
+UNREALENGINEPYTHON_API bool _Buffer_Check(PyObject* op);
 
-PyTypeObject* _Class_Type();
-bool _Class_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Class_Type();
+UNREALENGINEPYTHON_API bool _Class_Check(PyObject* op);
 
-PyTypeObject* _Instance_Type();
-bool _Instance_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Instance_Type();
+UNREALENGINEPYTHON_API bool _Instance_Check(PyObject* op);
 
-PyTypeObject* _Method_Type();
-bool _Method_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Method_Type();
+UNREALENGINEPYTHON_API bool _Method_Check(PyObject* op);
 
-PyTypeObject* _CObject_Type();
-bool _CObject_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _CObject_Type();
+UNREALENGINEPYTHON_API bool _CObject_Check(PyObject* op);
 
-PyTypeObject* _Complex_Type();
-bool _Complex_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Complex_Type();
+UNREALENGINEPYTHON_API bool _Complex_Check(PyObject* op);
 
-PyTypeObject* _Dict_Type();
-bool _Dict_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Dict_Type();
+UNREALENGINEPYTHON_API bool _Dict_Check(PyObject* op);
 
-PyTypeObject* _File_Type();
-bool _File_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _File_Type();
+UNREALENGINEPYTHON_API bool _File_Check(PyObject* op);
 
-PyTypeObject* _Float_Type();
-bool _Float_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Float_Type();
+UNREALENGINEPYTHON_API bool _Float_Check(PyObject* op);
 
-PyTypeObject* _Frame_Type();
-bool _Frame_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Frame_Type();
+UNREALENGINEPYTHON_API bool _Frame_Check(PyObject* op);
 
-PyTypeObject* _Function_Type();
-bool _Function_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Function_Type();
+UNREALENGINEPYTHON_API bool _Function_Check(PyObject* op);
 
-PyTypeObject* _Bool_Type();
-bool _Boolean_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Bool_Type();
+UNREALENGINEPYTHON_API bool _Boolean_Check(PyObject* op);
 
-PyTypeObject* _Int_Type();
-bool _Int_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Int_Type();
+UNREALENGINEPYTHON_API bool _Int_Check(PyObject* op);
 
-PyTypeObject* _List_Type();
-bool _List_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _List_Type();
+UNREALENGINEPYTHON_API bool _List_Check(PyObject* op);
 
-PyTypeObject* _Long_Type();
-bool _Long_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Long_Type();
+UNREALENGINEPYTHON_API bool _Long_Check(PyObject* op);
 
-PyTypeObject* _CFunction_Type();
-bool _CFunction_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _CFunction_Type();
+UNREALENGINEPYTHON_API bool _CFunction_Check(PyObject* op);
 
-PyTypeObject* _Module_Type();
-bool _Module_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Module_Type();
+UNREALENGINEPYTHON_API bool _Module_Check(PyObject* op);
 
-PyTypeObject* _Type_Type();
-bool _Type_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Type_Type();
+UNREALENGINEPYTHON_API bool _Type_Check(PyObject* op);
 
-PyTypeObject* _Range_Type();
-bool _Range_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Range_Type();
+UNREALENGINEPYTHON_API bool _Range_Check(PyObject* op);
 
-PyTypeObject* _Slice_Type();
-bool _Slice_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Slice_Type();
+UNREALENGINEPYTHON_API bool _Slice_Check(PyObject* op);
 
-PyTypeObject* _Unicode_Type();
-bool _Unicode_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Unicode_Type();
+UNREALENGINEPYTHON_API bool _Unicode_Check(PyObject* op);
 
-PyTypeObject* _Bytes_Type();
-bool _Bytes_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Bytes_Type();
+UNREALENGINEPYTHON_API bool _Bytes_Check(PyObject* op);
 
-PyTypeObject* _TraceBack_Type();
-bool _TraceBack_Check(PyObject* v);
+UNREALENGINEPYTHON_API PyTypeObject* _TraceBack_Type();
+UNREALENGINEPYTHON_API bool _TraceBack_Check(PyObject* v);
 
-PyTypeObject* _Tuple_Type();
-bool _Tuple_Check(PyObject* op);
+UNREALENGINEPYTHON_API PyTypeObject* _Tuple_Type();
+UNREALENGINEPYTHON_API bool _Tuple_Check(PyObject* op);
 
-int& _Py_DebugFlag();
-int& _Py_InteractiveFlag();
-int& _Py_OptimizeFlag();
-int& _Py_NoSiteFlag();
-int& _Py_TabcheckFlag();
-int& _Py_VerboseFlag();
-int& _Py_UnicodeFlag();
+//
+//    Macros for the types above
+//
+#define ue_PyList_Type _List_Type()
+#define ue_PyBuffer_Type _Buffer_Type()
+#define ue_PyClass_Type _Class_Type()
+#define ue_PyInstance_Type _Instance_Type()
+#define ue_PyMethod_Type _Method_Type()
+#define ue_PyCObject_Type _CObject_Type()
+#define ue_PyComplex_Type _Complex_Type()
+#define ue_PyDict_Type _Dict_Type()
+#define ue_PyFile_Type _File_Type()
+#define ue_PyFloat_Type _Float_Type()
+#define ue_PyFrame_Type _Frame_Type()
+#define ue_PyFunction_Type _Function_Type()
+#define ue_PyBool_Type _Bool_Type()
+#define ue_PyInt_Type _Int_Type()
+#define ue_PyList_Type _List_Type()
+#define ue_PyLong_Type _Long_Type()
+#define ue_PyCFunction_Type _CFunction_Type()
+#define ue_PyModule_Type _Module_Type()
+#define ue_PyType_Type _Type_Type()
+#define ue_PyRange_Type _Range_Type()
+#define ue_PySlice_Type _Slice_Type()
+#define ue_PyUnicode_Type _Unicode_Type()
+#define ue_PyBytes_Type _Bytes_Type()
+#define ue_PyTraceBack_Type _TraceBack_Type()
+#define ue_PyTuple_Type _Tuple_Type()
 
-void _XINCREF(PyObject* op);
-void _XDECREF(PyObject* op);
+UNREALENGINEPYTHON_API int& _Py_DebugFlag();
+UNREALENGINEPYTHON_API int& _Py_InteractiveFlag();
+UNREALENGINEPYTHON_API int& _Py_OptimizeFlag();
+UNREALENGINEPYTHON_API int& _Py_NoSiteFlag();
+UNREALENGINEPYTHON_API int& _Py_TabcheckFlag();
+UNREALENGINEPYTHON_API int& _Py_VerboseFlag();
+UNREALENGINEPYTHON_API int& _Py_UnicodeFlag();
 
-char* __Py_PackageContext();
+UNREALENGINEPYTHON_API void ue_Py_XINCREF(void* op);
+UNREALENGINEPYTHON_API void ue_Py_XDECREF(void* op);
+
+UNREALENGINEPYTHON_API char* __Py_PackageContext();

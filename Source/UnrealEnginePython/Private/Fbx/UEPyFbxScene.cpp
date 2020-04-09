@@ -11,7 +11,7 @@ static PyObject *py_ue_fbx_scene_get_root_node(ue_PyFbxScene *self, PyObject *ar
 	FbxNode *fbx_node = self->fbx_scene->GetRootNode();
 	if (!fbx_node)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to get RootNode from FbxScene");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get RootNode from FbxScene");
 	}
 
 	return py_ue_new_fbx_node(fbx_node);
@@ -36,7 +36,7 @@ static PyObject *py_ue_fbx_scene_get_src_object(ue_PyFbxScene *self, PyObject *a
 	}
 	FbxObject *fbx_object = self->fbx_scene->GetSrcObject(index);
 	if (!fbx_object)
-		return PyErr_Format(PyExc_Exception, "unable to find FbxObject with index %d", index);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find FbxObject with index %d", index);
 
 	return py_ue_new_fbx_object(fbx_object);
 }
@@ -50,7 +50,7 @@ static PyObject *py_ue_fbx_scene_get_pose(ue_PyFbxScene *self, PyObject *args)
 	}
 	FbxPose *fbx_pose = self->fbx_scene->GetPose(index);
 	if (!fbx_pose)
-		return PyErr_Format(PyExc_Exception, "unable to find FbxPose with index %d", index);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find FbxPose with index %d", index);
 
 	return py_ue_new_fbx_pose(fbx_pose);
 }
@@ -146,7 +146,7 @@ static int py_ue_fbx_scene_init(ue_PyFbxScene *self, PyObject * args)
 	ue_PyFbxManager *py_fbx_manager = py_ue_is_fbx_manager(py_object);
 	if (!py_fbx_manager)
 	{
-		PyErr_SetString(PyExc_Exception, "argument is not a FbxManager");
+		PyErr_SetString(ue_PyExc_Exception, "argument is not a FbxManager");
 		return -1;
 	}
 

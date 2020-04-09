@@ -51,7 +51,7 @@ static int ue_py_sgraph_editor_init(ue_PySGraphEditor *self, PyObject *args, PyO
 	UEdGraph *graph = ue_py_check_type<UEdGraph>(py_graph);
 	if (!graph)
 	{
-		PyErr_SetString(PyExc_Exception, "argument is not a EdGraph");
+		PyErr_SetString(ue_PyExc_Exception, "argument is not a EdGraph");
 		return -1;
 	}
 	ue_py_slate_setup_farguments(SGraphEditor);

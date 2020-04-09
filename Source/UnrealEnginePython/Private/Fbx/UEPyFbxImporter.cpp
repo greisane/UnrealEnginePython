@@ -20,7 +20,7 @@ static PyObject *py_ue_fbx_importer_get_take_local_time_span(ue_PyFbxImporter *s
 
 	FbxTakeInfo *take_info = self->fbx_importer->GetTakeInfo(index);
 	if (!take_info)
-		return PyErr_Format(PyExc_Exception, "unable to get FbxTakeInfo for index %d", index);
+		return PyErr_Format(ue_PyExc_Exception, "unable to get FbxTakeInfo for index %d", index);
 
 	FbxTimeSpan time_span = take_info->mLocalTimeSpan;
 	return Py_BuildValue((char *)"(ff)", time_span.GetStart().GetSecondDouble(), time_span.GetStop().GetSecondDouble());
@@ -38,7 +38,7 @@ static PyObject *py_ue_fbx_importer_initialize(ue_PyFbxImporter *self, PyObject 
 	ue_PyFbxIOSettings *py_fbx_io_settings = py_ue_is_fbx_io_settings(py_object);
 	if (!py_fbx_io_settings)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FbxIOSettings");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FbxIOSettings");
 	}
 
 	if (self->fbx_importer->Initialize(filename, -1, py_fbx_io_settings->fbx_io_settings))
@@ -60,7 +60,7 @@ static PyObject *py_ue_fbx_importer_import(ue_PyFbxImporter *self, PyObject *arg
 	ue_PyFbxScene *py_fbx_scene = py_ue_is_fbx_scene(py_object);
 	if (!py_fbx_scene)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FbxScene");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FbxScene");
 	}
 
 	if (self->fbx_importer->Import(py_fbx_scene->fbx_scene))
@@ -124,7 +124,7 @@ static int py_ue_fbx_importer_init(ue_PyFbxImporter *self, PyObject * args)
 	ue_PyFbxManager *py_fbx_manager = py_ue_is_fbx_manager(py_object);
 	if (!py_fbx_manager)
 	{
-		PyErr_SetString(PyExc_Exception, "argument is not a FbxManager");
+		PyErr_SetString(ue_PyExc_Exception, "argument is not a FbxManager");
 		return -1;
 	}
 

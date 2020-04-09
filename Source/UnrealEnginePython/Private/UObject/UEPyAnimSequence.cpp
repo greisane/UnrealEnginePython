@@ -7,7 +7,7 @@ PyObject *py_ue_anim_get_skeleton(ue_PyUObject * self, PyObject * args)
 
 	UAnimationAsset *anim = ue_py_check_type<UAnimationAsset>(self);
 	if (!anim)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimationAsset.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimationAsset.");
 
 	USkeleton *skeleton = anim->GetSkeleton();
 	if (!skeleton)
@@ -33,7 +33,7 @@ PyObject *py_ue_anim_get_bone_transform(ue_PyUObject * self, PyObject * args)
 
 	UAnimSequence *anim = ue_py_check_type<UAnimSequence>(self);
 	if (!anim)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	bool bUseRawData = false;
 	if (py_b_use_raw_data && PyObject_IsTrue(py_b_use_raw_data))
@@ -59,7 +59,7 @@ PyObject *py_ue_anim_extract_bone_transform(ue_PyUObject * self, PyObject * args
 
 	UAnimSequence *anim = ue_py_check_type<UAnimSequence>(self);
 	if (!anim)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	ue_PyFRawAnimSequenceTrack *rast = py_ue_is_fraw_anim_sequence_track(py_sources);
 	if (rast)
@@ -70,7 +70,7 @@ PyObject *py_ue_anim_extract_bone_transform(ue_PyUObject * self, PyObject * args
 		return py_ue_new_ftransform(OutAtom);
 	}
 
-	return PyErr_Format(PyExc_Exception, "argument is not an FRawAnimSequenceTrack");
+	return PyErr_Format(ue_PyExc_Exception, "argument is not an FRawAnimSequenceTrack");
 
 }
 
@@ -89,7 +89,7 @@ PyObject *py_ue_anim_extract_root_motion(ue_PyUObject * self, PyObject * args)
 
 	UAnimSequence *anim = ue_py_check_type<UAnimSequence>(self);
 	if (!anim)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	bool bAllowLooping = false;
 	if (py_b_allow_looping && PyObject_IsTrue(py_b_allow_looping))
@@ -112,7 +112,7 @@ PyObject *py_ue_anim_sequence_update_compressed_track_map_from_raw(ue_PyUObject 
 
 	UAnimSequence *anim_seq = ue_py_check_type<UAnimSequence>(self);
 	if (!anim_seq)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	anim_seq->UpdateCompressedTrackMapFromRaw();
 
@@ -127,7 +127,7 @@ PyObject *py_ue_anim_sequence_get_raw_animation_data(ue_PyUObject * self, PyObje
 
 	UAnimSequence *anim_seq = ue_py_check_type<UAnimSequence>(self);
 	if (!anim_seq)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	PyObject *py_list = PyList_New(0);
 
@@ -151,10 +151,10 @@ PyObject *py_ue_anim_sequence_get_raw_animation_track(ue_PyUObject * self, PyObj
 
 	UAnimSequence *anim_seq = ue_py_check_type<UAnimSequence>(self);
 	if (!anim_seq)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	if (index < 0 || index >= anim_seq->GetAnimationTrackNames().Num())
-		return PyErr_Format(PyExc_Exception, "invalid track index %d", index);
+		return PyErr_Format(ue_PyExc_Exception, "invalid track index %d", index);
 
 	return py_ue_new_fraw_anim_sequence_track(anim_seq->GetRawAnimationTrack(index));
 }
@@ -171,11 +171,11 @@ PyObject *py_ue_anim_add_key_to_sequence(ue_PyUObject * self, PyObject * args)
 
 	UAnimSequence *anim_seq = ue_py_check_type<UAnimSequence>(self);
 	if (!anim_seq)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	ue_PyFTransform *ue_py_transform = py_ue_is_ftransform(py_transform);
 	if (!ue_py_transform)
-		return PyErr_Format(PyExc_Exception, "argument is not a FTransform.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FTransform.");
 
 	anim_seq->AddKeyToSequence(frame_time, FName(UTF8_TO_TCHAR(track_name)), ue_py_transform->transform);
 
@@ -188,7 +188,7 @@ PyObject *py_ue_anim_sequence_apply_raw_anim_changes(ue_PyUObject * self, PyObje
 
 	UAnimSequence *anim_seq = ue_py_check_type<UAnimSequence>(self);
 	if (!anim_seq)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 
 	if (anim_seq->DoesNeedRebake())
@@ -219,7 +219,7 @@ PyObject *py_ue_anim_sequence_add_new_raw_track(ue_PyUObject * self, PyObject * 
 
 	UAnimSequence *anim_seq = ue_py_check_type<UAnimSequence>(self);
 	if (!anim_seq)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	FRawAnimSequenceTrack *rast = nullptr;
 
@@ -232,7 +232,7 @@ PyObject *py_ue_anim_sequence_add_new_raw_track(ue_PyUObject * self, PyObject * 
 		}
 		else
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FRawAnimSequenceTrack.");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FRawAnimSequenceTrack.");
 		}
 	}
 
@@ -257,12 +257,12 @@ PyObject *py_ue_anim_sequence_update_raw_track(ue_PyUObject * self, PyObject * a
 
 	UAnimSequence *anim_seq = ue_py_check_type<UAnimSequence>(self);
 	if (!anim_seq)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimSequence.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimSequence.");
 
 	ue_PyFRawAnimSequenceTrack *py_f_rast = py_ue_is_fraw_anim_sequence_track(py_rast);
 	if (!py_f_rast)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FRawAnimSequenceTrack.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FRawAnimSequenceTrack.");
 	}
 
 	anim_seq->Modify();
@@ -292,7 +292,7 @@ PyObject *py_ue_add_anim_composite_section(ue_PyUObject * self, PyObject * args)
 
 	UAnimMontage *anim = ue_py_check_type<UAnimMontage>(self);
 	if (!anim)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimMontage.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimMontage.");
 
 	return PyLong_FromLong(anim->AddAnimCompositeSection(FName(UTF8_TO_TCHAR(name)), time));
 }
@@ -310,11 +310,11 @@ PyObject *py_ue_anim_set_skeleton(ue_PyUObject * self, PyObject * args)
 
 	UAnimationAsset *anim = ue_py_check_type<UAnimationAsset>(self);
 	if (!anim)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UAnimationAsset.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UAnimationAsset.");
 
 	USkeleton *skeleton = ue_py_check_type<USkeleton>(py_skeleton);
 	if (!skeleton)
-		return PyErr_Format(PyExc_Exception, "argument is not a USkeleton.");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a USkeleton.");
 
 	anim->SetSkeleton(skeleton);
 
@@ -331,10 +331,10 @@ PyObject *py_ue_get_blend_parameter(ue_PyUObject * self, PyObject * args)
 
 	UBlendSpaceBase *blend = ue_py_check_type<UBlendSpaceBase>(self);
 	if (!blend)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UBlendSpaceBase.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UBlendSpaceBase.");
 
 	if (index < 0 || index > 2)
-		return PyErr_Format(PyExc_Exception, "invalid Blend Parameter index");
+		return PyErr_Format(ue_PyExc_Exception, "invalid Blend Parameter index");
 
 	const FBlendParameter & parameter = blend->GetBlendParameter(index);
 
@@ -352,14 +352,14 @@ PyObject *py_ue_set_blend_parameter(ue_PyUObject * self, PyObject * args)
 
 	UBlendSpaceBase *blend = ue_py_check_type<UBlendSpaceBase>(self);
 	if (!blend)
-		return PyErr_Format(PyExc_Exception, "UObject is not a UBlendSpaceBase.");
+		return PyErr_Format(ue_PyExc_Exception, "UObject is not a UBlendSpaceBase.");
 
 	if (index < 0 || index > 2)
-		return PyErr_Format(PyExc_Exception, "invalid Blend Parameter index");
+		return PyErr_Format(ue_PyExc_Exception, "invalid Blend Parameter index");
 
 	FBlendParameter *parameter = ue_py_check_struct<FBlendParameter>(py_blend);
 	if (!parameter)
-		return PyErr_Format(PyExc_Exception, "argument is not a FBlendParameter");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FBlendParameter");
 
 	const FBlendParameter & orig_parameter = blend->GetBlendParameter(index);
 

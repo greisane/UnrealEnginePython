@@ -22,7 +22,7 @@ static PyObject *py_ue_ftransform_get_relative_transform(ue_PyFTransform *self, 
 
 	ue_PyFTransform *py_transform = py_ue_is_ftransform(py_obj);
 	if (!py_transform)
-		return PyErr_Format(PyExc_Exception, "argument is not a FTransform");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FTransform");
 	return py_ue_new_ftransform(self->transform.GetRelativeTransform(py_transform->transform));
 }
 
@@ -36,7 +36,7 @@ static PyObject *py_ue_ftransform_transform_vector(ue_PyFTransform *self, PyObje
 
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 	return py_ue_new_fvector(self->transform.TransformVector(py_vec->vec));
 }
 
@@ -50,7 +50,7 @@ static PyObject *py_ue_ftransform_transform_vector_no_scale(ue_PyFTransform *sel
 
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 	return py_ue_new_fvector(self->transform.TransformVectorNoScale(py_vec->vec));
 }
 
@@ -64,7 +64,7 @@ static PyObject *py_ue_ftransform_transform_position(ue_PyFTransform *self, PyOb
 
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 	return py_ue_new_fvector(self->transform.TransformPosition(py_vec->vec));
 }
 
@@ -78,7 +78,7 @@ static PyObject *py_ue_ftransform_transform_position_no_scale(ue_PyFTransform *s
 
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 	return py_ue_new_fvector(self->transform.TransformPositionNoScale(py_vec->vec));
 }
 
@@ -93,7 +93,7 @@ static PyObject *py_ue_ftransform_transform_rotation(ue_PyFTransform *self, PyOb
 
 	ue_PyFQuat *py_quat = py_ue_is_fquat(py_obj);
 	if (!py_quat)
-		return PyErr_Format(PyExc_Exception, "argument is not a FQuat");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FQuat");
 	return py_ue_new_fquat(self->transform.TransformRotation(py_quat->quat));
 }
 #endif
@@ -106,7 +106,7 @@ static PyObject *py_ue_ftransform_get_matrix(ue_PyFTransform *self, PyObject * a
 	UScriptStruct *u_struct = FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR("Matrix"));
 	if (!u_struct)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to get Matrix struct");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get Matrix struct");
 	}
 	return py_ue_new_owned_uscriptstruct(u_struct, (uint8 *)&matrix);
 }
@@ -153,7 +153,7 @@ static int py_ue_ftransform_set_translation(ue_PyFTransform *self, PyObject *val
 		self->transform.SetLocation(py_vec->vec);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a vector");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a vector");
 	return -1;
 }
 
@@ -164,7 +164,7 @@ static int py_ue_ftransform_set_rotation(ue_PyFTransform *self, PyObject *value,
 		self->transform.SetRotation(py_rot->rot.Quaternion());
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a rotator");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a rotator");
 	return -1;
 }
 
@@ -175,7 +175,7 @@ static int py_ue_ftransform_set_quaternion(ue_PyFTransform *self, PyObject *valu
 		self->transform.SetRotation(py_quat->quat);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a quaternion");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a quaternion");
 	return -1;
 }
 
@@ -186,7 +186,7 @@ static int py_ue_ftransform_set_scale(ue_PyFTransform *self, PyObject *value, vo
 		self->transform.SetScale3D(py_vec->vec);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not a vector");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not a vector");
 	return -1;
 }
 
@@ -282,14 +282,14 @@ static int ue_py_ftransform_init(ue_PyFTransform *self, PyObject *args, PyObject
 						PyObject *py_item = PyIter_Next(py_iter);
 						if (!py_item)
 						{
-							PyErr_SetString(PyExc_Exception, "matrix is not 4x4");
+							PyErr_SetString(ue_PyExc_Exception, "matrix is not 4x4");
 							Py_DECREF(py_iter);
 							return -1;
 						}
 
 						if (!PyNumber_Check(py_item))
 						{
-							PyErr_SetString(PyExc_Exception, "matrix can contains only float");
+							PyErr_SetString(ue_PyExc_Exception, "matrix can contains only float");
 							Py_DECREF(py_iter);
 							return -1;
 						}
@@ -297,7 +297,7 @@ static int ue_py_ftransform_init(ue_PyFTransform *self, PyObject *args, PyObject
 						PyObject *py_num = PyNumber_Float(py_item);
 						if (!py_num)
 						{
-							PyErr_SetString(PyExc_Exception, "matrix can contains only float");
+							PyErr_SetString(ue_PyExc_Exception, "matrix can contains only float");
 							Py_DECREF(py_iter);
 							return -1;
 						}
@@ -309,7 +309,7 @@ static int ue_py_ftransform_init(ue_PyFTransform *self, PyObject *args, PyObject
 				Py_DECREF(py_iter);
 				return 0;
 			}
-			PyErr_SetString(PyExc_Exception, "argument is not a FVector or a 4x4 float matrix");
+			PyErr_SetString(ue_PyExc_Exception, "argument is not a FVector or a 4x4 float matrix");
 			return -1;
 		}
 	}
@@ -326,7 +326,7 @@ static int ue_py_ftransform_init(ue_PyFTransform *self, PyObject *args, PyObject
 		}
 		else
 		{
-			PyErr_SetString(PyExc_Exception, "argument is not a FRotator or a FQuat");
+			PyErr_SetString(ue_PyExc_Exception, "argument is not a FRotator or a FQuat");
 			return -1;
 		}
 	}
@@ -346,7 +346,7 @@ static int ue_py_ftransform_init(ue_PyFTransform *self, PyObject *args, PyObject
 		}
 		else
 		{
-			PyErr_SetString(PyExc_Exception, "argument is not a FVector");
+			PyErr_SetString(ue_PyExc_Exception, "argument is not a FVector");
 			return -1;
 		}
 	}
@@ -371,7 +371,7 @@ static PyObject *ue_py_ftransform_mul(ue_PyFTransform *self, PyObject *value)
 	}
 	else
 	{
-		return PyErr_Format(PyExc_TypeError, "FTransform can be multiplied only for an FQuat, an FRotator or an FTransform");
+		return PyErr_Format(ue_PyExc_TypeError, "FTransform can be multiplied only for an FQuat, an FRotator or an FTransform");
 	}
 	return py_ue_new_ftransform(t);
 }
@@ -418,7 +418,7 @@ bool py_ue_transform_arg(PyObject *args, FTransform &t)
 		ue_PyFTransform *py_t = py_ue_is_ftransform(arg);
 		if (!py_t)
 		{
-			PyErr_Format(PyExc_TypeError, "argument is not a FTransform");
+			PyErr_Format(ue_PyExc_TypeError, "argument is not a FTransform");
 			return false;
 		}
 		t = py_t->transform;

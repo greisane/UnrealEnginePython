@@ -29,11 +29,11 @@ PyObject *py_ue_set_material_by_name(ue_PyUObject *self, PyObject * args)
 
 	UPrimitiveComponent *primitive = ue_py_check_type<UPrimitiveComponent>(self);
 	if (!primitive)
-		return PyErr_Format(PyExc_Exception, "uobject is not a UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UPrimitiveComponent");
 
 	UMaterialInterface *material = ue_py_check_type<UMaterialInterface>(py_mat);
 	if (!material)
-		return PyErr_Format(PyExc_Exception, "argument is not a UMaterialInterface");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UMaterialInterface");
 
 	primitive->SetMaterialByName(FName(UTF8_TO_TCHAR(slot_name)), material);
 
@@ -54,7 +54,7 @@ PyObject *py_ue_set_material(ue_PyUObject *self, PyObject * args)
 
 	UMaterialInterface *material = ue_py_check_type<UMaterialInterface>(py_mat);
 	if (!material)
-		return PyErr_Format(PyExc_Exception, "argument is not a UMaterialInterface");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UMaterialInterface");
 
 #if ENGINE_MINOR_VERSION >= 20
 #if WITH_EDITOR
@@ -69,7 +69,7 @@ PyObject *py_ue_set_material(ue_PyUObject *self, PyObject * args)
 
 	UPrimitiveComponent *primitive = ue_py_check_type<UPrimitiveComponent>(self);
 	if (!primitive)
-		return PyErr_Format(PyExc_Exception, "uobject is not a UPrimitiveComponent");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UPrimitiveComponent");
 
 
 	primitive->SetMaterial(slot, material);
@@ -111,7 +111,7 @@ PyObject *py_ue_set_material_scalar_parameter(ue_PyUObject *self, PyObject * arg
 
 	if (!valid)
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a MaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a MaterialInstance");
 	}
 
 	Py_RETURN_NONE;
@@ -186,7 +186,7 @@ PyObject *py_ue_set_material_static_switch_parameter(ue_PyUObject *self, PyObjec
 
 	if (!valid)
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a MaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a MaterialInstance");
 	}
 
 	Py_RETURN_NONE;
@@ -206,7 +206,7 @@ PyObject *py_ue_get_material_scalar_parameter(ue_PyUObject *self, PyObject * arg
 
 	if (!self->ue_object->IsA<UMaterialInstance>())
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a UMaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMaterialInstance");
 	}
 
 	FName parameterName(UTF8_TO_TCHAR(scalarName));
@@ -234,7 +234,7 @@ PyObject *py_ue_get_material_static_switch_parameter(ue_PyUObject *self, PyObjec
 
 	if (!self->ue_object->IsA<UMaterialInstance>())
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a UMaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMaterialInstance");
 	}
 
 	FName parameterName(UTF8_TO_TCHAR(switchName));
@@ -273,7 +273,7 @@ PyObject *py_ue_set_material_vector_parameter(ue_PyUObject *self, PyObject * arg
 		ue_PyFVector *py_true_vector = py_ue_is_fvector(vectorValue);
 		if (!py_true_vector)
 		{
-			return PyErr_Format(PyExc_Exception, "argument must be an FLinearColor or FVector");
+			return PyErr_Format(ue_PyExc_Exception, "argument must be an FLinearColor or FVector");
 		}
 		else
 		{
@@ -310,7 +310,7 @@ PyObject *py_ue_set_material_vector_parameter(ue_PyUObject *self, PyObject * arg
 
 	if (!valid)
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a MaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a MaterialInstance");
 	}
 
 	Py_RETURN_NONE;
@@ -329,7 +329,7 @@ PyObject *py_ue_get_material_vector_parameter(ue_PyUObject *self, PyObject * arg
 
 	if (!self->ue_object->IsA<UMaterialInstance>())
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a UMaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMaterialInstance");
 	}
 
 	FName parameterName(UTF8_TO_TCHAR(scalarName));
@@ -357,7 +357,7 @@ PyObject *py_ue_set_material_texture_parameter(ue_PyUObject *self, PyObject * ar
 
 	UTexture *ue_texture = ue_py_check_type<UTexture>(textureObject);
 	if (!ue_texture)
-		return PyErr_Format(PyExc_Exception, "uobject is not a UTexture");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UTexture");
 
 	FName parameterName(UTF8_TO_TCHAR(textureName));
 
@@ -381,7 +381,7 @@ PyObject *py_ue_set_material_texture_parameter(ue_PyUObject *self, PyObject * ar
 
 	if (!valid)
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a MaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a MaterialInstance");
 	}
 
 	Py_RETURN_NONE;
@@ -400,7 +400,7 @@ PyObject *py_ue_get_material_texture_parameter(ue_PyUObject *self, PyObject * ar
 
 	if (!self->ue_object->IsA<UMaterialInstance>())
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a UMaterialInstance");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMaterialInstance");
 	}
 
 	FName parameterName(UTF8_TO_TCHAR(scalarName));
@@ -431,7 +431,7 @@ PyObject *py_ue_create_material_instance_dynamic(ue_PyUObject *self, PyObject * 
 
 	UMaterialInterface *material_interface = ue_py_check_type<UMaterialInterface>(py_material);
 	if (!material_interface)
-		return PyErr_Format(PyExc_Exception, "argument is not a UMaterialInterface");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UMaterialInterface");
 
 	UMaterialInstanceDynamic *material_dynamic = UMaterialInstanceDynamic::Create(material_interface, self->ue_object);
 
@@ -456,18 +456,18 @@ PyObject *py_ue_set_material_parent(ue_PyUObject *self, PyObject * args)
 
 	if (!self->ue_object->IsA<UMaterialInstanceConstant>())
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a UMaterialInstanceConstant");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMaterialInstanceConstant");
 	}
 
 
 	if (!ue_is_pyuobject(py_material))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 	}
 
 	ue_PyUObject *py_obj = (ue_PyUObject *)py_material;
 	if (!py_obj->ue_object->IsA<UMaterialInterface>())
-		return PyErr_Format(PyExc_Exception, "uobject is not a UMaterialInterface");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMaterialInterface");
 
 
 	UMaterialInterface *materialInterface = (UMaterialInterface *)py_obj->ue_object;
@@ -494,7 +494,7 @@ PyObject *py_ue_static_mesh_set_collision_for_lod(ue_PyUObject *self, PyObject *
 
 	if (!self->ue_object->IsA<UStaticMesh>())
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a StaticMesh");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a StaticMesh");
 	}
 
 	UStaticMesh *mesh = (UStaticMesh *)self->ue_object;
@@ -534,7 +534,7 @@ PyObject *py_ue_static_mesh_set_shadow_for_lod(ue_PyUObject *self, PyObject * ar
 
 	if (!self->ue_object->IsA<UStaticMesh>())
 	{
-		return PyErr_Format(PyExc_Exception, "uobject is not a StaticMesh");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a StaticMesh");
 	}
 
 	UStaticMesh *mesh = (UStaticMesh *)self->ue_object;
@@ -561,7 +561,7 @@ PyObject *py_ue_get_material_graph(ue_PyUObject *self, PyObject * args)
 
 	UMaterial *material = ue_py_check_type<UMaterial>(self);
 	if (!material)
-		return PyErr_Format(PyExc_Exception, "uobject is not a UMaterialInterface");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMaterialInterface");
 
 	UMaterialGraph *graph = material->MaterialGraph;
 	if (!graph)
@@ -570,7 +570,7 @@ PyObject *py_ue_get_material_graph(ue_PyUObject *self, PyObject * args)
 		material->MaterialGraph = graph;
 	}
 	if (!graph)
-		return PyErr_Format(PyExc_Exception, "Unable to retrieve/allocate MaterialGraph");
+		return PyErr_Format(ue_PyExc_Exception, "Unable to retrieve/allocate MaterialGraph");
 
 	Py_RETURN_UOBJECT(graph);
 }

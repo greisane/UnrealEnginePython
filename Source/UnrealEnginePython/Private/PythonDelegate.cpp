@@ -54,7 +54,7 @@ void UPythonDelegate::ProcessEvent(UFunction *function, void *Parms)
 	}
 
 	PyObject *ret = PyObject_CallObject(py_callable, py_args);
-	Py_XDECREF(py_args);
+	ue_Py_XDECREF(py_args);
 	if (!ret)
 	{
 		unreal_engine_py_log_error();
@@ -113,7 +113,7 @@ UPythonDelegate::~UPythonDelegate()
 {
 	FScopePythonGIL gil;
 
-	Py_XDECREF(py_callable);
+	ue_Py_XDECREF(py_callable);
 #if defined(UEPY_MEMORY_DEBUG)
 	UE_LOG(LogPython, Warning, TEXT("PythonDelegate %p callable XDECREF'ed"), this);
 #endif

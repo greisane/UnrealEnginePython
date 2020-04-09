@@ -174,7 +174,7 @@ static PyObject *py_ue_swindow_add_child(ue_PySWindow *self, PyObject * args)
 	ue_PySWindow *py_swindow_child = py_ue_is_swindow(py_obj);
 	if (!py_swindow_child)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a SWindow");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a SWindow");
 	}
 
 	FSlateApplication::Get().AddWindowAsNativeChild(

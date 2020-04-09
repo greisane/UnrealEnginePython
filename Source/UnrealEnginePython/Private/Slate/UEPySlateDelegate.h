@@ -84,7 +84,7 @@ public:
 		}
 		if (!PyNumber_Check(ret))
 		{
-			PyErr_SetString(PyExc_ValueError, "returned value is not a number");
+			PyErr_SetString(ue_PyExc_ValueError, "returned value is not a number");
 			Py_DECREF(ret);
 			return (T)0;
 		}
@@ -110,7 +110,7 @@ public:
 		T *u_struct = ue_py_check_struct<T>(ret);
 		if (!u_struct)
 		{
-			PyErr_SetString(PyExc_ValueError, "returned value is not a UStruct");
+			PyErr_SetString(ue_PyExc_ValueError, "returned value is not a UStruct");
 			Py_DECREF(ret);
 			return T();
 		}

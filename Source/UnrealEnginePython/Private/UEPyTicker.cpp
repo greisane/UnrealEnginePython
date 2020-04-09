@@ -72,12 +72,12 @@ PyObject *py_unreal_engine_add_ticker(PyObject * self, PyObject * args)
 	}
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(PyExc_Exception, "argument is not a callable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a callable");
 
 	ue_PyFDelegateHandle *ret = (ue_PyFDelegateHandle *)PyObject_New(ue_PyFDelegateHandle, &ue_PyFDelegateHandleType);
 	if (!ret)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to allocate FDelegateHandle python object");
+		return PyErr_Format(ue_PyExc_Exception, "unable to allocate FDelegateHandle python object");
 	}
 
 	FTickerDelegate ticker_delegate;
@@ -90,7 +90,7 @@ PyObject *py_unreal_engine_add_ticker(PyObject * self, PyObject * args)
 	if (!ret->dhandle.IsValid())
 	{
 		Py_DECREF(ret);
-		return PyErr_Format(PyExc_Exception, "unable to add FTicker");
+		return PyErr_Format(ue_PyExc_Exception, "unable to add FTicker");
 	}
 	new(&ret->delegate_ptr) TSharedPtr<FPythonSmartDelegate>(py_delegate);
 	ret->garbaged = false;
@@ -107,7 +107,7 @@ PyObject *py_unreal_engine_remove_ticker(PyObject * self, PyObject * args)
 	}
 
 	if (!PyObject_IsInstance(py_obj, (PyObject *)&ue_PyFDelegateHandleType))
-		return PyErr_Format(PyExc_Exception, "argument is not a PyFDelegateHandle");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a PyFDelegateHandle");
 
 	ue_PyFDelegateHandle *py_handle = (ue_PyFDelegateHandle *)py_obj;
 

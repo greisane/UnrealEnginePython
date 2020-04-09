@@ -10,7 +10,7 @@ PyObject *py_ue_get_instanced_foliage_actor_for_current_level(ue_PyUObject *self
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	Py_RETURN_UOBJECT(AInstancedFoliageActor::GetInstancedFoliageActorForCurrentLevel(world, true));
 }
@@ -21,7 +21,7 @@ PyObject *py_ue_get_instanced_foliage_actor_for_level(ue_PyUObject *self, PyObje
 
 	ULevel *level = ue_py_check_type<ULevel>(self);
 	if (!level)
-		return PyErr_Format(PyExc_Exception, "uobject is not a ULevel");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a ULevel");
 
 	Py_RETURN_UOBJECT(AInstancedFoliageActor::GetInstancedFoliageActorForLevel(level, true));
 }
@@ -32,7 +32,7 @@ PyObject *py_ue_get_foliage_types(ue_PyUObject *self, PyObject * args)
 
 	AInstancedFoliageActor *foliage_actor = ue_py_check_type<AInstancedFoliageActor>(self);
 	if (!foliage_actor)
-		return PyErr_Format(PyExc_Exception, "uobject is not a AInstancedFoliageActor");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a AInstancedFoliageActor");
 
 	PyObject *py_list = PyList_New(0);
 
@@ -65,11 +65,11 @@ PyObject *py_ue_get_foliage_instances(ue_PyUObject *self, PyObject * args)
 
 	AInstancedFoliageActor *foliage_actor = ue_py_check_type<AInstancedFoliageActor>(self);
 	if (!foliage_actor)
-		return PyErr_Format(PyExc_Exception, "uobject is not a AInstancedFoliageActor");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not a AInstancedFoliageActor");
 
 	UFoliageType *foliage_type = ue_py_check_type<UFoliageType>(py_foliage_type);
 	if (!foliage_type)
-		return PyErr_Format(PyExc_Exception, "argument is not a UFoliageType");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UFoliageType");
 
 #if ENGINE_MINOR_VERSION >= 23
 	if (!foliage_actor->FoliageInfos.Contains(foliage_type))
@@ -77,7 +77,7 @@ PyObject *py_ue_get_foliage_instances(ue_PyUObject *self, PyObject * args)
 	if (!foliage_actor->FoliageMeshes.Contains(foliage_type))
 #endif
 	{
-		return PyErr_Format(PyExc_Exception, "specified UFoliageType not found in AInstancedFoliageActor");
+		return PyErr_Format(ue_PyExc_Exception, "specified UFoliageType not found in AInstancedFoliageActor");
 	}
 
 #if ENGINE_MINOR_VERSION >= 23
@@ -111,11 +111,11 @@ PyObject *py_ue_add_foliage_asset(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	UObject *u_object = ue_py_check_type<UObject>(py_uobject);
 	if (!u_object)
-		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
 
 	UFoliageType *foliage_type = nullptr;
 
@@ -140,7 +140,7 @@ PyObject *py_ue_add_foliage_asset(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!foliage_type)
-		return PyErr_Format(PyExc_Exception, "unable to add foliage asset");
+		return PyErr_Format(ue_PyExc_Exception, "unable to add foliage asset");
 
 	Py_RETURN_UOBJECT(foliage_type);
 

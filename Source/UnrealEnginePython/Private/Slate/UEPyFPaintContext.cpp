@@ -20,7 +20,7 @@ static PyObject *py_ue_fpaint_context_draw_line(ue_PyFPaintContext *self, PyObje
 	{
 		if (!py_ue_get_flinearcolor(py_linear_color, tint))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 		}
 	}
 
@@ -59,7 +59,7 @@ static PyObject *py_ue_fpaint_context_draw_box(ue_PyFPaintContext *self, PyObjec
 	{
 		if (!py_ue_get_flinearcolor(py_linear_color, tint))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 		}
 	}
 
@@ -69,7 +69,7 @@ static PyObject *py_ue_fpaint_context_draw_box(ue_PyFPaintContext *self, PyObjec
 	{
 		FSlateBrush *custom_brush = ue_py_check_struct<FSlateBrush>(py_brush);
 		if (!custom_brush)
-			return PyErr_Format(PyExc_Exception, "argument is not a FSlateBrush");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FSlateBrush");
 		brush = custom_brush;
 	}
 
@@ -106,7 +106,7 @@ static PyObject *py_ue_fpaint_context_draw_text(ue_PyFPaintContext *self, PyObje
 	{
 		if (!py_ue_get_flinearcolor(py_linear_color, tint))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 		}
 	}
 
@@ -119,7 +119,7 @@ static PyObject *py_ue_fpaint_context_draw_text(ue_PyFPaintContext *self, PyObje
 		}
 		else
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a SlateFontInfo USTRUCT");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a SlateFontInfo USTRUCT");
 		}
 	}
 	if (size <= 0)
@@ -161,7 +161,7 @@ static PyObject *py_ue_fpaint_context_draw_spline(ue_PyFPaintContext *self, PyOb
 	{
 		if (!py_ue_get_flinearcolor(py_linear_color, tint))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 		}
 	}
 
@@ -197,13 +197,13 @@ static PyObject *py_ue_fpaint_context_draw_lines(ue_PyFPaintContext *self, PyObj
 
 	PyObject *py_iter = PyObject_GetIter(py_points);
 	if (!py_iter)
-		return PyErr_Format(PyExc_Exception, "argument is not an iterable of tuples");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not an iterable of tuples");
 
 	while (PyObject *py_item = PyIter_Next(py_iter))
 	{
 		if (!PyTuple_Check(py_item))
 		{
-			return PyErr_Format(PyExc_Exception, "iterable item is not a tuple");
+			return PyErr_Format(ue_PyExc_Exception, "iterable item is not a tuple");
 			Py_DECREF(py_iter);
 		}
 
@@ -223,7 +223,7 @@ static PyObject *py_ue_fpaint_context_draw_lines(ue_PyFPaintContext *self, PyObj
 	{
 		if (!py_ue_get_flinearcolor(py_linear_color, tint))
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor or FColor.");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor or FColor.");
 		}
 	}
 

@@ -38,7 +38,7 @@ static PyObject *py_ue_sgrid_panel_add_slot(ue_PySGridPanel *self, PyObject * ar
 
 	if (retCode != 0)
 	{
-		return PyErr_Format(PyExc_Exception, "could not add GridPanel slot");
+		return PyErr_Format(ue_PyExc_Exception, "could not add GridPanel slot");
 	}
 
 	Py_RETURN_SLATE_SELF;

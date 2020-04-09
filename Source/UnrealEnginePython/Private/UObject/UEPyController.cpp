@@ -18,11 +18,11 @@ PyObject *py_ue_controller_posses(ue_PyUObject * self, PyObject * args)
 
 	AController *controller = ue_py_check_type<AController>(self);
 	if (!controller)
-		return PyErr_Format(PyExc_Exception, "uobject is not an AController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an AController");
 
 	APawn *pawn = ue_py_check_type<APawn>(obj);
 	if (!pawn)
-		return PyErr_Format(PyExc_Exception, "uobject is not an APawn");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an APawn");
 
 	controller->Possess(pawn);
 
@@ -37,7 +37,7 @@ PyObject *py_ue_controller_get_hud(ue_PyUObject * self, PyObject * args)
 
 	APlayerController *controller = ue_py_check_type<APlayerController>(self);
 	if (!controller)
-		return PyErr_Format(PyExc_Exception, "uobject is not an AController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an AController");
 
 	Py_RETURN_UOBJECT((UObject *)controller->GetHUD());
 }
@@ -49,7 +49,7 @@ PyObject *py_ue_controller_unposses(ue_PyUObject * self, PyObject * args)
 
 	AController *controller = ue_py_check_type<AController>(self);
 	if (!controller)
-		return PyErr_Format(PyExc_Exception, "uobject is not an AController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an AController");
 
 	controller->UnPossess();
 
@@ -63,7 +63,7 @@ PyObject *py_ue_get_controlled_pawn(ue_PyUObject * self, PyObject * args)
 
 	AController *controller = ue_py_check_type<AController>(self);
 	if (!controller)
-		return PyErr_Format(PyExc_Exception, "uobject is not an AController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an AController");
 
 #if ENGINE_MINOR_VERSION >= 15
 	APawn *pawn = controller->GetPawn();
@@ -91,17 +91,17 @@ PyObject *py_ue_controller_project_world_location_to_screen(ue_PyUObject * self,
 
 	APlayerController *controller = ue_py_check_type<APlayerController>(self);
 	if (!controller)
-		return PyErr_Format(PyExc_Exception, "uobject is not an AController");
+		return PyErr_Format(ue_PyExc_Exception, "uobject is not an AController");
 
 	ue_PyFVector *point = py_ue_is_fvector(py_obj_point);
 	if (!point)
-		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 
 	// TODO: Check return value:
 	FVector2D screenLocation;
 	if (!controller->ProjectWorldLocationToScreen(point->vec, screenLocation, (py_relative && PyObject_IsTrue(py_relative))))
 	{
-		return PyErr_Format(PyExc_Exception, "unable to project coordinates");
+		return PyErr_Format(ue_PyExc_Exception, "unable to project coordinates");
 	}
 
 	return Py_BuildValue("(ff)", screenLocation.X, screenLocation.Y);

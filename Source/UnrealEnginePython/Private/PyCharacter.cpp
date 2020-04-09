@@ -207,7 +207,7 @@ void APyCharacter::SetPythonAttrObject(FString attr, UObject *object)
 	ue_PyUObject *py_obj = ue_get_python_uobject(object);
 	if (!py_obj)
 	{
-		PyErr_Format(PyExc_Exception, "PyUObject is in invalid state");
+		PyErr_Format(ue_PyExc_Exception, "PyUObject is in invalid state");
 		unreal_engine_py_log_error();
 		return;
 	}
@@ -467,7 +467,7 @@ void APyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 			unreal_engine_py_log_error();
 		}
 
-		Py_XDECREF(ep_ret);
+		ue_Py_XDECREF(ep_ret);
 	}
 
 	Super::EndPlay(EndPlayReason);
@@ -481,13 +481,13 @@ APyCharacter::~APyCharacter()
 	FScopePythonGIL gil;
 
 
-	Py_XDECREF(py_character_instance);
+	ue_Py_XDECREF(py_character_instance);
 
 #if defined(UEPY_MEMORY_DEBUG)
 	UE_LOG(LogPython, Warning, TEXT("Python ACharacter (mapped to %p) wrapper XDECREF'ed"), py_uobject ? py_uobject->py_proxy : nullptr);
 #endif
 
 	// this could trigger the distruction of the python/uobject mapper
-	Py_XDECREF(py_uobject);
+	ue_Py_XDECREF(py_uobject);
 	FUnrealEnginePythonHouseKeeper::Get()->UnregisterPyUObject(this);
 }

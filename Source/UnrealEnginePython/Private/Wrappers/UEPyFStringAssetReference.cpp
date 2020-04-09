@@ -81,7 +81,7 @@ static int ue_py_fstring_asset_reference_init(ue_PyFStringAssetReference *self, 
 	UObject *u_object = ue_py_check_type<UObject>(py_object);
 	if (!u_object)
 	{
-		PyErr_SetString(PyExc_Exception, "argument is not a UObject or a string");
+		PyErr_SetString(ue_PyExc_Exception, "argument is not a UObject or a string");
 		return -1;
 	}
 

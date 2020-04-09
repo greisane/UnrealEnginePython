@@ -75,7 +75,7 @@ static PyObject *py_ue_spython_editor_viewport_set_exposure_settings(ue_PySPytho
 	FExposureSettings *settings = ue_py_check_struct<FExposureSettings>(py_settings);
 	if (!settings)
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not a FExposureSettings");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FExposureSettings");
 	}
 
 
@@ -96,7 +96,7 @@ static PyObject *py_ue_spython_editor_viewport_set_view_location(ue_PySPythonEdi
 		ue_PyFVector *ue_py_vec = py_ue_is_fvector(PyTuple_GetItem(args, 0));
 		if (!ue_py_vec)
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 		}
 		vec = ue_py_vec->vec;
 	}
@@ -128,7 +128,7 @@ static PyObject *py_ue_spython_editor_viewport_set_view_rotation(ue_PySPythonEdi
 		ue_PyFRotator *ue_py_rot = py_ue_is_frotator(PyTuple_GetItem(args, 0));
 		if (!ue_py_rot)
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FRotator");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FRotator");
 		}
 		rot = ue_py_rot->rot;
 	}
@@ -172,7 +172,7 @@ static PyObject *py_ue_spython_editor_viewport_set_light_color(ue_PySPythonEdito
 
 	ue_PyFColor *py_fcolor = py_ue_is_fcolor(py_obj);
 	if (!py_fcolor)
-		return PyErr_Format(PyExc_Exception, "argument is not a FColor");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FColor");
 
 	py_SPythonEditorViewport->GetPreviewScene()->SetLightColor(py_fcolor->color);
 
@@ -191,7 +191,7 @@ static PyObject *py_ue_spython_editor_viewport_set_light_direction(ue_PySPythonE
 		ue_PyFRotator *ue_py_rot = py_ue_is_frotator(PyTuple_GetItem(args, 0));
 		if (!ue_py_rot)
 		{
-			return PyErr_Format(PyExc_Exception, "argument is not a FRotator");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FRotator");
 		}
 		rot = ue_py_rot->rot;
 	}

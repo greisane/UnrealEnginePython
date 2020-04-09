@@ -1202,7 +1202,7 @@ static void ue_pyobject_dealloc(ue_PyUObject* self)
 		self->ue_object->RemoveFromRoot();
 	}
 
-	Py_XDECREF(self->py_dict);
+	ue_Py_XDECREF(self->py_dict);
 
 	Py_TYPE(self)->tp_free((PyObject*)self);
 }
@@ -1283,7 +1283,7 @@ static PyObject* ue_PyUObject_getattro(ue_PyUObject* self, PyObject* attr_name)
 #endif
 						}
 					}
-					return PyErr_Format(PyExc_Exception, "unknown enum name \"%s\"", attr);
+					return PyErr_Format(ue_PyExc_Exception, "unknown enum name \"%s\"", attr);
 				}
 #endif
 				if (self->ue_object->IsA<UEnum>())
@@ -1293,12 +1293,12 @@ static PyObject* ue_PyUObject_getattro(ue_PyUObject* self, PyObject* attr_name)
 #if ENGINE_MINOR_VERSION > 15
 					int32 value = u_enum->GetIndexByName(FName(UTF8_TO_TCHAR(attr)));
 					if (value == INDEX_NONE)
-						return PyErr_Format(PyExc_Exception, "unknown enum name \"%s\"", attr);
+						return PyErr_Format(ue_PyExc_Exception, "unknown enum name \"%s\"", attr);
 					return PyLong_FromLong(value);
 #else
 					int32 value = u_enum->FindEnumIndex(FName(UTF8_TO_TCHAR(attr)));
 					if (value == INDEX_NONE)
-						return PyErr_Format(PyExc_Exception, "unknown enum name \"%s\"", attr);
+						return PyErr_Format(ue_PyExc_Exception, "unknown enum name \"%s\"", attr);
 					return PyLong_FromLong(value);
 #endif
 				}
@@ -1359,7 +1359,7 @@ static int ue_PyUObject_setattro(ue_PyUObject* self, PyObject* attr_name, PyObje
 						}
 						else
 						{
-							PyErr_SetString(PyExc_ValueError, "invalid value for UProperty");
+							PyErr_SetString(ue_PyExc_ValueError, "invalid value for UProperty");
 							return -1;
 						}
 					}
@@ -1367,14 +1367,14 @@ static int ue_PyUObject_setattro(ue_PyUObject* self, PyObject* attr_name, PyObje
 #endif
 				return 0;
 			}
-			PyErr_SetString(PyExc_ValueError, "invalid value for UProperty");
+			PyErr_SetString(ue_PyExc_ValueError, "invalid value for UProperty");
 			return -1;
 		}
 
 		// now check for function name
 		if (self->ue_object->FindFunction(FName(UTF8_TO_TCHAR(attr))))
 		{
-			PyErr_SetString(PyExc_ValueError, "you cannot overwrite a UFunction");
+			PyErr_SetString(ue_PyExc_ValueError, "you cannot overwrite a UFunction");
 			return -1;
 		}
 	}
@@ -1403,11 +1403,11 @@ static PyObject* ue_PyUObject_call(ue_PyUObject* self, PyObject* args, PyObject*
 		UClass* u_class = (UClass*)self->ue_object;
 		if (u_class->HasAnyClassFlags(CLASS_Abstract))
 		{
-			return PyErr_Format(PyExc_Exception, "abstract classes cannot be instantiated");
+			return PyErr_Format(ue_PyExc_Exception, "abstract classes cannot be instantiated");
 		}
 		if (u_class->IsChildOf<AActor>())
 		{
-			return PyErr_Format(PyExc_Exception, "you cannot use __call__ on actors, they have to be spawned");
+			return PyErr_Format(ue_PyExc_Exception, "you cannot use __call__ on actors, they have to be spawned");
 		}
 		PyObject* py_name = nullptr;
 		PyObject* py_outer = Py_None;
@@ -1458,7 +1458,7 @@ static PyObject* ue_PyUObject_call(ue_PyUObject* self, PyObject* args, PyObject*
 					if (PyErr_Occurred())
 					{
 						FMemory::Free(data);
-						return PyErr_Format(PyExc_Exception, "unable to build struct from dictionary");
+						return PyErr_Format(ue_PyExc_Exception, "unable to build struct from dictionary");
 					}
 					break;
 				}
@@ -1472,7 +1472,7 @@ static PyObject* ue_PyUObject_call(ue_PyUObject* self, PyObject* args, PyObject*
 					if (PyErr_Occurred())
 					{
 						FMemory::Free(data);
-						return PyErr_Format(PyExc_Exception, "unable to build struct from dictionary");
+						return PyErr_Format(ue_PyExc_Exception, "unable to build struct from dictionary");
 					}
 					break;
 				}
@@ -1483,20 +1483,20 @@ static PyObject* ue_PyUObject_call(ue_PyUObject* self, PyObject* args, PyObject*
 					if (!ue_py_convert_pyobject(value, u_property, data, 0))
 					{
 						FMemory::Free(data);
-						return PyErr_Format(PyExc_Exception, "invalid value for UProperty");
+						return PyErr_Format(ue_PyExc_Exception, "invalid value for UProperty");
 					}
 				}
 				else
 				{
 					FMemory::Free(data);
-					return PyErr_Format(PyExc_Exception, "UProperty %s not found", struct_key);
+					return PyErr_Format(ue_PyExc_Exception, "UProperty %s not found", struct_key);
 				}
 			}
 		}
 		return py_ue_new_owned_uscriptstruct_zero_copy(u_script_struct, data);
 	}
 
-	return PyErr_Format(PyExc_Exception, "the specified uobject has no __call__ support");
+	return PyErr_Format(ue_PyExc_Exception, "the specified uobject has no __call__ support");
 }
 
 static PyTypeObject ue_PyUObjectType = {
@@ -2111,7 +2111,7 @@ PyObject* ue_py_convert_property(UProperty* prop, uint8* buffer, int32 index)
 		{
 			Py_RETURN_UOBJECT(value);
 		}
-		return PyErr_Format(PyExc_Exception, "invalid UClass type for %s", TCHAR_TO_UTF8(*casted_prop->GetName()));
+		return PyErr_Format(ue_PyExc_Exception, "invalid UClass type for %s", TCHAR_TO_UTF8(*casted_prop->GetName()));
 	}
 
 	// try to manage known struct first
@@ -2156,7 +2156,7 @@ PyObject* ue_py_convert_property(UProperty* prop, uint8* buffer, int32 index)
 			}
 			return py_ue_new_uscriptstruct(casted_struct, casted_prop->ContainerPtrToValuePtr<uint8>(buffer, index));
 		}
-		return PyErr_Format(PyExc_TypeError, "unsupported UStruct type");
+		return PyErr_Format(ue_PyExc_TypeError, "unsupported UStruct type");
 	}
 
 	if (auto casted_prop = Cast<UWeakObjectProperty>(prop))
@@ -2249,7 +2249,7 @@ PyObject* ue_py_convert_property(UProperty* prop, uint8* buffer, int32 index)
 	}
 #endif
 
-	return PyErr_Format(PyExc_Exception, "unsupported value type %s for property %s", TCHAR_TO_UTF8(*prop->GetClass()->GetName()), TCHAR_TO_UTF8(*prop->GetName()));
+	return PyErr_Format(ue_PyExc_Exception, "unsupported value type %s for property %s", TCHAR_TO_UTF8(*prop->GetClass()->GetName()), TCHAR_TO_UTF8(*prop->GetName()));
 }
 
 // convert a python object to a property
@@ -2788,7 +2788,7 @@ void ue_bind_events_for_py_class_by_attribute(UObject* u_obj, PyObject* py_class
 					int n = event_name.ParseIntoArray(parts, UTF8_TO_TCHAR("."));
 					if (n < 1 || n > 2)
 					{
-						PyErr_SetString(PyExc_Exception, "invalid ue_event syntax, must be the name of an event or ComponentName.Event");
+						PyErr_SetString(ue_PyExc_Exception, "invalid ue_event syntax, must be the name of an event or ComponentName.Event");
 						unreal_engine_py_log_error();
 					}
 					else
@@ -2818,7 +2818,7 @@ void ue_bind_events_for_py_class_by_attribute(UObject* u_obj, PyObject* py_class
 
 							if (!found)
 							{
-								PyErr_SetString(PyExc_Exception, "unable to find component by name");
+								PyErr_SetString(ue_PyExc_Exception, "unable to find component by name");
 								unreal_engine_py_log_error();
 							}
 						}
@@ -2826,13 +2826,13 @@ void ue_bind_events_for_py_class_by_attribute(UObject* u_obj, PyObject* py_class
 				}
 				else
 				{
-					PyErr_SetString(PyExc_Exception, "ue_event attribute must be a string");
+					PyErr_SetString(ue_PyExc_Exception, "ue_event attribute must be a string");
 					unreal_engine_py_log_error();
 				}
 			}
-			Py_XDECREF(event_signature);
+			ue_Py_XDECREF(event_signature);
 		}
-		Py_XDECREF(item);
+		ue_Py_XDECREF(item);
 	}
 	Py_DECREF(attrs);
 
@@ -2874,7 +2874,7 @@ void ue_autobind_events_for_pyclass(ue_PyUObject* u_obj, PyObject* py_class)
 				ue_bind_pyevent(u_obj, event_name, item, false);
 			}
 		}
-		Py_XDECREF(item);
+		ue_Py_XDECREF(item);
 	}
 
 	Py_DECREF(attrs);
@@ -2902,7 +2902,7 @@ PyObject* py_ue_ufunction_call(UFunction* u_function, UObject* u_obj, PyObject* 
 		{
 			if (!u_function->GetSuperFunction())
 			{
-				return PyErr_Format(PyExc_Exception, "UFunction has no SuperFunction");
+				return PyErr_Format(ue_PyExc_Exception, "UFunction has no SuperFunction");
 			}
 			u_function = u_function->GetSuperFunction();
 		}
@@ -2925,7 +2925,7 @@ PyObject* py_ue_ufunction_call(UFunction* u_function, UObject* u_obj, PyObject* 
 		{
 			if (!prop->IsInContainer(u_function->ParmsSize))
 			{
-				return PyErr_Format(PyExc_Exception, "Attempting to import func param property that's out of bounds. %s", TCHAR_TO_UTF8(*u_function->GetName()));
+				return PyErr_Format(ue_PyExc_Exception, "Attempting to import func param property that's out of bounds. %s", TCHAR_TO_UTF8(*u_function->GetName()));
 			}
 #if WITH_EDITOR
 			FString default_key = FString("CPP_Default_") + prop->GetName();
@@ -2957,12 +2957,12 @@ PyObject* py_ue_ufunction_call(UFunction* u_function, UObject* u_obj, PyObject* 
 			if (!py_arg)
 			{
 				py_ue_destroy_params(u_function, buffer);
-				return PyErr_Format(PyExc_TypeError, "unable to get pyobject for property %s", TCHAR_TO_UTF8(*prop->GetName()));
+				return PyErr_Format(ue_PyExc_TypeError, "unable to get pyobject for property %s", TCHAR_TO_UTF8(*prop->GetName()));
 			}
 			if (!ue_py_convert_pyobject(py_arg, prop, buffer, 0))
 			{
 				py_ue_destroy_params(u_function, buffer);
-				return PyErr_Format(PyExc_TypeError, "unable to convert pyobject to property %s (%s)", TCHAR_TO_UTF8(*prop->GetName()), TCHAR_TO_UTF8(*prop->GetClass()->GetName()));
+				return PyErr_Format(ue_PyExc_TypeError, "unable to convert pyobject to property %s (%s)", TCHAR_TO_UTF8(*prop->GetName()), TCHAR_TO_UTF8(*prop->GetClass()->GetName()));
 			}
 		}
 		else if (kwargs)
@@ -2974,7 +2974,7 @@ PyObject* py_ue_ufunction_call(UFunction* u_function, UObject* u_obj, PyObject* 
 				if (!ue_py_convert_pyobject(dict_value, prop, buffer, 0))
 				{
 					py_ue_destroy_params(u_function, buffer);
-					return PyErr_Format(PyExc_TypeError, "unable to convert pyobject to property %s (%s)", TCHAR_TO_UTF8(*prop->GetName()), TCHAR_TO_UTF8(*prop->GetClass()->GetName()));
+					return PyErr_Format(ue_PyExc_TypeError, "unable to convert pyobject to property %s (%s)", TCHAR_TO_UTF8(*prop->GetName()), TCHAR_TO_UTF8(*prop->GetClass()->GetName()));
 				}
 			}
 		}
@@ -3061,7 +3061,7 @@ PyObject* ue_unbind_pyevent(ue_PyUObject* u_obj, FString event_name, PyObject* p
 	if (!u_property)
 	{
 		if (fail_on_wrong_property)
-			return PyErr_Format(PyExc_Exception, "unable to find event property %s", TCHAR_TO_UTF8(*event_name));
+			return PyErr_Format(ue_PyExc_Exception, "unable to find event property %s", TCHAR_TO_UTF8(*event_name));
 		Py_RETURN_NONE;
 	}
 
@@ -3097,7 +3097,7 @@ PyObject* ue_unbind_pyevent(ue_PyUObject* u_obj, FString event_name, PyObject* p
 	else
 	{
 		if (fail_on_wrong_property)
-			return PyErr_Format(PyExc_Exception, "property %s is not an event", TCHAR_TO_UTF8(*event_name));
+			return PyErr_Format(ue_PyExc_Exception, "property %s is not an event", TCHAR_TO_UTF8(*event_name));
 	}
 
 	Py_RETURN_NONE;
@@ -3110,7 +3110,7 @@ PyObject* ue_bind_pyevent(ue_PyUObject* u_obj, FString event_name, PyObject* py_
 	if (!u_property)
 	{
 		if (fail_on_wrong_property)
-			return PyErr_Format(PyExc_Exception, "unable to find event property %s", TCHAR_TO_UTF8(*event_name));
+			return PyErr_Format(ue_PyExc_Exception, "unable to find event property %s", TCHAR_TO_UTF8(*event_name));
 		Py_RETURN_NONE;
 	}
 
@@ -3151,7 +3151,7 @@ PyObject* ue_bind_pyevent(ue_PyUObject* u_obj, FString event_name, PyObject* py_
 	else
 	{
 		if (fail_on_wrong_property)
-			return PyErr_Format(PyExc_Exception, "property %s is not an event", TCHAR_TO_UTF8(*event_name));
+			return PyErr_Format(ue_PyExc_Exception, "property %s is not an event", TCHAR_TO_UTF8(*event_name));
 	}
 
 	Py_RETURN_NONE;
@@ -3236,19 +3236,19 @@ UFunction* unreal_engine_add_function(UClass* u_class, char* name, PyObject* py_
 		UProperty* prop = nullptr;
 		if (PyType_Check(value))
 		{
-			if ((PyTypeObject*)value == &PyFloat_Type)
+			if ((PyTypeObject*)value == ue_PyFloat_Type)
 			{
 				prop = NewObject<UFloatProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 			}
-			else if ((PyTypeObject*)value == &PyUnicode_Type)
+			else if ((PyTypeObject*)value == ue_PyUnicode_Type)
 			{
 				prop = NewObject<UStrProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 			}
-			else if ((PyTypeObject*)value == &PyBool_Type)
+			else if ((PyTypeObject*)value == ue_PyBool_Type)
 			{
 				prop = NewObject<UBoolProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 			}
-			else if ((PyTypeObject*)value == &PyLong_Type)
+			else if ((PyTypeObject*)value == ue_PyLong_Type)
 			{
 				prop = NewObject<UIntProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 			}
@@ -3296,7 +3296,7 @@ UFunction* unreal_engine_add_function(UClass* u_class, char* name, PyObject* py_
 				prop = prop_struct;
 			}
 #endif
-			else if (PyObject_IsInstance(value, (PyObject*)& PyType_Type))
+			else if (PyObject_IsInstance(value, (PyObject*)ue_PyType_Type))
 			{
 				// Method annotation like foo:typing.Type[Pawn] produces annotations like typing.Type[Pawn], with .__args__ = (Pawn,)
 				PyObject* type_args = PyObject_GetAttrString(value, "__args__");
@@ -3385,19 +3385,19 @@ UFunction* unreal_engine_add_function(UClass* u_class, char* name, PyObject* py_
 			char* p_name = (char*) "ReturnValue";
 			if (PyType_Check(py_return_value))
 			{
-				if ((PyTypeObject*)py_return_value == &PyFloat_Type)
+				if ((PyTypeObject*)py_return_value == ue_PyFloat_Type)
 				{
 					prop = NewObject<UFloatProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 				}
-				else if ((PyTypeObject*)py_return_value == &PyUnicode_Type)
+				else if ((PyTypeObject*)py_return_value == ue_PyUnicode_Type)
 				{
 					prop = NewObject<UStrProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 				}
-				else if ((PyTypeObject*)py_return_value == &PyBool_Type)
+				else if ((PyTypeObject*)py_return_value == ue_PyBool_Type)
 				{
 					prop = NewObject<UBoolProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 				}
-				else if ((PyTypeObject*)py_return_value == &PyLong_Type)
+				else if ((PyTypeObject*)py_return_value == ue_PyLong_Type)
 				{
 					prop = NewObject<UIntProperty>(function, UTF8_TO_TCHAR(p_name), RF_Public);
 				}
@@ -3445,7 +3445,7 @@ UFunction* unreal_engine_add_function(UClass* u_class, char* name, PyObject* py_
 					prop = prop_struct;
 				}
 #endif
-				else if (PyObject_IsInstance(py_return_value, (PyObject*)& PyType_Type))
+				else if (PyObject_IsInstance(py_return_value, (PyObject*)ue_PyType_Type))
 				{
 					// Method annotation like foo:typing.Type[Pawn] produces annotations like typing.Type[Pawn], with .__args__ = (Pawn,)
 					PyObject* type_args = PyObject_GetAttrString(py_return_value, "__args__");
@@ -3563,7 +3563,7 @@ UFunction* unreal_engine_add_function(UClass* u_class, char* name, PyObject* py_
 				}
 				++It2;
 			}
-			PyErr_Format(PyExc_Exception, "function %s signature's is not compatible with the parent", name);
+			PyErr_Format(ue_PyExc_Exception, "function %s signature's is not compatible with the parent", name);
 			return nullptr;
 		}
 	}

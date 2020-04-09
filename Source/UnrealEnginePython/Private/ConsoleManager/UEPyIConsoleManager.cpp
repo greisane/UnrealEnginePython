@@ -91,7 +91,7 @@ static PyObject *py_ue_iconsole_manager_get_help(PyObject *cls, PyObject * args)
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	return PyUnicode_FromString(TCHAR_TO_UTF8(c_object->GetHelp()));
@@ -109,7 +109,7 @@ static PyObject *py_ue_iconsole_manager_set_help(PyObject *cls, PyObject * args)
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	c_object->SetHelp(UTF8_TO_TCHAR(help));
@@ -128,19 +128,19 @@ static PyObject *py_ue_iconsole_manager_get_string(PyObject *cls, PyObject * arg
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	IConsoleVariable *var = c_object->AsVariable();
 	if (!var)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a variable", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a variable", key);
 	}
 
 	/*TConsoleVariableData<FString> *c_string = c_object->AsVariableString();
 	if (!c_string)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a string", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a string", key);
 	}*/
 
 	return PyUnicode_FromString(TCHAR_TO_UTF8(*var->GetString()));
@@ -157,19 +157,19 @@ static PyObject *py_ue_iconsole_manager_get_int(PyObject *cls, PyObject * args)
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	IConsoleVariable *var = c_object->AsVariable();
 	if (!var)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a variable", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a variable", key);
 	}
 
 	TConsoleVariableData<int32> *c_int = c_object->AsVariableInt();
 	if (!c_int)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not an int", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not an int", key);
 	}
 
 	return PyLong_FromLong(var->GetInt());
@@ -186,19 +186,19 @@ static PyObject *py_ue_iconsole_manager_get_float(PyObject *cls, PyObject * args
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	IConsoleVariable *var = c_object->AsVariable();
 	if (!var)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a variable", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a variable", key);
 	}
 
 	TConsoleVariableData<float> *c_float = c_object->AsVariableFloat();
 	if (!c_float)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a float", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a float", key);
 	}
 
 	return PyFloat_FromDouble(var->GetFloat());
@@ -216,19 +216,19 @@ static PyObject *py_ue_iconsole_manager_set_string(PyObject *cls, PyObject * arg
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	IConsoleVariable *var = c_object->AsVariable();
 	if (!var)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a variable", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a variable", key);
 	}
 
 	TConsoleVariableData<FString> *c_string = c_object->AsVariableString();
 	if (!c_string)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a string", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a string", key);
 	}
 
 	var->Set(UTF8_TO_TCHAR(value));
@@ -248,19 +248,19 @@ static PyObject *py_ue_iconsole_manager_set_int(PyObject *cls, PyObject * args)
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	IConsoleVariable *var = c_object->AsVariable();
 	if (!var)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a variable", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a variable", key);
 	}
 
 	TConsoleVariableData<int32> *c_int = c_object->AsVariableInt();
 	if (!c_int)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not an int", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not an int", key);
 	}
 
 	var->Set(value);
@@ -280,19 +280,19 @@ static PyObject *py_ue_iconsole_manager_set_float(PyObject *cls, PyObject * args
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	IConsoleVariable *var = c_object->AsVariable();
 	if (!var)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a variable", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a variable", key);
 	}
 
 	TConsoleVariableData<float> *c_float = c_object->AsVariableFloat();
 	if (!c_float)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" is not a float", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" is not a float", key);
 	}
 
 	var->Set(value);
@@ -311,7 +311,7 @@ static PyObject *py_ue_iconsole_manager_is_variable(PyObject *cls, PyObject * ar
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	if (!c_object->AsVariable())
@@ -332,7 +332,7 @@ static PyObject *py_ue_iconsole_manager_is_command(PyObject *cls, PyObject * arg
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	if (!c_object->AsCommand())
@@ -353,7 +353,7 @@ static PyObject *py_ue_iconsole_manager_is_variable_string(PyObject *cls, PyObje
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	if (!c_object->AsVariableString())
@@ -374,7 +374,7 @@ static PyObject *py_ue_iconsole_manager_is_variable_int(PyObject *cls, PyObject 
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	if (!c_object->AsVariableInt())
@@ -395,7 +395,7 @@ static PyObject *py_ue_iconsole_manager_is_variable_float(PyObject *cls, PyObjec
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 	if (!c_object->AsVariableFloat())
@@ -431,7 +431,7 @@ static PyObject *py_ue_iconsole_manager_unregister_object(PyObject *cls, PyObjec
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (!c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "unable to find console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to find console object \"%s\"", key);
 	}
 
 
@@ -457,12 +457,12 @@ static PyObject *py_ue_iconsole_manager_register_variable_string(PyObject *cls, 
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" already exists", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" already exists", key);
 	}
 
 	if (!IConsoleManager::Get().RegisterConsoleVariable(UTF8_TO_TCHAR(key), FString(UTF8_TO_TCHAR(value)), UTF8_TO_TCHAR(help), 0))
 	{
-		return PyErr_Format(PyExc_Exception, "unable to register console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to register console object \"%s\"", key);
 	}
 
 	Py_RETURN_NONE;
@@ -481,12 +481,12 @@ static PyObject *py_ue_iconsole_manager_register_variable_int(PyObject *cls, PyO
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" already exists", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" already exists", key);
 	}
 
 	if (!IConsoleManager::Get().RegisterConsoleVariable(UTF8_TO_TCHAR(key), value, UTF8_TO_TCHAR(help), 0))
 	{
-		return PyErr_Format(PyExc_Exception, "unable to register console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to register console object \"%s\"", key);
 	}
 
 	Py_RETURN_NONE;
@@ -505,12 +505,12 @@ static PyObject *py_ue_iconsole_manager_register_variable_float(PyObject *cls, P
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" already exists", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" already exists", key);
 	}
 
 	if (!IConsoleManager::Get().RegisterConsoleVariable(UTF8_TO_TCHAR(key), value, UTF8_TO_TCHAR(help), 0))
 	{
-		return PyErr_Format(PyExc_Exception, "unable to register console object \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to register console object \"%s\"", key);
 	}
 
 	Py_RETURN_NONE;
@@ -558,13 +558,13 @@ static PyObject *py_ue_iconsole_manager_register_command(PyObject *cls, PyObject
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(PyExc_Exception, "argument is not callable");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
 	}
 
 	IConsoleObject *c_object = IConsoleManager::Get().FindConsoleObject(UTF8_TO_TCHAR(key));
 	if (c_object)
 	{
-		return PyErr_Format(PyExc_Exception, "console object \"%s\" already exists", key);
+		return PyErr_Format(ue_PyExc_Exception, "console object \"%s\" already exists", key);
 	}
 
 	TSharedRef<FPythonSmartConsoleDelegate> py_delegate = MakeShareable(new FPythonSmartConsoleDelegate);
@@ -576,7 +576,7 @@ static PyObject *py_ue_iconsole_manager_register_command(PyObject *cls, PyObject
 
 	c_object = IConsoleManager::Get().RegisterConsoleCommand(UTF8_TO_TCHAR(key), help ? UTF8_TO_TCHAR(help) : UTF8_TO_TCHAR(key), console_delegate, 0);
 	if (!c_object)
-		return PyErr_Format(PyExc_Exception, "unable to register console command \"%s\"", key);
+		return PyErr_Format(ue_PyExc_Exception, "unable to register console command \"%s\"", key);
 
 	// this allows the delegates to not be destroyed
 	FPythonSmartConsoleDelegate::RegisterPyDelegate(c_object, py_delegate);
@@ -651,7 +651,7 @@ static PyTypeObject ue_PyIConsoleManagerType = {
 
 static int py_ue_iconsole_manager_init(ue_PyIConsoleManager *self, PyObject * args)
 {
-	PyErr_SetString(PyExc_Exception, "IConsoleManager is a singleton");
+	PyErr_SetString(ue_PyExc_Exception, "IConsoleManager is a singleton");
 	return -1;
 }
 

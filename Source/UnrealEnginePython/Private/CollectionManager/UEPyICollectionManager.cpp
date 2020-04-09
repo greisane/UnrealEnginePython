@@ -349,7 +349,7 @@ static PyObject *py_ue_icollection_manager_get_dynamic_query_text(PyObject *cls,
 		(ECollectionShareType::Type)type,
 		query_text))
 	{
-		return PyErr_Format(PyExc_Exception, "unable to get dynamic query text");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get dynamic query text");
 	}
 
 	return PyUnicode_FromString(TCHAR_TO_UTF8(*query_text));
@@ -405,7 +405,7 @@ static PyObject *py_ue_icollection_manager_get_assets_in_collection(PyObject *cl
 		}
 		return py_list;
 	}
-	return PyErr_Format(PyExc_Exception, "unable to retrieve the assets list from collection");
+	return PyErr_Format(ue_PyExc_Exception, "unable to retrieve the assets list from collection");
 }
 
 static PyObject *py_ue_icollection_manager_get_objects_in_collection(PyObject *cls, PyObject * args)
@@ -430,7 +430,7 @@ static PyObject *py_ue_icollection_manager_get_objects_in_collection(PyObject *c
 		}
 		return py_list;
 	}
-	return PyErr_Format(PyExc_Exception, "unable to retrieve the objects list from collection");
+	return PyErr_Format(ue_PyExc_Exception, "unable to retrieve the objects list from collection");
 }
 
 static PyObject *py_ue_icollection_manager_get_classes_in_collection(PyObject *cls, PyObject * args)
@@ -455,7 +455,7 @@ static PyObject *py_ue_icollection_manager_get_classes_in_collection(PyObject *c
 		}
 		return py_list;
 	}
-	return PyErr_Format(PyExc_Exception, "unable to retrieve the classes list from collection");
+	return PyErr_Format(ue_PyExc_Exception, "unable to retrieve the classes list from collection");
 }
 
 static PyMethodDef ue_PyICollectionManager_methods[] = {
@@ -521,7 +521,7 @@ static PyTypeObject ue_PyICollectionManagerType = {
 
 static int py_ue_icollection_manager_init(ue_PyICollectionManager *self, PyObject * args)
 {
-	PyErr_SetString(PyExc_Exception, "ICollectionManager is a singleton");
+	PyErr_SetString(ue_PyExc_Exception, "ICollectionManager is a singleton");
 	return -1;
 }
 

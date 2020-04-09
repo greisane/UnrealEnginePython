@@ -30,7 +30,7 @@ static PyObject *py_ue_fvector_dot(ue_PyFVector *self, PyObject * args)
 		return NULL;
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_TypeError, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector");
 	return PyFloat_FromDouble(FVector::DotProduct(self->vec, py_vec->vec));
 }
 
@@ -41,7 +41,7 @@ static PyObject *py_ue_fvector_cross(ue_PyFVector *self, PyObject * args)
 		return NULL;
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_TypeError, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector");
 	return py_ue_new_fvector(FVector::CrossProduct(self->vec, py_vec->vec));
 }
 
@@ -52,7 +52,7 @@ static PyObject *py_ue_fvector_project_on_to(ue_PyFVector *self, PyObject * args
 		return nullptr;
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_TypeError, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector");
 	return py_ue_new_fvector(self->vec.ProjectOnTo(py_vec->vec));
 }
 
@@ -63,7 +63,7 @@ static PyObject *py_ue_fvector_project_on_to_normal(ue_PyFVector *self, PyObject
 		return nullptr;
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(PyExc_TypeError, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector");
 	return py_ue_new_fvector(self->vec.ProjectOnToNormal(py_vec->vec));
 }
 
@@ -97,7 +97,7 @@ static int py_ue_fvector_set_x(ue_PyFVector *self, PyObject *value, void *closur
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -115,7 +115,7 @@ static int py_ue_fvector_set_y(ue_PyFVector *self, PyObject *value, void *closur
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -133,7 +133,7 @@ static int py_ue_fvector_set_z(ue_PyFVector *self, PyObject *value, void *closur
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -262,7 +262,7 @@ static PyObject *ue_py_fvector_div(ue_PyFVector *self, PyObject *value)
 	if (py_vec)
 	{
 		if (py_vec->vec.X == 0 || py_vec->vec.Y == 0 || py_vec->vec.Z == 0)
-			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
 		vec /= py_vec->vec;
 	}
 	else if (PyNumber_Check(value))
@@ -270,7 +270,7 @@ static PyObject *ue_py_fvector_div(ue_PyFVector *self, PyObject *value)
 		PyObject *f_value = PyNumber_Float(value);
 		float f = PyFloat_AsDouble(f_value);
 		if (f == 0)
-			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
 		vec /= f;
 		Py_DECREF(f_value);
 	}
@@ -285,14 +285,14 @@ static PyObject *ue_py_fvector_floor_div(ue_PyFVector *self, PyObject *value)
 		PyObject *f_value = PyNumber_Float(value);
 		float f = PyFloat_AsDouble(f_value);
 		if (f == 0)
-			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
 		vec.X = floor(vec.X / f);
 		vec.Y = floor(vec.Y / f);
 		vec.Z = floor(vec.Z / f);
 		Py_DECREF(f_value);
 		return py_ue_new_fvector(vec);
 	}
-	return PyErr_Format(PyExc_TypeError, "value is not numeric");
+	return PyErr_Format(ue_PyExc_TypeError, "value is not numeric");
 }
 
 PyNumberMethods ue_PyFVector_number_methods;
@@ -313,7 +313,7 @@ static PyObject *ue_py_fvector_seq_item(ue_PyFVector *self, Py_ssize_t i)
 	case 2:
 		return PyFloat_FromDouble(self->vec.Z);
 	}
-	return PyErr_Format(PyExc_IndexError, "FVector has only 3 items");
+	return PyErr_Format(ue_PyExc_IndexError, "FVector has only 3 items");
 }
 
 PySequenceMethods ue_PyFVector_sequence_methods;
@@ -342,7 +342,7 @@ static PyObject *ue_py_fvector_richcompare(ue_PyFVector *vec1, PyObject *b, int 
 	ue_PyFVector *vec2 = py_ue_is_fvector(b);
 	if (!vec2 || (op != Py_EQ && op != Py_NE))
 	{
-		return PyErr_Format(PyExc_NotImplementedError, "can only compare with another FVector");
+		return PyErr_Format(ue_PyExc_NotImplementedError, "can only compare with another FVector");
 	}
 
 	if (op == Py_EQ)
@@ -423,7 +423,7 @@ bool py_ue_vector_arg(PyObject *args, FVector &vec)
 		ue_PyFVector *py_vec = py_ue_is_fvector(arg);
 		if (!py_vec)
 		{
-			PyErr_Format(PyExc_TypeError, "argument is not a FVector");
+			PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector");
 			return false;
 		}
 		vec = py_vec->vec;

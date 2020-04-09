@@ -64,7 +64,7 @@ static int ue_py_fpython_output_device_init(ue_PyFPythonOutputDevice *self, PyOb
 
 	if (!PyCallable_Check(py_serialize))
 	{
-		PyErr_SetString(PyExc_TypeError, "argument is not a callable");
+		PyErr_SetString(ue_PyExc_TypeError, "argument is not a callable");
 		return -1;
 	}
 

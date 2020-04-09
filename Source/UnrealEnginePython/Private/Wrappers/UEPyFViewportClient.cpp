@@ -6,7 +6,7 @@ static PyObject *py_ue_fviewport_client_get_world(ue_PyFViewportClient *self, Py
 {
 	UWorld *u_world = self->viewport_client->GetWorld();
 	if (!u_world)
-		return PyErr_Format(PyExc_Exception, "unable to get UWorld");
+		return PyErr_Format(ue_PyExc_Exception, "unable to get UWorld");
 	Py_RETURN_UOBJECT(u_world);
 }
 

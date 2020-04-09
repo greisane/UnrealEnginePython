@@ -80,7 +80,7 @@ static int py_ue_fquat_set_x(ue_PyFQuat *self, PyObject *value, void *closure)
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -98,7 +98,7 @@ static int py_ue_fquat_set_y(ue_PyFQuat *self, PyObject *value, void *closure)
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -116,7 +116,7 @@ static int py_ue_fquat_set_z(ue_PyFQuat *self, PyObject *value, void *closure)
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -134,7 +134,7 @@ static int py_ue_fquat_set_w(ue_PyFQuat *self, PyObject *value, void *closure)
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -233,7 +233,7 @@ static PyObject *ue_py_fquat_mul(ue_PyFQuat *self, PyObject *value)
 		Py_DECREF(f_value);
 		return py_ue_new_fquat(quat);
 	}
-	return PyErr_Format(PyExc_TypeError, "unsupported argument type");
+	return PyErr_Format(ue_PyExc_TypeError, "unsupported argument type");
 }
 
 static PyObject *ue_py_fquat_div(ue_PyFQuat *self, PyObject *value)
@@ -245,12 +245,12 @@ static PyObject *ue_py_fquat_div(ue_PyFQuat *self, PyObject *value)
 		PyObject *f_value = PyNumber_Float(value);
 		float f = PyFloat_AsDouble(f_value);
 		if (f == 0)
-			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
 		quat /= f;
 		Py_DECREF(f_value);
 		return py_ue_new_fquat(quat);
 	}
-	return PyErr_Format(PyExc_TypeError, "unsupported argument type");
+	return PyErr_Format(ue_PyExc_TypeError, "unsupported argument type");
 
 }
 
@@ -274,7 +274,7 @@ static PyObject *ue_py_fquat_seq_item(ue_PyFQuat *self, Py_ssize_t i)
 	case 3:
 		return PyFloat_FromDouble(self->quat.W);
 	}
-	return PyErr_Format(PyExc_IndexError, "FQuat has only 4 items");
+	return PyErr_Format(ue_PyExc_IndexError, "FQuat has only 4 items");
 }
 
 PySequenceMethods ue_PyFQuat_sequence_methods;
@@ -341,7 +341,7 @@ bool py_ue_quat_arg(PyObject *args, FQuat &quat)
 		ue_PyFQuat *py_quat = py_ue_is_fquat(arg);
 		if (!py_quat)
 		{
-			PyErr_Format(PyExc_TypeError, "argument is not a FQuat");
+			PyErr_Format(ue_PyExc_TypeError, "argument is not a FQuat");
 			return false;
 		}
 		quat = py_quat->quat;

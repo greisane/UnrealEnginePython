@@ -43,11 +43,11 @@ PyObject *py_ue_vlog_cylinder(ue_PyUObject *self, PyObject * args)
 
 	ue_PyFVector *py_vec_start = py_ue_is_fvector(py_start);
 	if (!py_vec_start)
-		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 
 	ue_PyFVector *py_vec_end = py_ue_is_fvector(py_end);
 	if (!py_vec_end)
-		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
 
 	FColor color = FColor::White;
 
@@ -55,7 +55,7 @@ PyObject *py_ue_vlog_cylinder(ue_PyUObject *self, PyObject * args)
 	{
 		ue_PyFColor *py_fcolor = py_ue_is_fcolor(py_color);
 		if (!py_fcolor)
-			return PyErr_Format(PyExc_Exception, "argument is not a FColor");
+			return PyErr_Format(ue_PyExc_Exception, "argument is not a FColor");
 		color = py_fcolor->color;
 	}
 
