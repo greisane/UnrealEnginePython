@@ -83,10 +83,7 @@ bool PyUnicodeOrString_Check(PyObject *py_obj)
 	return false;
 }
 
-#define SCRIPTS_FOLDER "Python"
-#define TEXT_SCRIPTS_FOLDER TEXT(SCRIPTS_FOLDER)
-
-#define LOCTEXT_NAMESPACE "FUnrealEnginePythonModule"
+#define LOCTEXT_NAMESPACE "UnrealEnginePython"
 
 void FUnrealEnginePythonModule::UESetupPythonInterpreter(bool verbose)
 {
@@ -183,7 +180,6 @@ static void setup_importlib()
 		"        loader = loader_class(fullname, path)\n"
 		"        return importlib.util.spec_from_file_location(fullname, path, loader=loader, submodule_search_locations=smsl)\n"
 		"    def find_spec(self, fullname, target=None):\n"
-		"        print(f'UFSFileFinder.find_spec: {fullname} {target}')\n"
 		"        is_namespace = False\n"
 		"        tail_module = fullname.rpartition('.')[2]\n"
 		"        if self._path_cache == None:\n"
@@ -201,12 +197,10 @@ static void setup_importlib()
 		"        # Check for a file w/ a proper suffix exists\n"
 		"        for suffix, loader_class in self._loaders:\n"
 		"            full_path = self.path + '/' + tail_module + suffix\n"
-		"            unreal_engine.log(f'trying {full_path}')\n"
 		"            if tail_module + suffix in self._path_cache:\n"
 		"                if unreal_engine.file_exists(full_path):\n"
 		"                    return self._get_spec(loader_class, fullname, full_path, None, target)\n"
 		"        if is_namespace:\n"
-		"            unreal_engine.log(f'possible namespace for {base_path}')\n"
 		"            spec = importlib.machinery.ModuleSpec(fullname, None)\n"
 		"            spec.submodule_search_locations = [base_path]\n"
 		"            return spec\n"
@@ -227,7 +221,6 @@ static void setup_importlib()
 		"    def path_mtime(self, path):\n"
 		"        raise OSError\n"
 		"    def get_data(self, path):\n"
-		"        unreal_engine.log(f'{self.__class__.__name__}.get_data: {path}')\n"
 		"        return unreal_engine.load_bytes(path)\n"
 		"\n"
 		"class UFSSourceFileLoader(UFSFileLoader, importlib.machinery.SourceFileLoader):\n"
@@ -241,8 +234,11 @@ static void setup_importlib()
 		"    bytecode = UFSSourcelessFileLoader, importlib.machinery.BYTECODE_SUFFIXES\n"
 		"    return [source, bytecode]\n"
 		"sys.path_hooks = [UFSFileFinder.path_hook(*_get_supported_file_loaders())]\n"
-		"sys.path.append(unreal_engine.get_content_dir() + '" SCRIPTS_FOLDER "')\n";
-	
+		"\n"
+		"# Drop already cached finders\n"
+		"for path, finder in list(sys.path_importer_cache.items()):\n"
+		"    if isinstance(finder, importlib.machinery.FileFinder):\n"
+		"        del sys.path_importer_cache[path]\n";
 	PyRun_SimpleString(code);
 }
 
@@ -250,33 +246,43 @@ namespace
 {
 	static void consoleExecScript(const TArray<FString>& Args)
 	{
+		if (!FUnrealEnginePythonModule::IsAvailable())
+		{
+			UE_LOG(LogPython, Display, TEXT("Python module is not loaded"));
+			return;
+		}
+
+		FUnrealEnginePythonModule& PythonModule = FUnrealEnginePythonModule::Get();
 		if (Args.Num() != 1)
 		{
 			UE_LOG(LogPython, Display, TEXT("Usage: 'py.exec <scriptname>'."));
-			UE_LOG(LogPython, Display, TEXT("  scriptname: Name of script, must reside in " TEXT_SCRIPTS_FOLDER " folder. Ex: myscript.py"));
+			UE_LOG(LogPython, Display, TEXT("  scriptname: Name of script, must reside in %s folder. Ex: myscript.py"), *PythonModule.GetScriptsFolder());
+			return;
 		}
-		else
-		{
-			UPythonBlueprintFunctionLibrary::ExecutePythonScript(Args[0]);
-		}
+
+		UPythonBlueprintFunctionLibrary::ExecutePythonScript(Args[0]);
 	}
 
 	static void consoleExecString(const TArray<FString>& Args)
 	{
+		if (!FUnrealEnginePythonModule::IsAvailable())
+		{
+			UE_LOG(LogPython, Display, TEXT("Python module is not loaded"));
+			return;
+		}
+
 		if (Args.Num() == 0)
 		{
-			UE_LOG(LogPython, Display, TEXT("Usage: 'py.cmd <command string>'."));
-			UE_LOG(LogPython, Display, TEXT("  scriptname: Name of script, must reside in " TEXT_SCRIPTS_FOLDER " folder. Ex: myscript.py"));
+			UE_LOG(LogPython, Display, TEXT("Usage: 'py.cmd <command>'."));
+			return;
 		}
-		else
+
+		FString cmdString;
+		for (const FString& argStr : Args)
 		{
-			FString cmdString;
-			for (const FString& argStr : Args)
-			{
-				cmdString += argStr.TrimQuotes() + '\n';
-			}
-			UPythonBlueprintFunctionLibrary::ExecutePythonString(cmdString);
+			cmdString += argStr.TrimQuotes() + '\n';
 		}
+		UPythonBlueprintFunctionLibrary::ExecutePythonString(cmdString);
 	}
 }
 
@@ -293,35 +299,39 @@ FAutoConsoleCommand ExecPythonStringCommand(
 void FUnrealEnginePythonModule::StartupModule()
 {
 	BrutalFinalize = false;
+	ScriptsFolder = "Python";
 
 	// Save the current locale (should be "C") to restore later. TCharTest::RunTest will fail otherwise
 	FString SavedLocale(setlocale(LC_CTYPE, nullptr));
 
-	// Manual import of data symbols that would prevent delay loading of python dll
-	//LoadPythonSymbols(PythonHandle);
-
 	// Point sys.path to the embedded python zip. Extraneous python installations are also cleared out
+	TArray<FString> SysPathItems;
 	FString PluginDir = IPluginManager::Get().FindPlugin(TEXT("UnrealEnginePython"))->GetBaseDir();
 	FString PythonDir = FString::Printf(TEXT("Python%d%d"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
 	FString ZipFilename = FString::Printf(TEXT("python%d%d.zip"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
 	FString ZipPath = FPaths::ConvertRelativePathToFull(FPaths::Combine(PluginDir, TEXT("ThirdParty"), PythonDir, ZipFilename));
-#if PY_MAJOR_VERSION >= 3
-	Py_SetPath(TCHAR_TO_WCHAR(*ZipPath));
-#else
-	Py_SetPath(TCHAR_TO_UTF8(*ZipPath));
-#endif
 
-	// Redundant because sys.path is manually set, clear PYTHONHOME for completeness
-	FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONHOME"), TEXT(""));
-	FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONPATH"), TEXT(""));
-	Py_SetPythonHome(TCHAR_TO_WCHAR(*ZipPath));
-	Py_SetProgramName(TCHAR_TO_WCHAR(FApp::GetProjectName()));
-
-	ScriptsPath = FPaths::Combine(*PROJECT_CONTENT_DIR, TEXT_SCRIPTS_FOLDER);
+	ScriptsPath = FPaths::Combine(PROJECT_CONTENT_DIR, ScriptsFolder);
 	if (!FPaths::DirectoryExists(ScriptsPath))
 	{
 		FPlatformFileManager::Get().GetPlatformFile().CreateDirectory(*ScriptsPath);
 	}
+
+	SysPathItems.Add(ZipPath);
+	SysPathItems.Add(ScriptsPath);
+	SysPathItems.Add(ScriptsPath / TEXT("site-packages"));
+	FString SysPaths = FString::Join(SysPathItems, FPlatformMisc::GetPathVarDelimiter());
+
+	// Configure and clear unused environment vars
+#if PY_MAJOR_VERSION >= 3
+	Py_SetPath(TCHAR_TO_WCHAR(*SysPaths));
+#else
+	Py_SetPath(TCHAR_TO_UTF8(*SysPaths));
+#endif
+	Py_SetPythonHome(TCHAR_TO_WCHAR(*ZipPath));
+	Py_SetProgramName(TCHAR_TO_WCHAR(FApp::GetProjectName()));
+	FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONHOME"), TEXT(""));
+	FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONPATH"), TEXT(""));
 
 #if PY_MAJOR_VERSION >= 3
 	init_unreal_engine_builtin();

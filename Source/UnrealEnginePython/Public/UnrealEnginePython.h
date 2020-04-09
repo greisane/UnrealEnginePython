@@ -123,7 +123,7 @@ public:
 	*/
 	static inline FUnrealEnginePythonModule& Get()
 	{
-		return FModuleManager::LoadModuleChecked< FUnrealEnginePythonModule >("UnrealEnginePython");
+		return FModuleManager::LoadModuleChecked<FUnrealEnginePythonModule>("UnrealEnginePython");
 	}
 
 	/**
@@ -140,12 +140,14 @@ public:
 	FString Pep8ize(FString Code);
 
 	FString GetScriptsPath() { return ScriptsPath; }
+	FString GetScriptsFolder() { return ScriptsFolder; }
 
 	static PyObject* __Py_NoneStruct; /* Don't use this directly */
 	static PyObject* __Py_TrueStruct; /* Don't use this directly */
 	static PyObject* __Py_FalseStruct; /* Don't use this directly */
 
 private:
+	FString ScriptsFolder;
 	FString ScriptsPath;
 	void *ue_python_gil;
 	// used by console
