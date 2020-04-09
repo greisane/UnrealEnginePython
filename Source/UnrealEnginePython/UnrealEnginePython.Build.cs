@@ -9,17 +9,12 @@ public class UnrealEnginePython : ModuleRules
 	protected int PythonVersionMajor = 3;
 	protected int PythonVersionMinor = 8;
 
-	public string ThirdPartyPath
-	{
-		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../ThirdParty/")); }
-	}
-
-	public string PythonHome
+	public string PythonDir
 	{
 		get
 		{
 			string folderName = string.Format("Python{0}{1}", PythonVersionMajor, PythonVersionMinor);
-			return Path.GetFullPath(Path.Combine(ThirdPartyPath, folderName));
+			return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../ThirdParty/", folderName));
 		}
 	}
 
@@ -34,7 +29,7 @@ public class UnrealEnginePython : ModuleRules
 		bUseUnity = string.IsNullOrEmpty(enableUnityBuild);
 
 		PublicIncludePaths.AddRange(new string[] {
-			PythonHome,
+			PythonDir,
 		});
 
 		PrivateIncludePaths.AddRange(new string[] {
@@ -111,34 +106,38 @@ public class UnrealEnginePython : ModuleRules
 			});
 		}
 
-		System.Console.WriteLine("Using Python at: " + PythonHome);
-		PublicIncludePaths.Add(PythonHome);
+		string zipFilename = string.Format("python{0}{1}.zip", PythonVersionMajor, PythonVersionMinor);
+		string zipPath = Path.Combine(PythonDir, zipFilename);
+		System.Console.WriteLine("Using Python at: " + zipPath);
+		RuntimeDependencies.Add(zipPath);
+		PublicIncludePaths.Add(PythonDir);
 
 		if ((Target.Platform == UnrealTargetPlatform.Win64) || (Target.Platform == UnrealTargetPlatform.Win32))
 		{
 			string libFilename = string.Format("python{0}{1}.lib", PythonVersionMajor, PythonVersionMinor);
-			string libPath = Path.Combine(PythonHome, "Lib", libFilename);
+			string libPath = Path.Combine(PythonDir, "libs", libFilename);
 			System.Console.WriteLine("Lib path: " + libPath);
 			PublicSystemLibraryPaths.Add(Path.GetDirectoryName(libPath));
 			PublicAdditionalLibraries.Add(libPath);
 
 			string dllFilename = string.Format("python{0}{1}.dll", PythonVersionMajor, PythonVersionMinor);
-			string dllPath = Path.Combine(PythonHome, "Binaries", "Win64", dllFilename);
+			string dllPath = Path.Combine(PythonDir, "bin", "win64", dllFilename);
 			System.Console.WriteLine("Dll path: " + dllPath);
+            //PublicDelayLoadDLLs.Add(dllFilename);
 			RuntimeDependencies.Add(dllPath);
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
 			string libFilename = string.Format("libpython{0}.{1}.dylib", PythonVersionMajor, PythonVersionMinor);
-			string libPath = Path.Combine(PythonHome, "Lib", libFilename);
+			string libPath = Path.Combine(PythonDir, "libs", libFilename);
 			System.Console.WriteLine("Lib path: " + libPath);
 			PublicSystemLibraryPaths.Add(Path.GetDirectoryName(libPath));
-			PublicDelayLoadDLLs.Add(libPath);
+			PublicDelayLoadDLLs.Add(libFilename);
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Linux)
 		{
 			string libFilename = string.Format("libpython{0}.{1}.so", PythonVersionMajor, PythonVersionMinor);
-			string libPath = Path.Combine(PythonHome, "Lib", libFilename);
+			string libPath = Path.Combine(PythonDir, "libs", libFilename);
 			System.Console.WriteLine("Lib path: " + libPath);
 			PublicAdditionalLibraries.Add(libPath);
 		}

@@ -114,10 +114,6 @@ public:
 
 	void UESetupPythonInterpreter(bool);
 
-	TArray<FString> ScriptsPaths;
-	FString ZipPath;
-	FString AdditionalModulesPath;
-
 	bool BrutalFinalize;
 
 	/**
@@ -144,7 +140,11 @@ public:
 	// pep8ize a string using various strategy (currently only autopep8 is supported)
 	FString Pep8ize(FString Code);
 
+	FString GetScriptsPath() { return ScriptsPath; }
+
 private:
+	FString ScriptsPath;
+
 	void *ue_python_gil;
 	// used by console
 	void *main_dict;

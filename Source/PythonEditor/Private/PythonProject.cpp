@@ -8,5 +8,5 @@ UPythonProject::UPythonProject(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	FUnrealEnginePythonModule &PythonModule = FModuleManager::GetModuleChecked<FUnrealEnginePythonModule>("UnrealEnginePython");
-	Path = PythonModule.ScriptsPaths[0];
+	Path = PythonModule.GetScriptsPath();
 }

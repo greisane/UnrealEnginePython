@@ -5,6 +5,7 @@
 #include "PythonBlueprintFunctionLibrary.h"
 #include "HAL/IConsoleManager.h"
 #include "HAL/PlatformFilemanager.h"
+#include "Misc/App.h"
 #if ENGINE_MINOR_VERSION < 13
 #include "ClassIconFinder.h"
 #endif
@@ -48,6 +49,8 @@ const char *ue4_module_options = "linux_global_symbols";
 #include "Android/AndroidApplication.h"
 #endif
 
+#define SCRIPTS_FOLDER "Python"
+#define TEXT_SCRIPTS_FOLDER TEXT(SCRIPTS_FOLDER)
 
 const char *UEPyUnicode_AsUTF8(PyObject *py_str)
 {
@@ -133,34 +136,6 @@ void FUnrealEnginePythonModule::UESetupPythonInterpreter(bool verbose)
 	}
 
 	PySys_SetArgv(Args.Num(), argv);
-
-	unreal_engine_init_py_module();
-
-	PyObject *py_sys = PyImport_ImportModule("sys");
-	PyObject *py_sys_dict = PyModule_GetDict(py_sys);
-
-	PyObject *py_path = PyDict_GetItemString(py_sys_dict, "path");
-
-	char *zip_path = TCHAR_TO_UTF8(*ZipPath);
-	PyObject *py_zip_path = PyUnicode_FromString(zip_path);
-	PyList_Insert(py_path, 0, py_zip_path);
-
-
-	int i = 0;
-	for (FString ScriptsPath : ScriptsPaths)
-	{
-		char *scripts_path = TCHAR_TO_UTF8(*ScriptsPath);
-		PyObject *py_scripts_path = PyUnicode_FromString(scripts_path);
-		PyList_Insert(py_path, i++, py_scripts_path);
-		if (verbose)
-		{
-			UE_LOG(LogPython, Log, TEXT("Python Scripts search path: %s"), UTF8_TO_TCHAR(scripts_path));
-		}
-	}
-
-	char *additional_modules_path = TCHAR_TO_UTF8(*AdditionalModulesPath);
-	PyObject *py_additional_modules_path = PyUnicode_FromString(additional_modules_path);
-	PyList_Insert(py_path, 0, py_additional_modules_path);
 
 	if (verbose)
 	{
@@ -276,7 +251,8 @@ static void setup_importlib()
 		"    bytecode = UFSSourcelessFileLoader, importlib.machinery.BYTECODE_SUFFIXES\n"
 		"    return [source, bytecode]\n"
 		"sys.path_hooks = [UFSFileFinder.path_hook(*_get_supported_file_loaders())]\n"
-		"sys.path.append(unreal_engine.get_content_dir() + 'Scripts')\n";
+		"sys.path.append(unreal_engine.get_content_dir() + '" SCRIPTS_FOLDER "')\n";
+	
 	PyRun_SimpleString(code);
 }
 
@@ -286,8 +262,8 @@ namespace
 	{
 		if (Args.Num() != 1)
 		{
-			UE_LOG(LogPython, Warning, TEXT("Usage: 'py.exec <scriptname>'."));
-			UE_LOG(LogPython, Warning, TEXT("  scriptname: Name of script, must reside in Scripts folder. Ex: myscript.py"));
+			UE_LOG(LogPython, Display, TEXT("Usage: 'py.exec <scriptname>'."));
+			UE_LOG(LogPython, Display, TEXT("  scriptname: Name of script, must reside in " TEXT_SCRIPTS_FOLDER " folder. Ex: myscript.py"));
 		}
 		else
 		{
@@ -299,8 +275,8 @@ namespace
 	{
 		if (Args.Num() == 0)
 		{
-			UE_LOG(LogPython, Warning, TEXT("Usage: 'py.cmd <command string>'."));
-			UE_LOG(LogPython, Warning, TEXT("  scriptname: Name of script, must reside in Scripts folder. Ex: myscript.py"));
+			UE_LOG(LogPython, Display, TEXT("Usage: 'py.cmd <command string>'."));
+			UE_LOG(LogPython, Display, TEXT("  scriptname: Name of script, must reside in " TEXT_SCRIPTS_FOLDER " folder. Ex: myscript.py"));
 		}
 		else
 		{
@@ -329,168 +305,31 @@ void FUnrealEnginePythonModule::StartupModule()
 {
 	BrutalFinalize = false;
 
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	FString PythonHome;
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("Home"), PythonHome, GEngineIni))
-	{
+	// Save the current locale (should be "C") to restore later. TCharTest::RunTest will fail otherwise
+	FString SavedLocale(setlocale(LC_CTYPE, nullptr));
+
+	// Point sys.path to the embedded python zip. Extraneous python installations are also cleared out
+	FString PluginDir = IPluginManager::Get().FindPlugin(TEXT("UnrealEnginePython"))->GetBaseDir();
+	FString PythonDir = FString::Printf(TEXT("Python%d%d"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
+	FString ZipFilename = FString::Printf(TEXT("python%d%d.zip"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
+	FString ZipPath = FPaths::ConvertRelativePathToFull(FPaths::Combine(PluginDir, TEXT("ThirdParty"), PythonDir, ZipFilename));
 #if PY_MAJOR_VERSION >= 3
-		wchar_t *home = (wchar_t *)*PythonHome;
+	Py_SetPath(TCHAR_TO_WCHAR(*ZipPath));
 #else
-		char *home = TCHAR_TO_UTF8(*PythonHome);
-#endif
-		FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONHOME"), *PythonHome);
-		Py_SetPythonHome(home);
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("RelativeHome"), PythonHome, GEngineIni))
-	{
-		PythonHome = FPaths::Combine(*PROJECT_CONTENT_DIR, *PythonHome);
-		FPaths::NormalizeFilename(PythonHome);
-		PythonHome = FPaths::ConvertRelativePathToFull(PythonHome);
-#if PY_MAJOR_VERSION >= 3
-		wchar_t *home = (wchar_t *)*PythonHome;
-#else
-		char *home = TCHAR_TO_UTF8(*PythonHome);
+	Py_SetPath(TCHAR_TO_UTF8(*ZipPath));
 #endif
 
-		Py_SetPythonHome(home);
-	}
+	// Redundant because sys.path is manually set, clear PYTHONHOME for completeness
+	FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONHOME"), TEXT(""));
+	FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONPATH"), TEXT(""));
+	Py_SetPythonHome(TCHAR_TO_WCHAR(*ZipPath));
+	Py_SetProgramName(TCHAR_TO_WCHAR(FApp::GetProjectName()));
 
-	TArray<FString> ImportModules;
-
-	FString IniValue;
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("ProgramName"), IniValue, GEngineIni))
+	ScriptsPath = FPaths::Combine(*PROJECT_CONTENT_DIR, TEXT_SCRIPTS_FOLDER);
+	if (!FPaths::DirectoryExists(ScriptsPath))
 	{
-#if PY_MAJOR_VERSION >= 3
-		wchar_t *program_name = (wchar_t *)*IniValue;
-#else
-		char *program_name = TCHAR_TO_UTF8(*IniValue);
-#endif
-		Py_SetProgramName(program_name);
+		FPlatformFileManager::Get().GetPlatformFile().CreateDirectory(*ScriptsPath);
 	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("RelativeProgramName"), IniValue, GEngineIni))
-	{
-		IniValue = FPaths::Combine(*PROJECT_CONTENT_DIR, *IniValue);
-		FPaths::NormalizeFilename(IniValue);
-		IniValue = FPaths::ConvertRelativePathToFull(IniValue);
-#if PY_MAJOR_VERSION >= 3
-		wchar_t *program_name = (wchar_t *)*IniValue;
-#else
-		char *program_name = TCHAR_TO_UTF8(*IniValue);
-#endif
-		Py_SetProgramName(program_name);
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("ScriptsPath"), IniValue, GEngineIni))
-	{
-		ScriptsPaths.Add(IniValue);
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("RelativeScriptsPath"), IniValue, GEngineIni))
-	{
-		ScriptsPaths.Add(FPaths::Combine(*PROJECT_CONTENT_DIR, *IniValue));
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("AdditionalModulesPath"), IniValue, GEngineIni))
-	{
-		AdditionalModulesPath = IniValue;
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("RelativeAdditionalModulesPath"), IniValue, GEngineIni))
-	{
-		AdditionalModulesPath = FPaths::Combine(*PROJECT_CONTENT_DIR, *IniValue);
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("ZipPath"), IniValue, GEngineIni))
-	{
-		ZipPath = IniValue;
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("RelativeZipPath"), IniValue, GEngineIni))
-	{
-		ZipPath = FPaths::Combine(*PROJECT_CONTENT_DIR, *IniValue);
-	}
-
-	if (GConfig->GetString(UTF8_TO_TCHAR("Python"), UTF8_TO_TCHAR("ImportModules"), IniValue, GEngineIni))
-	{
-		const TCHAR* separators[] = { TEXT(" "), TEXT(";"), TEXT(",") };
-		IniValue.ParseIntoArray(ImportModules, separators, 3);
-	}
-
-	FString ProjectScriptsPath = FPaths::Combine(*PROJECT_CONTENT_DIR, UTF8_TO_TCHAR("Scripts"));
-	if (!FPaths::DirectoryExists(ProjectScriptsPath))
-	{
-		FPlatformFileManager::Get().GetPlatformFile().CreateDirectory(*ProjectScriptsPath);
-	}
-	ScriptsPaths.Add(ProjectScriptsPath);
-
-#if WITH_EDITOR
-	for (TSharedRef<IPlugin>plugin : IPluginManager::Get().GetEnabledPlugins())
-	{
-		FString PluginScriptsPath = FPaths::Combine(plugin->GetContentDir(), UTF8_TO_TCHAR("Scripts"));
-		if (FPaths::DirectoryExists(PluginScriptsPath))
-		{
-			ScriptsPaths.Add(PluginScriptsPath);
-		}
-
-		// allows third parties to include their code in the main plugin directory
-		if (plugin->GetName() == "UnrealEnginePython")
-		{
-			ScriptsPaths.Add(plugin->GetBaseDir());
-		}
-	}
-#endif
-
-	if (ZipPath.IsEmpty())
-	{
-		ZipPath = FPaths::Combine(*PROJECT_CONTENT_DIR, UTF8_TO_TCHAR("ue_python.zip"));
-	}
-
-	// To ensure there are no path conflicts, if we have a valid python home at this point,
-	// we override the current environment entirely with the environment we want to use,
-	// removing any paths to other python environments we aren't using.
-	if (PythonHome.Len() > 0)
-	{
-		FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONHOME"), *PythonHome);
-
-		const int32 MaxPathVarLen = 32768;
-		FString OrigPathVar = FString::ChrN(MaxPathVarLen, TEXT('\0'));
-#if ENGINE_MINOR_VERSION >= 21
-		OrigPathVar = FPlatformMisc::GetEnvironmentVariable(TEXT("PATH"));
-#else
-		FPlatformMisc::GetEnvironmentVariable(TEXT("PATH"), OrigPathVar.GetCharArray().GetData(), MaxPathVarLen);
-#endif
-
-		// Get the current path and remove elements with python in them, we don't want any conflicts
-		const TCHAR* PathDelimiter = FPlatformMisc::GetPathVarDelimiter();
-		TArray<FString> PathVars;
-		OrigPathVar.ParseIntoArray(PathVars, PathDelimiter, true);
-		for (int32 PathRemoveIndex = PathVars.Num() - 1; PathRemoveIndex >= 0; --PathRemoveIndex)
-		{
-			if (PathVars[PathRemoveIndex].Contains(TEXT("python"), ESearchCase::IgnoreCase))
-			{
-				UE_LOG(LogPython, Verbose, TEXT("Removing other python Path: '%s'"), *PathVars[PathRemoveIndex]);
-				PathVars.RemoveAt(PathRemoveIndex);
-			}
-		}
-
-		// Setup our own paths for PYTHONPATH
-		TArray<FString> OurPythonPaths = {
-			PythonHome,
-			FPaths::Combine(PythonHome, TEXT("Lib")),
-			FPaths::Combine(PythonHome, TEXT("Lib/site-packages")),
-		};
-		FString PythonPathVars = FString::Join(OurPythonPaths, PathDelimiter);
-		FPlatformMisc::SetEnvironmentVar(TEXT("PYTHONPATH"), *PythonPathVars);
-
-		// Also add our paths to PATH, just so any searching will find our local python
-		PathVars.Append(OurPythonPaths);
-		FString ModifiedPath = FString::Join(PathVars, PathDelimiter);
-		FPlatformMisc::SetEnvironmentVar(TEXT("PATH"), *ModifiedPath);
-	}
-
-
 
 #if PY_MAJOR_VERSION >= 3
 	init_unreal_engine_builtin();
@@ -543,12 +382,17 @@ void FUnrealEnginePythonModule::StartupModule()
 #endif
 #endif
 
-	// Save the current locale (should be "C") to restore later. TCharTest::RunTest will fail otherwise
-	FString SavedLocale(setlocale(LC_CTYPE, nullptr));
+#if 1
+	freopen("cout.log", "w", stdout);
+	freopen("cerr.log", "w", stderr);
+	fflush(stdout);
+	fflush(stderr);
+#endif
 
 	Py_Initialize();
 
-	// importlib machinery to load scripts from uassets
+	// Init unreal_engine module and importlib machinery to load scripts from uassets
+	unreal_engine_init_py_module();
 	setup_importlib();
 
 #if PLATFORM_WINDOWS
@@ -559,15 +403,12 @@ void FUnrealEnginePythonModule::StartupModule()
 	_setmode(_fileno(stdout), O_TEXT);
 	_setmode(_fileno(stderr), O_TEXT);
 
-	// Also restore the user-requested UTF-8 flag if relevant (behaviour copied
-	// from LaunchEngineLoop.cpp).
+	// Restore the user-requested UTF-8 flag if relevant (behaviour copied from LaunchEngineLoop.cpp).
 	if (FParse::Param(FCommandLine::Get(), TEXT("UTF8Output")))
 	{
 		FPlatformMisc::SetUTF8Output();
 	}
 #endif
-
-	setlocale(LC_CTYPE, TCHAR_TO_UTF8(*SavedLocale));
 
 	PyEval_InitThreads();
 
@@ -610,21 +451,11 @@ void FUnrealEnginePythonModule::StartupModule()
 #endif
 	}
 
-
-	for (FString ImportModule : ImportModules)
-	{
-		if (PyImport_ImportModule(TCHAR_TO_UTF8(*ImportModule)))
-		{
-			UE_LOG(LogPython, Log, TEXT("%s Python module successfully imported"), *ImportModule);
-		}
-		else
-		{
-			unreal_engine_py_log_error();
-		}
-	}
-
 	// release the GIL
 	PyThreadState *UEPyGlobalState = PyEval_SaveThread();
+
+	// Restore locale
+	setlocale(LC_CTYPE, TCHAR_TO_UTF8(*SavedLocale));
 }
 
 void FUnrealEnginePythonModule::ShutdownModule()
@@ -724,22 +555,11 @@ void FUnrealEnginePythonModule::RunFile(char *filename)
 	FScopePythonGIL gil;
 	FString full_path = UTF8_TO_TCHAR(filename);
 	FString original_path = full_path;
-	bool foundFile = false;
-	if (!FPaths::FileExists(filename))
+	bool foundFile = FPaths::FileExists(filename);
+	if (!foundFile)
 	{
-		for (FString ScriptsPath : ScriptsPaths)
-		{
-			full_path = FPaths::Combine(*ScriptsPath, original_path);
-			if (FPaths::FileExists(full_path))
-			{
-				foundFile = true;
-				break;
-			}
-		}
-	}
-	else
-	{
-		foundFile = true;
+		full_path = FPaths::Combine(*ScriptsPath, original_path);
+		foundFile = FPaths::FileExists(full_path);
 	}
 
 	if (!foundFile)
