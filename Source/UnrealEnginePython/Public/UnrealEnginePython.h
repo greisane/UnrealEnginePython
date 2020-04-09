@@ -8,7 +8,7 @@
 
 
 //#define UEPY_MEMORY_DEBUG 1
-#define UEPY_OUTPUT_DEBUG 1
+//#define UEPY_OUTPUT_DEBUG 1
 
 #include "CoreMinimal.h"
 #include "Runtime/Core/Public/Modules/ModuleManager.h"
@@ -16,6 +16,7 @@
 #include "UObject/ScriptMacros.h"
 #include "Runtime/Launch/Resources/Version.h"
 
+THIRD_PARTY_INCLUDES_START
 #if PLATFORM_MAC
 #include <include/Python.h>
 #include <include/structmember.h>
@@ -33,6 +34,7 @@
 #include <include/Python.h>
 #include <include/structmember.h>
 #endif
+THIRD_PARTY_INCLUDES_END
 
 typedef struct
 {
@@ -111,8 +113,6 @@ public:
 	void RunFileInMainThread(char *);
 #endif
 
-	void UESetupPythonInterpreter(bool);
-
 	bool BrutalFinalize;
 
 	/**
@@ -142,11 +142,10 @@ public:
 	FString GetScriptsPath() { return ScriptsPath; }
 	FString GetScriptsFolder() { return ScriptsFolder; }
 
-	static PyObject* __Py_NoneStruct; /* Don't use this directly */
-	static PyObject* __Py_TrueStruct; /* Don't use this directly */
-	static PyObject* __Py_FalseStruct; /* Don't use this directly */
-
 private:
+	void SetupPythonInterpreter(bool verbose);
+	void SetupSysPaths();
+
 	FString ScriptsFolder;
 	FString ScriptsPath;
 	void *ue_python_gil;

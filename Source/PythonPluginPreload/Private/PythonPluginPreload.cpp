@@ -7,9 +7,6 @@
 #include "Interfaces/IPluginManager.h"
 
 THIRD_PARTY_INCLUDES_START
-// We include this file to get PY_MAJOR_VERSION
-// We don't include Python.h as that will trigger a link dependency which we don't want
-// as this module exists to pre-load the Python DLLs, so can't link to Python itself
 #include <include/patchlevel.h>
 THIRD_PARTY_INCLUDES_END
 
