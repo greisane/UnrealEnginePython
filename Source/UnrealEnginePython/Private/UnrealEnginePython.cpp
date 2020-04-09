@@ -288,8 +288,8 @@ namespace
 			UPythonBlueprintFunctionLibrary::ExecutePythonString(cmdString);
 		}
 	}
-
 }
+
 FAutoConsoleCommand ExecPythonScriptCommand(
 	TEXT("py.exec"),
 	*NSLOCTEXT("UnrealEnginePython", "CommandText_Exec", "Execute python script").ToString(),
@@ -300,7 +300,6 @@ FAutoConsoleCommand ExecPythonStringCommand(
 	*NSLOCTEXT("UnrealEnginePython", "CommandText_Cmd", "Execute python string").ToString(),
 	FConsoleCommandWithArgsDelegate::CreateStatic(consoleExecString));
 
-
 void FUnrealEnginePythonModule::StartupModule()
 {
 	BrutalFinalize = false;
@@ -308,9 +307,32 @@ void FUnrealEnginePythonModule::StartupModule()
 	// Save the current locale (should be "C") to restore later. TCharTest::RunTest will fail otherwise
 	FString SavedLocale(setlocale(LC_CTYPE, nullptr));
 
-	// Point sys.path to the embedded python zip. Extraneous python installations are also cleared out
+	// Load python library
 	FString PluginDir = IPluginManager::Get().FindPlugin(TEXT("UnrealEnginePython"))->GetBaseDir();
 	FString PythonDir = FString::Printf(TEXT("Python%d%d"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
+
+	auto LoadDll([](const FString& Path) -> void*
+		{
+			void* Handle = FPlatformProcess::GetDllHandle(*Path);
+			if (Handle == nullptr)
+			{
+				UE_LOG(LogPython, Fatal, TEXT("Failed to load module '%s'."), *Path);
+			}
+			return Handle;
+		});
+
+#if PLATFORM_WINDOWS
+	FString DllFilename = FString::Printf(TEXT("python%d%d.dll"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
+	FString DllPath = PythonDir / TEXT("bin/win64") / DllFilename;
+	PythonHandle = LoadDll(DllPath);
+#endif
+
+	// Manual import of data symbols that would prevent delay loading of python dll
+	ue_Py_None = (PyObject*)FPlatformProcess::GetDllExport(PythonHandle, TEXT("_Py_NoneStruct"));
+	ue_Py_True = (PyObject*)FPlatformProcess::GetDllExport(PythonHandle, TEXT("_Py_TrueStruct"));
+	ue_Py_False = (PyObject*)FPlatformProcess::GetDllExport(PythonHandle, TEXT("_Py_FalseStruct"));
+
+	// Point sys.path to the embedded python zip. Extraneous python installations are also cleared out
 	FString ZipFilename = FString::Printf(TEXT("python%d%d.zip"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
 	FString ZipPath = FPaths::ConvertRelativePathToFull(FPaths::Combine(PluginDir, TEXT("ThirdParty"), PythonDir, ZipFilename));
 #if PY_MAJOR_VERSION >= 3
@@ -549,7 +571,6 @@ FString FUnrealEnginePythonModule::Pep8ize(FString Code)
 	return NewCode;
 }
 
-
 void FUnrealEnginePythonModule::RunFile(char *filename)
 {
 	FScopePythonGIL gil;
@@ -616,7 +637,6 @@ void FUnrealEnginePythonModule::RunFile(char *filename)
 #endif
 
 }
-
 
 void ue_py_register_magic_module(char *name, PyObject *(*func)())
 {

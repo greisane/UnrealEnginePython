@@ -33,6 +33,11 @@
 #include <include/structmember.h>
 #endif
 
+// Manual import of data symbols that would prevent delay loading of python dll
+PyObject* ue_Py_None;
+PyObject* ue_Py_True;
+PyObject* ue_Py_False;
+
 typedef struct
 {
 	PyObject_HEAD
@@ -64,7 +69,6 @@ UNREALENGINEPYTHON_API PyObject *ue_py_register_module(const char *);
 		return -1;\
 	}
 
-
 const char *UEPyUnicode_AsUTF8(PyObject *py_str);
 
 #if PY_MAJOR_VERSION < 3
@@ -95,7 +99,6 @@ struct TStructOpsTypeTraitsBase2 : TStructOpsTypeTraitsBase
 #endif
 
 DECLARE_LOG_CATEGORY_EXTERN(LogPython, Log, All);
-
 
 class UNREALENGINEPYTHON_API FUnrealEnginePythonModule : public IModuleInterface
 {
@@ -144,7 +147,7 @@ public:
 
 private:
 	FString ScriptsPath;
-
+	void* PythonHandle = nullptr;
 	void *ue_python_gil;
 	// used by console
 	void *main_dict;
@@ -156,7 +159,6 @@ private:
 
 struct FScopePythonGIL
 {
-
 	PyGILState_STATE state;
 
 	FScopePythonGIL()
@@ -169,7 +171,3 @@ struct FScopePythonGIL
 		PyGILState_Release(state);
 	}
 };
-
-
-
-

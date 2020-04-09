@@ -123,8 +123,8 @@ public class UnrealEnginePython : ModuleRules
 			string dllFilename = string.Format("python{0}{1}.dll", PythonVersionMajor, PythonVersionMinor);
 			string dllPath = Path.Combine(PythonDir, "bin", "win64", dllFilename);
 			System.Console.WriteLine("Dll path: " + dllPath);
-            //PublicDelayLoadDLLs.Add(dllFilename);
-			RuntimeDependencies.Add(dllPath);
+            PublicDelayLoadDLLs.Add(dllFilename);
+            RuntimeDependencies.Add(dllPath);
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
