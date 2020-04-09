@@ -125,6 +125,7 @@ public class UnrealEnginePython : ModuleRules
 			System.Console.WriteLine("Dll path: " + dllPath);
             PublicDelayLoadDLLs.Add(dllFilename);
             RuntimeDependencies.Add(dllPath);
+			PublicDefinitions.Add("DELAYLOAD_PYTHON_DLL=1");
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Mac)
 		{

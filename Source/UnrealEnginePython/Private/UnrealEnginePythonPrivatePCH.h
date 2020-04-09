@@ -17,18 +17,7 @@
 
 #include "Runtime/Launch/Resources/Version.h"
 
-
-#if defined(UNREAL_ENGINE_PYTHON_ON_MAC)
-#include <Headers/Python.h>
-#include <Headers/structmember.h>
-#elif defined(UNREAL_ENGINE_PYTHON_ON_LINUX)
-#include <Python.h>
-#include <structmember.h>
-#else
-#include <Include/Python.h>
-#include <Include/structmember.h>
-#endif
-
+#include "PythonInterface.h"
 #include "UEPyModule.h"
 
 #include "Wrappers/UEPyESlateEnums.h"

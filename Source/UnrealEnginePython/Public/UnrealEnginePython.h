@@ -7,36 +7,15 @@
 #endif
 
 
-//#define UEPY_MEMORY_DEBUG	1
+//#define UEPY_MEMORY_DEBUG 1
+#define UEPY_OUTPUT_DEBUG 1
 
 #include "CoreMinimal.h"
 #include "Runtime/Core/Public/Modules/ModuleManager.h"
 #include "Runtime/SlateCore/Public/Styling/SlateStyle.h"
 #include "UObject/ScriptMacros.h"
 #include "Runtime/Launch/Resources/Version.h"
-
-#if PLATFORM_MAC
-#include <include/Python.h>
-#include <include/structmember.h>
-#elif PLATFORM_LINUX
-#include <include/Python.h>
-#include <include/structmember.h>
-#elif PLATFORM_ANDROID
-#include <include/Python.h>
-#include <include/structmember.h>
-#elif PLATFORM_WINDOWS
-#include <include/pyconfig.h>
-#ifndef SIZEOF_PID_T
-#define SIZEOF_PID_T 4
-#endif
-#include <include/Python.h>
-#include <include/structmember.h>
-#endif
-
-// Manual import of data symbols that would prevent delay loading of python dll
-PyObject* ue_Py_None;
-PyObject* ue_Py_True;
-PyObject* ue_Py_False;
+#include "PythonInterface.h"
 
 typedef struct
 {
@@ -98,8 +77,6 @@ struct TStructOpsTypeTraitsBase2 : TStructOpsTypeTraitsBase
 };
 #endif
 
-DECLARE_LOG_CATEGORY_EXTERN(LogPython, Log, All);
-
 class UNREALENGINEPYTHON_API FUnrealEnginePythonModule : public IModuleInterface
 {
 public:
@@ -144,6 +121,10 @@ public:
 	FString Pep8ize(FString Code);
 
 	FString GetScriptsPath() { return ScriptsPath; }
+
+	static PyObject* __Py_NoneStruct; /* Don't use this directly */
+	static PyObject* __Py_TrueStruct; /* Don't use this directly */
+	static PyObject* __Py_FalseStruct; /* Don't use this directly */
 
 private:
 	FString ScriptsPath;

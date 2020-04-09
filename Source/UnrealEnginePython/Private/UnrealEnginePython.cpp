@@ -326,11 +326,9 @@ void FUnrealEnginePythonModule::StartupModule()
 	FString DllPath = PythonDir / TEXT("bin/win64") / DllFilename;
 	PythonHandle = LoadDll(DllPath);
 #endif
-
+	
 	// Manual import of data symbols that would prevent delay loading of python dll
-	ue_Py_None = (PyObject*)FPlatformProcess::GetDllExport(PythonHandle, TEXT("_Py_NoneStruct"));
-	ue_Py_True = (PyObject*)FPlatformProcess::GetDllExport(PythonHandle, TEXT("_Py_TrueStruct"));
-	ue_Py_False = (PyObject*)FPlatformProcess::GetDllExport(PythonHandle, TEXT("_Py_FalseStruct"));
+	LoadPythonSymbols(PythonHandle);
 
 	// Point sys.path to the embedded python zip. Extraneous python installations are also cleared out
 	FString ZipFilename = FString::Printf(TEXT("python%d%d.zip"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
@@ -404,7 +402,7 @@ void FUnrealEnginePythonModule::StartupModule()
 #endif
 #endif
 
-#if 1
+#ifdef UEPY_OUTPUT_DEBUG
 	freopen("cout.log", "w", stdout);
 	freopen("cerr.log", "w", stderr);
 	fflush(stdout);
