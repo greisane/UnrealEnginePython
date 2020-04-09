@@ -11,6 +11,6 @@ PyObject * py_ue_run_on_game_thread(PyObject* PyFunction, PyObject* Args)
 		//Call the PyFunction with Args here after acquiring GIL
 	}, TStatId(), nullptr, ENamedThreads::GameThread);
 	
-	return Py_False;
+	return ue_Py_False;
 }
 

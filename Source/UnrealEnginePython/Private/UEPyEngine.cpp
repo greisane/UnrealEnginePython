@@ -95,8 +95,8 @@ PyObject *py_unreal_engine_add_on_screen_debug_message(PyObject * self, PyObject
 
 	if (!GEngine)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	PyObject *stringified = PyObject_Str(py_message);
@@ -659,7 +659,7 @@ PyObject *py_unreal_engine_new_object(PyObject * self, PyObject * args)
 
 	UObject *outer = GetTransientPackage();
 
-	if (py_outer && py_outer != Py_None)
+	if (py_outer && py_outer != ue_Py_None)
 	{
 		outer = ue_py_check_type<UObject>(py_outer);
 		if (!outer)
@@ -720,7 +720,7 @@ PyObject *py_unreal_engine_new_class(PyObject * self, PyObject * args)
 
 	UClass *parent = nullptr;
 
-	if (py_parent != Py_None)
+	if (py_parent != ue_Py_None)
 	{
 		if (!ue_is_pyuobject(py_parent))
 		{
@@ -877,7 +877,7 @@ PyObject* py_unreal_engine_create_and_dispatch_when_ready(PyObject* self, PyObje
 		Py_DECREF(py_callable_s);
 	}, TStatId(), nullptr, ENamedThreads::GameThread);
 
-	Py_INCREF(Py_None);
+	Py_INCREF(ue_Py_None);
 	Py_RETURN_NONE;
 }
 
@@ -943,8 +943,8 @@ PyObject *py_unreal_engine_get_viewport_screenshot(PyObject *self, PyObject * ar
 
 	if (!GEngine->GameViewport)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	PyObject *py_bool = nullptr;
@@ -964,8 +964,8 @@ PyObject *py_unreal_engine_get_viewport_screenshot(PyObject *self, PyObject * ar
 
 	if (!success)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	if (as_int_list)
@@ -995,8 +995,8 @@ PyObject *py_unreal_engine_get_viewport_size(PyObject *self, PyObject * args)
 
 	if (!GEngine->GameViewport)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	FViewport *viewport = GEngine->GameViewport->Viewport;
@@ -1016,8 +1016,8 @@ PyObject *py_unreal_engine_editor_get_active_viewport_screenshot(PyObject *self,
 	FViewport *viewport = GEditor->GetActiveViewport();
 	if (!viewport)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	PyObject *py_bool = nullptr;
@@ -1036,8 +1036,8 @@ PyObject *py_unreal_engine_editor_get_active_viewport_screenshot(PyObject *self,
 
 	if (!success)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	if (as_int_list)
@@ -1069,8 +1069,8 @@ PyObject *py_unreal_engine_editor_get_active_viewport_size(PyObject *self, PyObj
 	FViewport *viewport = GEditor->GetActiveViewport();
 	if (!viewport)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	PyObject *tuple_size = PyTuple_New(2);
@@ -1089,8 +1089,8 @@ PyObject *py_unreal_engine_editor_get_pie_viewport_screenshot(PyObject *self, Py
 	FViewport *viewport = GEditor->GetPIEViewport();
 	if (!viewport)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	PyObject *py_bool = nullptr;
@@ -1109,8 +1109,8 @@ PyObject *py_unreal_engine_editor_get_pie_viewport_screenshot(PyObject *self, Py
 
 	if (!success)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	if (as_int_list)
@@ -1142,8 +1142,8 @@ PyObject *py_unreal_engine_editor_get_pie_viewport_size(PyObject *self, PyObject
 	FViewport *viewport = GEditor->GetPIEViewport();
 	if (!viewport)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	PyObject *tuple_size = PyTuple_New(2);

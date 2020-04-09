@@ -122,7 +122,7 @@ FReply FPythonSlateDelegate::OnMouseEvent(const FGeometry &geometry, const FPoin
 		return FReply::Unhandled();
 	}
 
-	if (ret == Py_False)
+	if (ret == ue_Py_False)
 	{
 		Py_DECREF(ret);
 		return FReply::Unhandled();
@@ -142,7 +142,7 @@ FReply FPythonSlateDelegate::OnKeyDown(const FGeometry &geometry, const FKeyEven
 		return FReply::Unhandled();
 	}
 
-	if (ret == Py_False)
+	if (ret == ue_Py_False)
 	{
 		Py_DECREF(ret);
 		return FReply::Unhandled();
@@ -162,7 +162,7 @@ FReply FPythonSlateDelegate::OnClicked()
 		return FReply::Unhandled();
 	}
 
-	if (ret == Py_False)
+	if (ret == ue_Py_False)
 	{
 		Py_DECREF(ret);
 		return FReply::Unhandled();
@@ -1384,8 +1384,8 @@ PyObject *py_unreal_engine_add_tool_bar_extension(PyObject * self, PyObject * ar
 
 	ExtensibleModule.GetToolBarExtensibilityManager()->AddExtender(extender);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_unreal_engine_add_asset_view_context_menu_extension(PyObject * self, PyObject * args)
@@ -1474,8 +1474,8 @@ PyObject *py_unreal_engine_unregister_nomad_tab_spawner(PyObject * self, PyObjec
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(UTF8_TO_TCHAR(name));
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_unreal_engine_invoke_tab(PyObject * self, PyObject * args)
@@ -1489,8 +1489,8 @@ PyObject *py_unreal_engine_invoke_tab(PyObject * self, PyObject * args)
 
 	FGlobalTabmanager::Get()->InvokeTab(FTabId(FName(UTF8_TO_TCHAR(name))));
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 

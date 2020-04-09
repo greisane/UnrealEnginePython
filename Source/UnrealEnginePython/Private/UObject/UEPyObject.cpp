@@ -245,8 +245,8 @@ PyObject *py_ue_conditional_begin_destroy(ue_PyUObject *self, PyObject * args)
 	ue_py_check(self);
 
 	self->ue_object->ConditionalBeginDestroy();
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_is_valid(ue_PyUObject * self, PyObject * args)
@@ -589,11 +589,11 @@ PyObject *py_ue_has_metadata(ue_PyUObject * self, PyObject * args)
 		UField *u_field = (UField *)self->ue_object;
 		if (u_field->HasMetaData(FName(UTF8_TO_TCHAR(metadata_key))))
 		{
-			Py_INCREF(Py_True);
-			return Py_True;
+			Py_INCREF(ue_Py_True);
+			return ue_Py_True;
 		}
-		Py_INCREF(Py_False);
-		return Py_False;
+		Py_INCREF(ue_Py_False);
+		return ue_Py_False;
 	}
 
 	return PyErr_Format(ue_PyExc_TypeError, "the object does not support MetaData");
@@ -1499,8 +1499,8 @@ PyObject *py_ue_remove_from_root(ue_PyUObject *self, PyObject * args)
 
 	self->ue_object->RemoveFromRoot();
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_bind_event(ue_PyUObject * self, PyObject * args)
@@ -1604,8 +1604,8 @@ PyObject *py_ue_add_function(ue_PyUObject * self, PyObject * args)
 		return PyErr_Format(ue_PyExc_Exception, "unable to add function");
 	}
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 #endif
 

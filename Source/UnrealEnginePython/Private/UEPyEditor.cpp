@@ -336,7 +336,7 @@ PyObject *py_unreal_engine_import_asset(PyObject * self, PyObject * args)
 	UFactory *factory = nullptr;
 	bool sync_to_browser = false;
 
-	if (!obj || obj == Py_None)
+	if (!obj || obj == ue_Py_None)
 	{
 		factory_class = nullptr;
 	}
@@ -1060,8 +1060,8 @@ PyObject *py_unreal_engine_find_plugin(PyObject * self, PyObject * args)
 
 	if (!plugin.IsValid())
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	PyObject *ret = py_ue_new_iplugin(plugin.Get());
@@ -1247,8 +1247,8 @@ PyObject *py_unreal_engine_set_fbx_import_option(PyObject * self, PyObject * arg
 
 	FbxMeshUtils::SetImportOption(ui);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_unreal_engine_create_blueprint(PyObject * self, PyObject * args)
@@ -1263,7 +1263,7 @@ PyObject *py_unreal_engine_create_blueprint(PyObject * self, PyObject * args)
 
 	UClass *parent = UObject::StaticClass();
 
-	if (py_parent != Py_None)
+	if (py_parent != ue_Py_None)
 	{
 		UClass *new_parent = ue_py_check_type<UClass>(py_parent);
 		if (!new_parent)
@@ -1776,8 +1776,8 @@ PyObject *py_unreal_engine_blueprint_mark_as_structurally_modified(PyObject * se
 
 	FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(bp);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_unreal_engine_blueprint_add_ubergraph_page(PyObject * self, PyObject * args)

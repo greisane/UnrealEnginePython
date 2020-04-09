@@ -26,8 +26,8 @@ PyObject *py_ue_controller_posses(ue_PyUObject * self, PyObject * args)
 
 	controller->Possess(pawn);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_controller_get_hud(ue_PyUObject * self, PyObject * args)

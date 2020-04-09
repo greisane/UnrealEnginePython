@@ -195,8 +195,8 @@ PyObject *py_ue_attach_to_actor(ue_PyUObject * self, PyObject * args)
 
 	actor->AttachToActor(other, FAttachmentTransformRules((EAttachmentRule)location_rule, (EAttachmentRule)rotation_rule, (EAttachmentRule)scale_rule, weld), UTF8_TO_TCHAR(socket_name));
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 
 }
 
@@ -236,7 +236,7 @@ PyObject *py_ue_attach_to_component(ue_PyUObject * self, PyObject * args)
 
 	actor->AttachToComponent(other, FAttachmentTransformRules((EAttachmentRule)location_rule, (EAttachmentRule)rotation_rule, (EAttachmentRule)scale_rule, weld), UTF8_TO_TCHAR(socket_name));
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 
 }

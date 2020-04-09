@@ -183,8 +183,8 @@ PyObject *py_ue_add_movement_input(ue_PyUObject *self, PyObject * args)
 
 	pawn->AddMovementInput(movement->vec, scale, force);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_get_control_rotation(ue_PyUObject *self, PyObject * args)
@@ -247,8 +247,8 @@ PyObject *py_ue_jump(ue_PyUObject *self, PyObject * args)
 
 	character->Jump();
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_crouch(ue_PyUObject *self, PyObject * args)
@@ -280,8 +280,8 @@ PyObject *py_ue_crouch(ue_PyUObject *self, PyObject * args)
 
 	character->Crouch();
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_stop_jumping(ue_PyUObject *self, PyObject * args)
@@ -313,8 +313,8 @@ PyObject *py_ue_stop_jumping(ue_PyUObject *self, PyObject * args)
 
 	character->StopJumping();
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_uncrouch(ue_PyUObject *self, PyObject * args)
@@ -346,8 +346,8 @@ PyObject *py_ue_uncrouch(ue_PyUObject *self, PyObject * args)
 
 	character->UnCrouch();
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 
@@ -405,8 +405,8 @@ PyObject *py_ue_launch(ue_PyUObject *self, PyObject * args)
 
 	character->LaunchCharacter(force->vec, xy_override, z_override);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_INCREF(ue_Py_None);
+	return ue_Py_None;
 }
 
 PyObject *py_ue_is_jumping(ue_PyUObject *self, PyObject * args)
@@ -438,12 +438,12 @@ PyObject *py_ue_is_jumping(ue_PyUObject *self, PyObject * args)
 
 	if (character->IsJumpProvidingForce())
 	{
-		Py_INCREF(Py_True);
-		return Py_True;
+		Py_INCREF(ue_Py_True);
+		return ue_Py_True;
 	}
 
-	Py_INCREF(Py_False);
-	return Py_False;
+	Py_INCREF(ue_Py_False);
+	return ue_Py_False;
 }
 
 PyObject *py_ue_is_crouched(ue_PyUObject *self, PyObject * args)
@@ -475,12 +475,12 @@ PyObject *py_ue_is_crouched(ue_PyUObject *self, PyObject * args)
 
 	if (character->bIsCrouched)
 	{
-		Py_INCREF(Py_True);
-		return Py_True;
+		Py_INCREF(ue_Py_True);
+		return ue_Py_True;
 	}
 
-	Py_INCREF(Py_False);
-	return Py_False;
+	Py_INCREF(ue_Py_False);
+	return ue_Py_False;
 }
 
 PyObject *py_ue_is_falling(ue_PyUObject *self, PyObject * args)
@@ -516,13 +516,13 @@ PyObject *py_ue_is_falling(ue_PyUObject *self, PyObject * args)
 		UCharacterMovementComponent *character_movement = (UCharacterMovementComponent *)movement;
 		if (character_movement->IsFalling())
 		{
-			Py_INCREF(Py_True);
-			return Py_True;
+			Py_INCREF(ue_Py_True);
+			return ue_Py_True;
 		}
 	}
 
-	Py_INCREF(Py_False);
-	return Py_False;
+	Py_INCREF(ue_Py_False);
+	return ue_Py_False;
 }
 
 PyObject *py_ue_is_flying(ue_PyUObject *self, PyObject * args)
@@ -558,13 +558,13 @@ PyObject *py_ue_is_flying(ue_PyUObject *self, PyObject * args)
 		UCharacterMovementComponent *character_movement = (UCharacterMovementComponent *)movement;
 		if (character_movement->IsFlying())
 		{
-			Py_INCREF(Py_True);
-			return Py_True;
+			Py_INCREF(ue_Py_True);
+			return ue_Py_True;
 		}
 	}
 
-	Py_INCREF(Py_False);
-	return Py_False;
+	Py_INCREF(ue_Py_False);
+	return ue_Py_False;
 }
 
 PyObject *py_ue_can_jump(ue_PyUObject *self, PyObject * args)
@@ -596,12 +596,12 @@ PyObject *py_ue_can_jump(ue_PyUObject *self, PyObject * args)
 
 	if (character->CanJump())
 	{
-		Py_INCREF(Py_True);
-		return Py_True;
+		Py_INCREF(ue_Py_True);
+		return ue_Py_True;
 	}
 
-	Py_INCREF(Py_False);
-	return Py_False;
+	Py_INCREF(ue_Py_False);
+	return ue_Py_False;
 }
 
 PyObject *py_ue_can_crouch(ue_PyUObject *self, PyObject * args)
@@ -633,10 +633,10 @@ PyObject *py_ue_can_crouch(ue_PyUObject *self, PyObject * args)
 
 	if (character->CanCrouch())
 	{
-		Py_INCREF(Py_True);
-		return Py_True;
+		Py_INCREF(ue_Py_True);
+		return ue_Py_True;
 	}
 
-	Py_INCREF(Py_False);
-	return Py_False;
+	Py_INCREF(ue_Py_False);
+	return ue_Py_False;
 }

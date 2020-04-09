@@ -122,10 +122,6 @@ public:
 
 	FString GetScriptsPath() { return ScriptsPath; }
 
-	static PyObject* __Py_NoneStruct; /* Don't use this directly */
-	static PyObject* __Py_TrueStruct; /* Don't use this directly */
-	static PyObject* __Py_FalseStruct; /* Don't use this directly */
-
 private:
 	FString ScriptsPath;
 	void* PythonHandle = nullptr;

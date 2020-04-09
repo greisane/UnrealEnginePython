@@ -95,11 +95,11 @@ static PyObject *py_ue_fslowtask_received_user_cancel(ue_PyFSlowTask *self, PyOb
 {
 	if(GWarn->ReceivedUserCancel())
 	{
-		Py_INCREF(Py_True);
-		return Py_True;
+		Py_INCREF(ue_Py_True);
+		return ue_Py_True;
 	}
-	Py_INCREF(Py_False);
-	return Py_False;
+	Py_INCREF(ue_Py_False);
+	return ue_Py_False;
 }
 
 static PyMethodDef ue_PyFSlowTask_methods[] = {

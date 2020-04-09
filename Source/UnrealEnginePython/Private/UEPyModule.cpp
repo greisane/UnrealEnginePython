@@ -1410,7 +1410,7 @@ static PyObject* ue_PyUObject_call(ue_PyUObject* self, PyObject* args, PyObject*
 			return PyErr_Format(ue_PyExc_Exception, "you cannot use __call__ on actors, they have to be spawned");
 		}
 		PyObject* py_name = nullptr;
-		PyObject* py_outer = Py_None;
+		PyObject* py_outer = ue_Py_None;
 		if (!PyArg_ParseTuple(args, "|OO:new_object", &py_name, &py_outer))
 		{
 			return NULL;
@@ -2718,7 +2718,7 @@ bool ue_py_convert_pyobject(PyObject* py_obj, UProperty* prop, uint8* buffer, in
 		return false;
 	}
 
-	if (py_obj == Py_None)
+	if (py_obj == ue_Py_None)
 	{
 		auto casted_prop_class = Cast<UClassProperty>(prop);
 		if (casted_prop_class)

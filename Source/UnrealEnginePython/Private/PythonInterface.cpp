@@ -61,7 +61,6 @@ bool _Bytes_Check(PyObject* op) { return op->ob_type == _Bytes_Type(); }
 
 #if DELAYLOAD_PYTHON_DLL
 
-#if PLATFORM_WINDOWS
 static PyObject* ptr__Exc_ArithmeticError = nullptr;
 static PyObject* ptr__Exc_AssertionError = nullptr;
 static PyObject* ptr__Exc_AttributeError = nullptr;
@@ -385,10 +384,6 @@ void ue_Py_XDECREF(void* op)
 
 
 #else
-#error "Can only delay load under Win32"
-#endif
-
-#else
 
 //================================================================================
 //
@@ -436,7 +431,7 @@ PyObject* _Exc_UnicodeError() { return ::PyExc_UnicodeError; }
 //
 //    wrap items in Object.h
 //
-PyObject* _None() { return &::_Py_NoneStruct; }
+PyObject* _None() { return &::Py_None; }
 
 PyObject* _False() { return Py_False; }
 PyObject* _True() { return Py_True; }

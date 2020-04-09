@@ -29,8 +29,8 @@ PyObject *py_ue_get_anim_instance(ue_PyUObject *self, PyObject * args)
 	UAnimInstance *anim = skeletal->GetAnimInstance();
 	if (!anim)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_INCREF(ue_Py_None);
+		return ue_Py_None;
 	}
 
 	Py_RETURN_UOBJECT((UObject *)anim);
