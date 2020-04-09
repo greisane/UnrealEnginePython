@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class UnrealEnginePython : ModuleRules
 {
 	public static readonly int PythonVersionMajor = 3;
-	public static readonly int PythonVersionMinor = 8;
+	public static readonly int PythonVersionMinor = 7;
 
 	public static string PythonRelativeDir
 	{
@@ -140,7 +140,13 @@ public class UnrealEnginePython : ModuleRules
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Linux)
 		{
-			string dllFilename = string.Format("libpython{0}.{1}.so", PythonVersionMajor, PythonVersionMinor);
+			string libFilename = string.Format("libpython{0}{1}.a", PythonVersionMajor, PythonVersionMinor);
+			string libPath = Path.Combine(PythonDir, "libs", libFilename);
+			System.Console.WriteLine("Lib path: " + libPath);
+			PublicSystemLibraryPaths.Add(Path.GetDirectoryName(libPath));
+			PublicAdditionalLibraries.Add(libPath);
+
+			string dllFilename = string.Format("libpython{0}{1}.so", PythonVersionMajor, PythonVersionMinor);
 			string dllPath = Path.Combine(PythonDir, "bin", "linux", dllFilename);
 			System.Console.WriteLine("Dll path: " + dllPath);
 			PublicAdditionalLibraries.Add(dllPath);
