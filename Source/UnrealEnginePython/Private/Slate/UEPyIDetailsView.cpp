@@ -29,7 +29,7 @@ static PyObject *py_ue_idetails_view_set_object(ue_PyIDetailsView *self, PyObjec
 	UObject *u_object = ue_py_check_type<UObject>(py_in_obj);
 	if (!u_object)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
 	}
 
 	const bool bForceRefresh = py_force_refresh && PyObject_IsTrue(py_force_refresh);

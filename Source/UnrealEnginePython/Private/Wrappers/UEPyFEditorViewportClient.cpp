@@ -75,7 +75,7 @@ static PyObject *py_ue_feditor_viewport_client_set_look_at_location(ue_PyFEditor
 {
 	FVector vec;
 	if (!py_ue_vector_arg(args, vec))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
 	self->editor_viewport_client->SetLookAtLocation(vec);
 	Py_RETURN_NONE;
 }
@@ -84,7 +84,7 @@ static PyObject *py_ue_feditor_viewport_client_set_view_location(ue_PyFEditorVie
 {
 	FVector vec;
 	if (!py_ue_vector_arg(args, vec))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
 	self->editor_viewport_client->SetViewLocation(vec);
 	Py_RETURN_NONE;
 }
@@ -93,7 +93,7 @@ static PyObject *py_ue_feditor_viewport_client_set_view_rotation(ue_PyFEditorVie
 {
 	FRotator rot;
 	if (!py_ue_rotator_arg(args, rot))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FRotator");
+		return PyErr_Format(PyExc_Exception, "argument is not a FRotator");
 	self->editor_viewport_client->SetViewRotation(rot);
 	Py_RETURN_NONE;
 }

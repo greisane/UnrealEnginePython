@@ -13,7 +13,7 @@ static PyObject *py_ue_simage_set_brush(ue_PySImage *self, PyObject * args)
 
 	FSlateBrush *brush = ue_py_check_struct<FSlateBrush>(py_brush);
 	if (!brush)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FSlateBrush");
+		return PyErr_Format(PyExc_Exception, "argument is not a FSlateBrush");
 
 	self->brush = *brush;
 
@@ -34,7 +34,7 @@ static PyObject *py_ue_simage_set_texture(ue_PySImage *self, PyObject * args)
 
 	UTexture2D *texture = ue_py_check_type<UTexture2D>(py_texture);
 	if (!texture)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a Texture");
+		return PyErr_Format(PyExc_Exception, "argument is not a Texture");
 
 	FLinearColor tint(1, 1, 1, 1);
 
@@ -43,7 +43,7 @@ static PyObject *py_ue_simage_set_texture(ue_PySImage *self, PyObject * args)
 		ue_PyFLinearColor *py_color = py_ue_is_flinearcolor(py_linear_color);
 		if (!py_color)
 		{
-			return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor");
+			return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor");
 		}
 		tint = py_color->color;
 	}

@@ -14,7 +14,7 @@ static PyObject *py_ue_uscriptstruct_get_field(ue_PyUScriptStruct *self, PyObjec
 
 	UProperty *u_property = self->u_struct->FindPropertyByName(FName(UTF8_TO_TCHAR(name)));
 	if (!u_property)
-		return PyErr_Format(ue_PyExc_Exception, "unable to find property %s", name);
+		return PyErr_Format(PyExc_Exception, "unable to find property %s", name);
 
 	return ue_py_convert_property(u_property, self->u_struct_ptr, index);
 }
@@ -29,7 +29,7 @@ static PyObject *py_ue_uscriptstruct_get_field_array_dim(ue_PyUScriptStruct *sel
 
 	UProperty *u_property = self->u_struct->FindPropertyByName(FName(UTF8_TO_TCHAR(name)));
 	if (!u_property)
-		return PyErr_Format(ue_PyExc_Exception, "unable to find property %s", name);
+		return PyErr_Format(PyExc_Exception, "unable to find property %s", name);
 
 	return PyLong_FromLongLong(u_property->ArrayDim);
 }
@@ -46,12 +46,12 @@ static PyObject *py_ue_uscriptstruct_set_field(ue_PyUScriptStruct *self, PyObjec
 
 	UProperty *u_property = self->u_struct->FindPropertyByName(FName(UTF8_TO_TCHAR(name)));
 	if (!u_property)
-		return PyErr_Format(ue_PyExc_Exception, "unable to find property %s", name);
+		return PyErr_Format(PyExc_Exception, "unable to find property %s", name);
 
 
 	if (!ue_py_convert_pyobject(value, u_property, self->u_struct_ptr, index))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "unable to set property %s", name);
+		return PyErr_Format(PyExc_Exception, "unable to set property %s", name);
 	}
 
 	Py_RETURN_NONE;
@@ -211,7 +211,7 @@ static int ue_PyUScriptStruct_setattro(ue_PyUScriptStruct *self, PyObject *attr_
 			{
 				return 0;
 			}
-			PyErr_SetString(ue_PyExc_ValueError, "invalid value for UProperty");
+			PyErr_SetString(PyExc_ValueError, "invalid value for UProperty");
 			return -1;
 		}
 	}
@@ -274,14 +274,14 @@ static int ue_py_uscriptstruct_init(ue_PyUScriptStruct *self, PyObject *args, Py
 
 	if (!ue_is_pyuobject(py_struct))
 	{
-		PyErr_SetString(ue_PyExc_Exception, "argument is not a UScriptStruct");
+		PyErr_SetString(PyExc_Exception, "argument is not a UScriptStruct");
 		return -1;
 	}
 
 	ue_PyUObject *py_u_obj = (ue_PyUObject *)py_struct;
 	if (!py_u_obj->ue_object->IsA<UScriptStruct>())
 	{
-		PyErr_SetString(ue_PyExc_Exception, "argument is not a UScriptStruct");
+		PyErr_SetString(PyExc_Exception, "argument is not a UScriptStruct");
 		return -1;
 	}
 
@@ -308,7 +308,7 @@ static PyObject *ue_py_uscriptstruct_richcompare(ue_PyUScriptStruct *u_struct1, 
 	ue_PyUScriptStruct *u_struct2 = py_ue_is_uscriptstruct(py_obj);
 	if (!u_struct2 || (op != Py_EQ && op != Py_NE))
 	{
-		return PyErr_Format(ue_PyExc_NotImplementedError, "can only compare with another UScriptStruct");
+		return PyErr_Format(PyExc_NotImplementedError, "can only compare with another UScriptStruct");
 	}
 
 	bool equals = (u_struct1->u_struct == u_struct2->u_struct && !memcmp(u_struct1->u_struct_ptr, u_struct2->u_struct_ptr, u_struct1->u_struct->GetStructureSize()));

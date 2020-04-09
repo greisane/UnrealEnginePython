@@ -15,7 +15,7 @@ static int py_ue_fsoft_skin_vertex_set_color(ue_PyFSoftSkinVertex *self, PyObjec
 		self->ss_vertex.Color = py_color->color;
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not a FColor");
+	PyErr_SetString(PyExc_TypeError, "value is not a FColor");
 	return -1;
 }
 
@@ -32,7 +32,7 @@ static int py_ue_fsoft_skin_vertex_set_position(ue_PyFSoftSkinVertex *self, PyOb
 		self->ss_vertex.Position = py_vec->vec;
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not a FVector");
+	PyErr_SetString(PyExc_TypeError, "value is not a FVector");
 	return -1;
 }
 
@@ -49,7 +49,7 @@ static int py_ue_fsoft_skin_vertex_set_tangent_x(ue_PyFSoftSkinVertex *self, PyO
 		self->ss_vertex.TangentX = py_vec->vec;
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not a FVector");
+	PyErr_SetString(PyExc_TypeError, "value is not a FVector");
 	return -1;
 }
 
@@ -66,7 +66,7 @@ static int py_ue_fsoft_skin_vertex_set_tangent_y(ue_PyFSoftSkinVertex *self, PyO
 		self->ss_vertex.TangentY = py_vec->vec;
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not a FVector");
+	PyErr_SetString(PyExc_TypeError, "value is not a FVector");
 	return -1;
 }
 
@@ -83,7 +83,7 @@ static int py_ue_fsoft_skin_vertex_set_tangent_z(ue_PyFSoftSkinVertex *self, PyO
 		self->ss_vertex.TangentZ = py_vec->vec;
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not a FVector");
+	PyErr_SetString(PyExc_TypeError, "value is not a FVector");
 	return -1;
 }
 
@@ -104,7 +104,7 @@ static int py_ue_fsoft_skin_vertex_set_influence_bones(ue_PyFSoftSkinVertex *sel
 			if (!PyNumber_Check(py_item))
 			{
 				Py_DECREF(py_iter);
-				PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of numbers");
+				PyErr_SetString(PyExc_TypeError, "value is not an iterable of numbers");
 				return -1;
 			}
 			PyObject *py_num = PyNumber_Long(py_item);
@@ -118,7 +118,7 @@ static int py_ue_fsoft_skin_vertex_set_influence_bones(ue_PyFSoftSkinVertex *sel
 		Py_DECREF(py_iter);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of numbers");
+	PyErr_SetString(PyExc_TypeError, "value is not an iterable of numbers");
 	return -1;
 }
 
@@ -139,7 +139,7 @@ static int py_ue_fsoft_skin_vertex_set_influence_weights(ue_PyFSoftSkinVertex *s
 			if (!PyNumber_Check(py_item))
 			{
 				Py_DECREF(py_iter);
-				PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of numbers");
+				PyErr_SetString(PyExc_TypeError, "value is not an iterable of numbers");
 				return -1;
 			}
 			PyObject *py_num = PyNumber_Long(py_item);
@@ -153,7 +153,7 @@ static int py_ue_fsoft_skin_vertex_set_influence_weights(ue_PyFSoftSkinVertex *s
 		Py_DECREF(py_iter);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of numbers");
+	PyErr_SetString(PyExc_TypeError, "value is not an iterable of numbers");
 	return -1;
 }
 
@@ -179,14 +179,14 @@ static int py_ue_fsoft_skin_vertex_set_uvs(ue_PyFSoftSkinVertex *self, PyObject 
 			if (!PyTuple_Check(py_item))
 			{
 				Py_DECREF(py_iter);
-				PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of 2-members tuples");
+				PyErr_SetString(PyExc_TypeError, "value is not an iterable of 2-members tuples");
 				return -1;
 			}
 
 			if (PyTuple_Size(py_item) != 2)
 			{
 				Py_DECREF(py_iter);
-				PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of 2-members tuples");
+				PyErr_SetString(PyExc_TypeError, "value is not an iterable of 2-members tuples");
 				return -1;
 			}
 
@@ -196,7 +196,7 @@ static int py_ue_fsoft_skin_vertex_set_uvs(ue_PyFSoftSkinVertex *self, PyObject 
 			if (!PyNumber_Check(py_x))
 			{
 				Py_DECREF(py_iter);
-				PyErr_SetString(ue_PyExc_TypeError, "tuple item is not a number");
+				PyErr_SetString(PyExc_TypeError, "tuple item is not a number");
 				return -1;
 			}
 			PyObject *py_num = PyNumber_Float(py_x);
@@ -206,7 +206,7 @@ static int py_ue_fsoft_skin_vertex_set_uvs(ue_PyFSoftSkinVertex *self, PyObject 
 			if (!PyNumber_Check(py_y))
 			{
 				Py_DECREF(py_iter);
-				PyErr_SetString(ue_PyExc_TypeError, "tuple item is not a number");
+				PyErr_SetString(PyExc_TypeError, "tuple item is not a number");
 				return -1;
 			}
 			py_num = PyNumber_Float(py_y);
@@ -221,7 +221,7 @@ static int py_ue_fsoft_skin_vertex_set_uvs(ue_PyFSoftSkinVertex *self, PyObject 
 		Py_DECREF(py_iter);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of numbers");
+	PyErr_SetString(PyExc_TypeError, "value is not an iterable of numbers");
 	return -1;
 }
 
@@ -235,7 +235,7 @@ static int py_ue_fsoft_skin_vertex_set_material_index(ue_PyFSoftSkinVertex *self
 		Py_DECREF(py_num);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not a number");
+	PyErr_SetString(PyExc_TypeError, "value is not a number");
 	return -1;
 }
 
@@ -254,7 +254,7 @@ static int py_ue_fsoft_skin_vertex_set_smoothing_group(ue_PyFSoftSkinVertex *sel
 		Py_DECREF(py_num);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not a number");
+	PyErr_SetString(PyExc_TypeError, "value is not a number");
 	return -1;
 }
 

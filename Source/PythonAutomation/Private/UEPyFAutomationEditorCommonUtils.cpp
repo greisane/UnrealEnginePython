@@ -73,7 +73,7 @@ static PyTypeObject ue_PyFAutomationEditorCommonUtilsType = {
 
 static int py_ue_fautomation_editor_common_utils_init(ue_PyFAutomationEditorCommonUtils *self, PyObject * args)
 {
-	PyErr_SetString(ue_PyExc_Exception, "FAutomationEditorCommonUtils is a singleton");
+	PyErr_SetString(PyExc_Exception, "FAutomationEditorCommonUtils is a singleton");
 	return -1;
 }
 

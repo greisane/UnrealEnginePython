@@ -177,7 +177,7 @@ void APyActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 			unreal_engine_py_log_error();
 		}
 
-		ue_Py_XDECREF(ep_ret);
+		Py_XDECREF(ep_ret);
 	}
 
 
@@ -287,13 +287,13 @@ APyActor::~APyActor()
 {
 	FScopePythonGIL gil;
 
-	ue_Py_XDECREF(py_actor_instance);
+	Py_XDECREF(py_actor_instance);
 
 #if defined(UEPY_MEMORY_DEBUG)
 	UE_LOG(LogPython, Warning, TEXT("Python AActor %p (mapped to %p) wrapper XDECREF'ed"), this, py_uobject ? py_uobject->py_proxy : nullptr);
 #endif
 
-	ue_Py_XDECREF(py_uobject);
+	Py_XDECREF(py_uobject);
 	FUnrealEnginePythonHouseKeeper::Get()->UnregisterPyUObject(this);
 
 

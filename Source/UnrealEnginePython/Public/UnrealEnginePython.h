@@ -6,9 +6,9 @@
 #pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
 #endif
 
-//#define UEPY_MEMORY_DEBUG	1
-#define UEPY_INITIALIZE_DEBUG 1
-#define UEPY_THREADING 1
+
+//#define UEPY_MEMORY_DEBUG 1
+#define UEPY_OUTPUT_DEBUG 1
 
 #include "CoreMinimal.h"
 #include "Runtime/Core/Public/Modules/ModuleManager.h"
@@ -40,11 +40,11 @@ UNREALENGINEPYTHON_API PyObject *ue_py_register_module(const char *);
 #endif
 
 #define ue_py_check(py_u) if (!FUnrealEnginePythonHouseKeeper::Get()->IsValidPyUObject(py_u))\
-	return PyErr_Format(ue_PyExc_Exception, "PyUObject is in invalid state")
+	return PyErr_Format(PyExc_Exception, "PyUObject is in invalid state")
 
 #define ue_py_check_int(py_u) if (!FUnrealEnginePythonHouseKeeper::Get()->IsValidPyUObject(py_u))\
 	{\
-		PyErr_SetString(ue_PyExc_Exception, "PyUObject is in invalid state");\
+		PyErr_SetString(PyExc_Exception, "PyUObject is in invalid state");\
 		return -1;\
 	}
 
@@ -61,12 +61,12 @@ UNREALENGINEPYTHON_API ue_PyUObject *ue_get_python_uobject_inc(UObject *);
 
 #define Py_RETURN_UOBJECT(py_uobj) ue_PyUObject *ret = ue_get_python_uobject_inc(py_uobj);\
 	if (!ret)\
-		return PyErr_Format(ue_PyExc_Exception, "uobject is in invalid state");\
+		return PyErr_Format(PyExc_Exception, "uobject is in invalid state");\
 	return (PyObject *)ret;
 
 #define Py_RETURN_UOBJECT_NOINC(py_uobj) ue_PyUObject *ret = ue_get_python_uobject(py_uobj);\
 	if (!ret)\
-		return PyErr_Format(ue_PyExc_Exception, "uobject is in invalid state");\
+		return PyErr_Format(PyExc_Exception, "uobject is in invalid state");\
 	return (PyObject *)ret;
 
 #if ENGINE_MINOR_VERSION < 16

@@ -26,13 +26,13 @@ static PyObject *py_ue_fassetdata_get_thumbnail(ue_PyFAssetData *self, PyObject 
 
 	if (!ThumbnailTools::ConditionallyLoadThumbnailsForObjects(names, map))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "Unable to retrieve thumbnail from FAssetData");
+		return PyErr_Format(PyExc_Exception, "Unable to retrieve thumbnail from FAssetData");
 	}
 
 	FObjectThumbnail *thumbnail = map.Find(name);
 	if (!thumbnail)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "Unable to retrieve thumbnail from FAssetData");
+		return PyErr_Format(PyExc_Exception, "Unable to retrieve thumbnail from FAssetData");
 	}
 
 	return py_ue_new_fobject_thumbnail(*thumbnail);

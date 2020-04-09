@@ -173,7 +173,7 @@ static int py_ue_fbx_mesh_init(ue_PyFbxMesh *self, PyObject * args)
 	ue_PyFbxManager *py_fbx_manager = py_ue_is_fbx_manager(py_object);
 	if (!py_fbx_manager)
 	{
-		PyErr_SetString(ue_PyExc_Exception, "argument is not a FbxManager");
+		PyErr_SetString(PyExc_Exception, "argument is not a FbxManager");
 		return -1;
 	}
 

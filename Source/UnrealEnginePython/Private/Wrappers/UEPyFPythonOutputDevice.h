@@ -20,7 +20,7 @@ public:
 		{
 			GLog->RemoveOutputDevice(this);
 		}
-		ue_Py_XDECREF(py_serialize);
+		Py_XDECREF(py_serialize);
 	}
 
 	void SetPySerialize(PyObject *py_callable)
@@ -39,7 +39,7 @@ protected:
 		{
 			unreal_engine_py_log_error();
 		}
-		ue_Py_XDECREF(ret);
+		Py_XDECREF(ret);
 	}
 
 private:

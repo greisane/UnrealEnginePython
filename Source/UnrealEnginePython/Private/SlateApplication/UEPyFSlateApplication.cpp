@@ -118,7 +118,7 @@ static PyObject *py_ue_process_key_down_event(PyObject *cls, PyObject * args)
 		ue_PyFKeyEvent *py_fkey_event = py_ue_is_fkey_event(py_event);
 		if (!py_fkey_event)
 		{
-			return PyErr_Format(ue_PyExc_Exception, "argument is not a FKeyEvent");
+			return PyErr_Format(PyExc_Exception, "argument is not a FKeyEvent");
 		}
 		InKeyEvent = &py_fkey_event->key_event;
 	}
@@ -143,7 +143,7 @@ static PyObject *py_ue_process_key_char_event(PyObject *cls, PyObject * args)
 		ue_PyFCharacterEvent *py_fchar_event = py_ue_is_fcharacter_event(py_event);
 		if (!py_fchar_event)
 		{
-			return PyErr_Format(ue_PyExc_Exception, "argument is not a FCharacterEvent");
+			return PyErr_Format(PyExc_Exception, "argument is not a FCharacterEvent");
 		}
 		InCharEvent = &py_fchar_event->character_event;
 	}
@@ -177,7 +177,7 @@ static PyObject *py_ue_get_active_top_level_window(PyObject *cls, PyObject * arg
 
 	TSharedPtr<SWindow> Window = FSlateApplication::Get().GetActiveTopLevelWindow();
 	if (!Window.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "no active TopLevel Window found");
+		return PyErr_Format(PyExc_Exception, "no active TopLevel Window found");
 
 	return (PyObject *)py_ue_new_swindow(Window.ToSharedRef());
 }
@@ -236,7 +236,7 @@ static PyTypeObject ue_PyFSlateApplicationType = {
 
 static int py_ue_fslate_application_init(ue_PyFSlateApplication *self, PyObject * args)
 {
-	PyErr_SetString(ue_PyExc_Exception, "FSlateApplication is a singleton");
+	PyErr_SetString(PyExc_Exception, "FSlateApplication is a singleton");
 	return -1;
 }
 

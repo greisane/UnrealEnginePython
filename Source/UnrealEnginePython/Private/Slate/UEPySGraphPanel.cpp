@@ -35,7 +35,7 @@ static PyObject *py_ue_sgraph_panel_add_slot(ue_PySGraphPanel* self, PyObject *a
 	ue_PySWidget *py_swidget = py_ue_is_swidget(py_content);
 	if (!py_swidget)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a SWidget");
+		return PyErr_Format(PyExc_Exception, "argument is not a SWidget");
 	}
 
 	Py_INCREF(py_swidget);
@@ -53,7 +53,7 @@ static PyObject *py_ue_sgraph_panel_add_slot(ue_PySGraphPanel* self, PyObject *a
 			FMargin margin;
 			if (!PyArg_ParseTuple(padding, "f|fff", &margin.Left, &margin.Top, &margin.Right, &margin.Bottom))
 			{
-				return PyErr_Format(ue_PyExc_Exception, "invalid padding value");
+				return PyErr_Format(PyExc_Exception, "invalid padding value");
 			}
 			fslot.Padding(margin);
 		}
@@ -65,7 +65,7 @@ static PyObject *py_ue_sgraph_panel_add_slot(ue_PySGraphPanel* self, PyObject *a
 		}
 		else
 		{
-			return PyErr_Format(ue_PyExc_Exception, "invalid padding value");
+			return PyErr_Format(PyExc_Exception, "invalid padding value");
 		}
 	}
 	fslot.VAlign((EVerticalAlignment)v_align);

@@ -76,7 +76,7 @@ static int ue_py_spython_shelf_init(ue_PySPythonShelf *self, PyObject *args, PyO
 		py_classes_iterable = PyObject_GetIter(py_classes_iterable);
 		if (!py_classes_iterable)
 		{
-			PyErr_SetString(ue_PyExc_Exception, "argument is not an iterable");
+			PyErr_SetString(PyExc_Exception, "argument is not an iterable");
 			return -1;
 		}
 	}
@@ -86,26 +86,26 @@ static int ue_py_spython_shelf_init(ue_PySPythonShelf *self, PyObject *args, PyO
 		py_collections_iterable = PyObject_GetIter(py_collections_iterable);
 		if (!py_collections_iterable)
 		{
-			PyErr_SetString(ue_PyExc_Exception, "argument is not an iterable");
+			PyErr_SetString(PyExc_Exception, "argument is not an iterable");
 			return -1;
 		}
 	}
 
 	if (py_callable_double_clicked && !PyCallable_Check(py_callable_double_clicked))
 	{
-		PyErr_SetString(ue_PyExc_Exception, "argument is not callable");
+		PyErr_SetString(PyExc_Exception, "argument is not callable");
 		return -1;
 	}
 
 	if (py_callable_get_context_menu && !PyCallable_Check(py_callable_get_context_menu))
 	{
-		PyErr_SetString(ue_PyExc_Exception, "argument is not callable");
+		PyErr_SetString(PyExc_Exception, "argument is not callable");
 		return -1;
 	}
 
 	if (py_callable_asset_selected && !PyCallable_Check(py_callable_asset_selected))
 	{
-		PyErr_SetString(ue_PyExc_Exception, "argument is not callable");
+		PyErr_SetString(PyExc_Exception, "argument is not callable");
 		return -1;
 	}
 

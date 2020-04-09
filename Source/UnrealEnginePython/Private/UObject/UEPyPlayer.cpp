@@ -20,11 +20,11 @@ PyObject *py_ue_get_player_controller(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	Py_RETURN_UOBJECT(controller);
 }
@@ -42,11 +42,11 @@ PyObject *py_ue_get_player_camera_manager(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerCameraManager *camera = UGameplayStatics::GetPlayerCameraManager(world, controller_id);
 	if (!camera)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve camera manager for controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve camera manager for controller %d", controller_id);
 
 	Py_RETURN_UOBJECT(camera);
 }
@@ -64,11 +64,11 @@ PyObject *py_ue_get_player_hud(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	Py_RETURN_UOBJECT(controller->GetHUD());
 }
@@ -87,15 +87,15 @@ PyObject *py_ue_set_player_hud(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	AHUD *hud = ue_py_check_type<AHUD>(py_hud);
 	if (!hud)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a AHUD");
+		return PyErr_Format(PyExc_Exception, "argument is not a AHUD");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	controller->MyHUD = hud;
 
@@ -115,11 +115,11 @@ PyObject *py_ue_get_player_pawn(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	// the controller could not have a pawn
 	if (!controller->GetPawn())
@@ -149,11 +149,11 @@ PyObject *py_ue_create_player(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::CreatePlayer(world, controller_id, b_spawn_pawn);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to create a new player from controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to create a new player from controller %d", controller_id);
 
 	return PyLong_FromLong(controller->PlayerState->PlayerId);
 }
@@ -165,14 +165,14 @@ PyObject *py_ue_get_num_players(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 #if ENGINE_MINOR_VERSION < 14
 	AGameMode *game_mode = world->GetAuthGameMode();
 #else
 	AGameModeBase *game_mode = world->GetAuthGameMode();
 #endif
 	if (!game_mode)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve GameMode from world");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve GameMode from world");
 #if ENGINE_MINOR_VERSION < 14
 	return PyLong_FromLong(game_mode->NumPlayers);
 #else
@@ -187,14 +187,14 @@ PyObject *py_ue_get_num_spectators(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 #if ENGINE_MINOR_VERSION < 14
 	AGameMode *game_mode = world->GetAuthGameMode();
 #else
 	AGameModeBase *game_mode = world->GetAuthGameMode();
 #endif
 	if (!game_mode)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve GameMode from world");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve GameMode from world");
 #if ENGINE_MINOR_VERSION < 14
 	return PyLong_FromLong(game_mode->NumSpectators);
 #else
@@ -215,11 +215,11 @@ PyObject *py_ue_restart_level(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	controller->RestartLevel();
 

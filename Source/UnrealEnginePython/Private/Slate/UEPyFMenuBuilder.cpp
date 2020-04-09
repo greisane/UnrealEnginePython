@@ -47,7 +47,7 @@ static PyObject* py_ue_fmenu_builder_add_menu_entry(ue_PyFMenuBuilder* self, PyO
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
+		return PyErr_Format(PyExc_Exception, "argument is not callable");
 	}
 
 
@@ -85,7 +85,7 @@ static PyObject* py_ue_fmenu_builder_add_sub_menu(ue_PyFMenuBuilder* self, PyObj
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
+		return PyErr_Format(PyExc_Exception, "argument is not callable");
 	}
 
 
@@ -128,7 +128,7 @@ static PyObject* py_ue_fmenu_builder_add_asset_actions(ue_PyFMenuBuilder* self, 
 	py_assets = PyObject_GetIter(py_assets);
 	if (!py_assets)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not iterable");
+		return PyErr_Format(PyExc_Exception, "argument is not iterable");
 	}
 
 	TArray<UObject*> u_objects;

@@ -22,11 +22,11 @@ PyObject *py_ue_struct_add_variable(ue_PyUObject * self, PyObject * args)
 
 	UUserDefinedStruct *u_struct = ue_py_check_type<UUserDefinedStruct>(self);
 	if (!u_struct)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UUserDefinedStruct");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UUserDefinedStruct");
 
 	FStructVariableDescription *var = ue_py_check_struct<FStructVariableDescription>(py_var);
 	if (!var)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FStructVariableDescription");
+		return PyErr_Format(PyExc_Exception, "argument is not a FStructVariableDescription");
 
 	var->VarGuid = FGuid::NewGuid();
 
@@ -44,7 +44,7 @@ PyObject *py_ue_struct_get_variables(ue_PyUObject * self, PyObject * args)
 
 	UUserDefinedStruct *u_struct = ue_py_check_type<UUserDefinedStruct>(self);
 	if (!u_struct)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UUserDefinedStruct");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UUserDefinedStruct");
 
 	TArray<FStructVariableDescription> variables = FStructureEditorUtils::GetVarDesc(u_struct);
 
@@ -70,11 +70,11 @@ PyObject *py_ue_struct_remove_variable(ue_PyUObject * self, PyObject * args)
 
 	UUserDefinedStruct *u_struct = ue_py_check_type<UUserDefinedStruct>(self);
 	if (!u_struct)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UUserDefinedStruct");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UUserDefinedStruct");
 
 	FGuid *guid = ue_py_check_fguid(py_guid);
 	if (!guid)
-		return PyErr_Format(ue_PyExc_Exception, "object is not a FGuid");
+		return PyErr_Format(PyExc_Exception, "object is not a FGuid");
 
 	if (FStructureEditorUtils::RemoveVariable(u_struct, *guid))
 	{
@@ -98,11 +98,11 @@ PyObject *py_ue_struct_move_variable_up(ue_PyUObject * self, PyObject * args)
 
 	UUserDefinedStruct *u_struct = ue_py_check_type<UUserDefinedStruct>(self);
 	if (!u_struct)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UUserDefinedStruct");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UUserDefinedStruct");
 
 	FGuid *guid = ue_py_check_fguid(py_guid);
 	if (!guid)
-		return PyErr_Format(ue_PyExc_Exception, "object is not a FGuid");
+		return PyErr_Format(PyExc_Exception, "object is not a FGuid");
 
 	if (FStructureEditorUtils::MoveVariable(u_struct, *guid, FStructureEditorUtils::EMoveDirection::MD_Up))
 	{
@@ -126,11 +126,11 @@ PyObject *py_ue_struct_move_variable_down(ue_PyUObject * self, PyObject * args)
 
 	UUserDefinedStruct *u_struct = ue_py_check_type<UUserDefinedStruct>(self);
 	if (!u_struct)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UUserDefinedStruct");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UUserDefinedStruct");
 
 	FGuid *guid = ue_py_check_fguid(py_guid);
 	if (!guid)
-		return PyErr_Format(ue_PyExc_Exception, "object is not a FGuid");
+		return PyErr_Format(PyExc_Exception, "object is not a FGuid");
 
 	if (FStructureEditorUtils::MoveVariable(u_struct, *guid, FStructureEditorUtils::EMoveDirection::MD_Down))
 	{

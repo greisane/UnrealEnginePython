@@ -61,7 +61,7 @@ static int ue_py_fslate_icon_init(ue_PyFSlateIcon *self, PyObject *args, PyObjec
 	{
 		if (!style)
 		{
-			PyErr_SetString(ue_PyExc_ValueError, "you have not specified as style name");
+			PyErr_SetString(PyExc_ValueError, "you have not specified as style name");
 			return -1;
 		}
 		new(&self->icon) FSlateIcon(FName(style_set), FName(style));

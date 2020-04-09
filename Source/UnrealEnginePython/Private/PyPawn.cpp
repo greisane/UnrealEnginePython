@@ -160,7 +160,7 @@ void APyPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 			unreal_engine_py_log_error();
 		}
 
-		ue_Py_XDECREF(ep_ret);
+		Py_XDECREF(ep_ret);
 	}
 
 	Super::EndPlay(EndPlayReason);
@@ -245,6 +245,6 @@ APyPawn::~APyPawn()
 #endif
 
 	// this could trigger the distruction of the python/uobject mapper
-	ue_Py_XDECREF(py_uobject);
+	Py_XDECREF(py_uobject);
 	FUnrealEnginePythonHouseKeeper::Get()->UnregisterPyUObject(this);
 }

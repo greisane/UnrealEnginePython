@@ -16,7 +16,7 @@ PyObject *py_ue_line_trace_single_by_channel(ue_PyUObject * self, PyObject * arg
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 
 	if (!PyArg_ParseTuple(args, "OOi:line_trace_single_by_channel", &py_obj_start, &py_obj_end, &channel))
@@ -28,7 +28,7 @@ PyObject *py_ue_line_trace_single_by_channel(ue_PyUObject * self, PyObject * arg
 	ue_PyFVector *end = py_ue_is_fvector(py_obj_end);
 
 	if (!start || !end)
-		return PyErr_Format(ue_PyExc_Exception, "start and end location must be vectors");
+		return PyErr_Format(PyExc_Exception, "start and end location must be vectors");
 
 	FHitResult hit;
 
@@ -54,7 +54,7 @@ PyObject *py_ue_line_trace_multi_by_channel(ue_PyUObject * self, PyObject * args
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 
 	if (!PyArg_ParseTuple(args, "OOi:line_trace_multi_by_channel", &py_obj_start, &py_obj_end, &channel))
@@ -66,7 +66,7 @@ PyObject *py_ue_line_trace_multi_by_channel(ue_PyUObject * self, PyObject * args
 	ue_PyFVector *end = py_ue_is_fvector(py_obj_end);
 
 	if (!start || !end)
-		return PyErr_Format(ue_PyExc_Exception, "start and end location must be vectors");
+		return PyErr_Format(PyExc_Exception, "start and end location must be vectors");
 
 	TArray<struct FHitResult> hits;
 	hits.Reset();
@@ -98,7 +98,7 @@ PyObject *py_ue_get_hit_result_under_cursor(ue_PyUObject * self, PyObject * args
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 
 	if (!PyArg_ParseTuple(args, "i|Oi:get_hit_result_under_cursor", &channel, &trace_complex, &controller_id))
@@ -115,7 +115,7 @@ PyObject *py_ue_get_hit_result_under_cursor(ue_PyUObject * self, PyObject * args
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	FHitResult hit;
 
@@ -143,7 +143,7 @@ PyObject *py_ue_draw_debug_line(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 
 	if (!PyArg_ParseTuple(args, "OOO|ff:draw_debug_line", &py_obj_start, &py_obj_end, &py_color, &duration, &thickness))
@@ -155,11 +155,11 @@ PyObject *py_ue_draw_debug_line(ue_PyUObject * self, PyObject * args)
 	ue_PyFVector *end = py_ue_is_fvector(py_obj_end);
 
 	if (!start || !end)
-		return PyErr_Format(ue_PyExc_Exception, "start and end location must be vectors");
+		return PyErr_Format(PyExc_Exception, "start and end location must be vectors");
 
 	ue_PyFLinearColor *py_linear_color = py_ue_is_flinearcolor(py_color);
 	if (!py_linear_color)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor");
+		return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor");
 
 	UKismetSystemLibrary::DrawDebugLine(world, start->vec, end->vec, py_linear_color->color, duration, thickness);
 

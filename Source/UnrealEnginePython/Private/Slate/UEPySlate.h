@@ -36,7 +36,7 @@ TSharedPtr<T> py_ue_is_swidget(PyObject *py_obj)
 {
 	if (!PyObject_IsInstance(py_obj, (PyObject *)&ue_PySWidgetType))
 	{
-		PyErr_SetString(ue_PyExc_Exception, "object is not an SWidget");
+		PyErr_SetString(PyExc_Exception, "object is not an SWidget");
 		return nullptr;
 	}
 	return StaticCastSharedRef<T>(((ue_PySWidget *)py_obj)->Widget);
@@ -127,7 +127,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 		}
 
 #define ue_py_slate_down(_param) else {\
-			PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " _param); \
+			PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " _param); \
 			return -1;\
 		}\
 	}\
@@ -247,7 +247,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 				arguments.attribute((_type)*u_struct); \
 			}\
 			else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 			}\
 		}\
@@ -261,7 +261,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 				arguments.attribute((_type *)u_struct);\
 			}\
 			else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 			}\
 		}\
@@ -273,7 +273,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 				arguments.attribute((_type *)u_object);\
 			}\
 			else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 			}\
 		}\
@@ -295,12 +295,12 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 					}\
 				}\
 				else {\
-					PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+					PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 					return -1;\
 				}\
 			}\
 			else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 			}\
 		}\
@@ -315,7 +315,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 				Py_DECREF(py_int);\
 			}\
 			else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 			}\
 		}\
@@ -330,7 +330,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 			Py_DECREF(py_int);\
 		}\
 		else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 		}\
 	}\
@@ -345,7 +345,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 			Py_DECREF(py_float);\
 		}\
 		else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 		}\
 	}\
@@ -359,7 +359,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 			Py_DECREF(py_float);\
 		}\
 		else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 		}\
 	}\
@@ -377,7 +377,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 			arguments.attribute(FText::FromString(UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(value))));\
 		}\
 		else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 		}\
 	}\
@@ -393,7 +393,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
             ];\
 		}\
 		else {\
-				PyErr_SetString(ue_PyExc_TypeError, "unsupported type for attribute " param); \
+				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
 				return -1;\
 		}\
 	}\
@@ -424,7 +424,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 			FMargin margin;\
 			if (!PyArg_ParseTuple(padding, "f|fff", &margin.Left, &margin.Top, &margin.Right, &margin.Bottom))\
 			{\
-				PyErr_SetString(ue_PyExc_TypeError, "invalid padding value");\
+				PyErr_SetString(PyExc_TypeError, "invalid padding value");\
 				return -1;\
 			}\
 			arguments.attribute(margin);\
@@ -441,7 +441,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 		}\
 		else\
 		{\
-			PyErr_SetString(ue_PyExc_TypeError, "invalid padding value"); \
+			PyErr_SetString(PyExc_TypeError, "invalid padding value"); \
 			return -1; \
 		}\
 	}\
@@ -474,13 +474,13 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 
 #define ue_py_slate_farguments_required_slot(param) { PyObject *value = ue_py_dict_get_item(kwargs, param);\
     value = value ? value : PyTuple_GetItem(args, 0);\
-    if (!value) {PyErr_Clear(); PyErr_SetString(ue_PyExc_TypeError, "you need to specify a widget"); return -1;}\
+    if (!value) {PyErr_Clear(); PyErr_SetString(PyExc_TypeError, "you need to specify a widget"); return -1;}\
 	TSharedPtr<SWidget> Widget = py_ue_is_swidget<SWidget>(value);\
 	if (Widget.IsValid())\
 		arguments.AttachWidget(Widget.ToSharedRef());\
 	else\
 	{\
-		PyErr_SetString(ue_PyExc_TypeError, "unsupported type for required slot " param);\
+		PyErr_SetString(PyExc_TypeError, "unsupported type for required slot " param);\
 		return -1;\
 	}\
 }

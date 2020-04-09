@@ -111,7 +111,7 @@ static int ue_py_fpointer_event_init(ue_PyFPointerEvent *self, PyObject *args, P
 		ue_PyFModifierKeysState *f_modifier = py_ue_is_fmodifier_keys_state(py_modifier);
 		if (!f_modifier)
 		{
-			PyErr_SetString(ue_PyExc_Exception, "argument is not a FModifierKeysState");
+			PyErr_SetString(PyExc_Exception, "argument is not a FModifierKeysState");
 			return -1;
 		}
 		modifier = f_modifier->modifier;

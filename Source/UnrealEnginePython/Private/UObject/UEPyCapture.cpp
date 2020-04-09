@@ -60,7 +60,7 @@ private:
 		OnlyStrongReference = nullptr;
 		{
 			FScopePythonGIL gil;
-			ue_Py_XDECREF(py_callable);
+			Py_XDECREF(py_callable);
 		}
 	}
 
@@ -143,7 +143,7 @@ private:
 			{
 				unreal_engine_py_log_error();
 			}
-			ue_Py_XDECREF(py_ret);
+			Py_XDECREF(py_ret);
 		}
 
 
@@ -355,7 +355,7 @@ PyObject *py_unreal_engine_in_editor_capture(PyObject * self, PyObject * args)
 		PyObject *py_iter = PyObject_GetIter(py_scene_captures);
 		if (!py_iter)
 		{
-			return PyErr_Format(ue_PyExc_Exception, "argument is not a UMovieSceneCapture or an iterable of UMovieSceneCapture");
+			return PyErr_Format(PyExc_Exception, "argument is not a UMovieSceneCapture or an iterable of UMovieSceneCapture");
 		}
 		while (PyObject *py_item = PyIter_Next(py_iter))
 		{
@@ -363,7 +363,7 @@ PyObject *py_unreal_engine_in_editor_capture(PyObject * self, PyObject * args)
 			if (!capture)
 			{
 				Py_DECREF(py_iter);
-				return PyErr_Format(ue_PyExc_Exception, "argument is not an iterable of UMovieSceneCapture");
+				return PyErr_Format(PyExc_Exception, "argument is not an iterable of UMovieSceneCapture");
 			}
 			Captures.Add(capture);
 		}
@@ -395,12 +395,12 @@ PyObject *py_ue_set_level_sequence_asset(ue_PyUObject *self, PyObject *args)
 	ULevelSequence *sequence = ue_py_check_type<ULevelSequence>(py_sequence);
 	if (!sequence)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a ULevelSequence");
+		return PyErr_Format(PyExc_Exception, "uobject is not a ULevelSequence");
 	}
 
 	UAutomatedLevelSequenceCapture *capture = ue_py_check_type<UAutomatedLevelSequenceCapture>(self);
 	if (!capture)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UAutomatedLevelSequenceCapture");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UAutomatedLevelSequenceCapture");
 
 #if ENGINE_MINOR_VERSION < 20
 	capture->SetLevelSequenceAsset(sequence->GetPathName());
@@ -425,7 +425,7 @@ PyObject *py_ue_capture_initialize(ue_PyUObject * self, PyObject * args)
 
 	UMovieSceneCapture *capture = ue_py_check_type<UMovieSceneCapture>(self);
 	if (!capture)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMovieSceneCapture");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UMovieSceneCapture");
 
 #if WITH_EDITOR
 	if (py_widget)
@@ -439,7 +439,7 @@ PyObject *py_ue_capture_initialize(ue_PyUObject * self, PyObject * args)
 		}
 		else
 		{
-			return PyErr_Format(ue_PyExc_Exception, "argument is not a supported Viewport-based SWidget");
+			return PyErr_Format(PyExc_Exception, "argument is not a supported Viewport-based SWidget");
 		}
 
 	}
@@ -454,7 +454,7 @@ PyObject *py_ue_capture_start(ue_PyUObject * self, PyObject * args)
 
 	UMovieSceneCapture *capture = ue_py_check_type<UMovieSceneCapture>(self);
 	if (!capture)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMovieSceneCapture");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UMovieSceneCapture");
 
 	capture->StartCapture();
 
@@ -468,7 +468,7 @@ PyObject *py_ue_capture_load_from_config(ue_PyUObject * self, PyObject * args)
 
 	UMovieSceneCapture *capture = ue_py_check_type<UMovieSceneCapture>(self);
 	if (!capture)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMovieSceneCapture");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UMovieSceneCapture");
 
 	capture->LoadFromConfig();
 
@@ -482,7 +482,7 @@ PyObject *py_ue_capture_stop(ue_PyUObject * self, PyObject * args)
 
 	UMovieSceneCapture *capture = ue_py_check_type<UMovieSceneCapture>(self);
 	if (!capture)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UMovieSceneCapture");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UMovieSceneCapture");
 
 	capture->Finalize();
 	capture->Close();

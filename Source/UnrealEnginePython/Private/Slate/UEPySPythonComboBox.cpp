@@ -15,7 +15,7 @@ static PyObject *py_ue_spython_combo_box_get_selected_item(ue_PySPythonComboBox 
 	ue_py_slate_cast(SPythonComboBox);
 	TSharedPtr<FPythonItem> ptr_item = py_SPythonComboBox->GetSelectedItem();
 	if (!ptr_item.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "invalid shared pointer to python item");
+		return PyErr_Format(PyExc_Exception, "invalid shared pointer to python item");
 
 	Py_INCREF(ptr_item->py_object);
 	return ptr_item->py_object;
@@ -92,14 +92,14 @@ static int ue_py_spython_combo_box_init(ue_PySPythonComboBox *self, PyObject *ar
 	PyObject *values = ue_py_dict_get_item(kwargs, "options_source");
 	if (!values)
 	{
-		PyErr_SetString(ue_PyExc_Exception, "you must specify the combo box items");
+		PyErr_SetString(PyExc_Exception, "you must specify the combo box items");
 		return -1;
 	}
 
 	values = PyObject_GetIter(values);
 	if (!values)
 	{
-		PyErr_SetString(ue_PyExc_Exception, "values field is not an iterable");
+		PyErr_SetString(PyExc_Exception, "values field is not an iterable");
 		return -1;
 	}
 

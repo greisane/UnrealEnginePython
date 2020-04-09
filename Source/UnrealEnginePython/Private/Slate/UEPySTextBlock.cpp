@@ -31,7 +31,7 @@ static PyObject *py_ue_stext_block_set_color_and_opacity(ue_PySTextBlock *self, 
 	ue_PyFLinearColor *py_linear_color = py_ue_is_flinearcolor(py_color);
 	if (!py_linear_color)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FLinearColor");
+		return PyErr_Format(PyExc_Exception, "argument is not a FLinearColor");
 	}
 
 	py_STextBlock->SetColorAndOpacity(py_linear_color->color);

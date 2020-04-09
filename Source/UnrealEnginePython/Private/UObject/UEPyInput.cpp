@@ -19,11 +19,11 @@ PyObject *py_ue_is_input_key_down(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	if (controller->IsInputKeyDown(key))
 	{
@@ -49,11 +49,11 @@ PyObject *py_ue_was_input_key_just_pressed(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	if (controller->WasInputKeyJustPressed(key))
 	{
@@ -79,11 +79,11 @@ PyObject *py_ue_is_action_pressed(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 	UPlayerInput *input = controller->PlayerInput;
 	if (!input)
 		goto end;
@@ -116,11 +116,11 @@ PyObject *py_ue_was_input_key_just_released(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	if (controller->WasInputKeyJustReleased(key))
 	{
@@ -146,11 +146,11 @@ PyObject *py_ue_is_action_released(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 	UPlayerInput *input = controller->PlayerInput;
 	if (!input)
 		goto end;
@@ -182,11 +182,11 @@ PyObject *py_ue_enable_input(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	if (self->ue_object->IsA<AActor>())
 	{
@@ -198,7 +198,7 @@ PyObject *py_ue_enable_input(ue_PyUObject *self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not an actor or a component");
+		return PyErr_Format(PyExc_Exception, "uobject is not an actor or a component");
 	}
 
 	Py_INCREF(Py_None);
@@ -229,12 +229,12 @@ PyObject *py_ue_get_input_axis(ue_PyUObject *self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not an actor or a component");
+		return PyErr_Format(PyExc_Exception, "uobject is not an actor or a component");
 	}
 
 	if (!input)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no input manager for this uobject");
+		return PyErr_Format(PyExc_Exception, "no input manager for this uobject");
 	}
 
 	return Py_BuildValue("f", input->GetAxisValue(FName(UTF8_TO_TCHAR(axis_name))));
@@ -264,12 +264,12 @@ PyObject *py_ue_bind_input_axis(ue_PyUObject *self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not an actor or a component");
+		return PyErr_Format(PyExc_Exception, "uobject is not an actor or a component");
 	}
 
 	if (!input)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no input manager for this uobject");
+		return PyErr_Format(PyExc_Exception, "no input manager for this uobject");
 	}
 
 	input->BindAxis(FName(UTF8_TO_TCHAR(axis_name)));
@@ -298,11 +298,11 @@ PyObject *py_ue_show_mouse_cursor(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	controller->bShowMouseCursor = enabled;
 
@@ -329,11 +329,11 @@ PyObject *py_ue_enable_click_events(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	controller->bEnableClickEvents = enabled;
 
@@ -360,7 +360,7 @@ PyObject *py_ue_enable_mouse_over_events(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
@@ -386,7 +386,7 @@ PyObject *py_ue_bind_action(ue_PyUObject *self, PyObject * args)
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "object is not a callable");
+		return PyErr_Format(PyExc_Exception, "object is not a callable");
 	}
 
 	UInputComponent *input = nullptr;
@@ -401,12 +401,12 @@ PyObject *py_ue_bind_action(ue_PyUObject *self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not an actor or a component");
+		return PyErr_Format(PyExc_Exception, "uobject is not an actor or a component");
 	}
 
 	if (!input)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no input manager for this uobject");
+		return PyErr_Format(PyExc_Exception, "no input manager for this uobject");
 	}
 
 	UPythonDelegate *py_delegate = FUnrealEnginePythonHouseKeeper::Get()->NewDelegate(input, py_callable, nullptr);
@@ -433,7 +433,7 @@ PyObject *py_ue_bind_axis(ue_PyUObject *self, PyObject * args)
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "object is not a callable");
+		return PyErr_Format(PyExc_Exception, "object is not a callable");
 	}
 
 	UInputComponent *input = nullptr;
@@ -448,12 +448,12 @@ PyObject *py_ue_bind_axis(ue_PyUObject *self, PyObject * args)
 	}
 	else
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not an actor or a component");
+		return PyErr_Format(PyExc_Exception, "uobject is not an actor or a component");
 	}
 
 	if (!input)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no input manager for this uobject");
+		return PyErr_Format(PyExc_Exception, "no input manager for this uobject");
 	}
 
 	UPythonDelegate *py_delegate = FUnrealEnginePythonHouseKeeper::Get()->NewDelegate(input, py_callable, nullptr);
@@ -481,7 +481,7 @@ PyObject *py_ue_bind_key(ue_PyUObject *self, PyObject * args)
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "object is not a callable");
+		return PyErr_Format(PyExc_Exception, "object is not a callable");
 	}
 
 	UInputComponent *input = nullptr;
@@ -494,17 +494,17 @@ PyObject *py_ue_bind_key(ue_PyUObject *self, PyObject * args)
 	{
 		UActorComponent *component = (UActorComponent *)self->ue_object;
 		if (!component->GetOwner())
-			return PyErr_Format(ue_PyExc_Exception, "component is still not mapped to an Actor");
+			return PyErr_Format(PyExc_Exception, "component is still not mapped to an Actor");
 		input = component->GetOwner()->InputComponent;
 	}
 	else
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not an actor or a component");
+		return PyErr_Format(PyExc_Exception, "uobject is not an actor or a component");
 	}
 
 	if (!input)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no input manager for this uobject");
+		return PyErr_Format(PyExc_Exception, "no input manager for this uobject");
 	}
 
 	UPythonDelegate *py_delegate = FUnrealEnginePythonHouseKeeper::Get()->NewDelegate(input, py_callable, nullptr);
@@ -579,11 +579,11 @@ PyObject *py_ue_input_axis(ue_PyUObject * self, PyObject * args)
 
 	APlayerController *controller = ue_py_check_type<APlayerController>(self);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "object is not a APlayerController");
+		return PyErr_Format(PyExc_Exception, "object is not a APlayerController");
 
 	FKey *key = ue_py_check_struct<FKey>(py_fkey);
 	if (!key)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FKey");
+		return PyErr_Format(PyExc_Exception, "argument is not a FKey");
 
 	if (controller->InputAxis(*key, delta, delta_time, num_samples, py_gamepad && PyObject_IsTrue(py_gamepad)))
 	{
@@ -611,11 +611,11 @@ PyObject *py_ue_input_key(ue_PyUObject * self, PyObject * args)
 
 	APlayerController *controller = ue_py_check_type<APlayerController>(self);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "object is not a APlayerController");
+		return PyErr_Format(PyExc_Exception, "object is not a APlayerController");
 
 	FKey *key = ue_py_check_struct<FKey>(py_fkey);
 	if (!key)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FKey");
+		return PyErr_Format(PyExc_Exception, "argument is not a FKey");
 
 	if (controller->InputKey(*key, (EInputEvent)event_type, amount, py_gamepad && PyObject_IsTrue(py_gamepad)))
 	{

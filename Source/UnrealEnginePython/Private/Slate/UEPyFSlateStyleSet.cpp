@@ -86,7 +86,7 @@ static PyObject *py_ue_fslate_style_set_set(ue_PyFSlateStyleSet *self, PyObject 
 		Py_RETURN_NONE;
 	}
 
-	return PyErr_Format(ue_PyExc_ValueError, "unsupported value type");
+	return PyErr_Format(PyExc_ValueError, "unsupported value type");
 }
 
 namespace
@@ -102,7 +102,7 @@ namespace
 static PyObject *py_ue_fslate_style_set_get(ue_PyFSlateStyleSet *self, PyObject * args)
 {
 	if (!(self && self->style_set))
-		return PyErr_Format(ue_PyExc_Exception, "fstyleset is in invalid state");
+		return PyErr_Format(PyExc_Exception, "fstyleset is in invalid state");
 
 	char *name = nullptr;
 	PyObject *py_type = nullptr;
@@ -180,7 +180,7 @@ static PyObject *py_ue_fslate_style_set_get(ue_PyFSlateStyleSet *self, PyObject 
 
 		if (!ret)
 		{
-			return PyErr_Format(ue_PyExc_ValueError, "Unsupported FSlateWidgetStyle type. Add it manually.");
+			return PyErr_Format(PyExc_ValueError, "Unsupported FSlateWidgetStyle type. Add it manually.");
 		}
 	}
 	else if (py_ue_is_flinearcolor(py_type))
@@ -193,11 +193,11 @@ static PyObject *py_ue_fslate_style_set_get(ue_PyFSlateStyleSet *self, PyObject 
 	}
 	else
 	{
-		return PyErr_Format(ue_PyExc_ValueError, "unsupported value type");
+		return PyErr_Format(PyExc_ValueError, "unsupported value type");
 	}
 
 	if (!ret)
-		return PyErr_Format(ue_PyExc_Exception, "Retrieved style object is in invalid state");
+		return PyErr_Format(PyExc_Exception, "Retrieved style object is in invalid state");
 
 	return ret;
 

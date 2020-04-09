@@ -15,7 +15,7 @@ PyObject *py_ue_get_socket_location(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!self->ue_object->IsA<USceneComponent>())
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a USceneComponent");
+		return PyErr_Format(PyExc_Exception, "uobject is not a USceneComponent");
 
 	USceneComponent *component = (USceneComponent *)self->ue_object;
 
@@ -35,7 +35,7 @@ PyObject *py_ue_get_socket_rotation(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!self->ue_object->IsA<USceneComponent>())
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a USceneComponent");
+		return PyErr_Format(PyExc_Exception, "uobject is not a USceneComponent");
 
 	USceneComponent *component = (USceneComponent *)self->ue_object;
 
@@ -55,7 +55,7 @@ PyObject *py_ue_get_socket_transform(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!self->ue_object->IsA<USceneComponent>())
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a USceneComponent");
+		return PyErr_Format(PyExc_Exception, "uobject is not a USceneComponent");
 
 	USceneComponent *component = (USceneComponent *)self->ue_object;
 
@@ -75,7 +75,7 @@ PyObject *py_ue_get_socket_world_transform(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!self->ue_object->IsA<USceneComponent>())
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a USceneComponent");
+		return PyErr_Format(PyExc_Exception, "uobject is not a USceneComponent");
 
 	USceneComponent *component = (USceneComponent *)self->ue_object;
 
@@ -95,7 +95,7 @@ PyObject *py_ue_get_socket_actor_transform(ue_PyUObject *self, PyObject * args)
 	}
 
 	if (!self->ue_object->IsA<USceneComponent>())
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a USceneComponent");
+		return PyErr_Format(PyExc_Exception, "uobject is not a USceneComponent");
 
 	USceneComponent *component = (USceneComponent *)self->ue_object;
 
@@ -119,7 +119,7 @@ PyObject *py_ue_get_all_child_actors(ue_PyUObject * self, PyObject * args)
 
 	AActor *actor = ue_get_actor(self);
 	if (!actor)
-		return PyErr_Format(ue_PyExc_Exception, "cannot retrieve actor from UObject");
+		return PyErr_Format(PyExc_Exception, "cannot retrieve actor from UObject");
 
 
 	PyObject *py_children = PyList_New(0);
@@ -143,7 +143,7 @@ PyObject *py_ue_get_attached_actors(ue_PyUObject * self, PyObject * args)
 
 	AActor *actor = ue_get_actor(self);
 	if (!actor)
-		return PyErr_Format(ue_PyExc_Exception, "cannot retrieve actor from UObject");
+		return PyErr_Format(PyExc_Exception, "cannot retrieve actor from UObject");
 
 	PyObject *py_children = PyList_New(0);
 
@@ -178,14 +178,14 @@ PyObject *py_ue_attach_to_actor(ue_PyUObject * self, PyObject * args)
 
 	AActor *actor = ue_get_actor(self);
 	if (!actor)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve Actor from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve Actor from uobject");
 
 	ue_PyUObject *py_obj = ue_is_pyuobject(obj);
 	if (!py_obj)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
 
 	if (!py_obj->ue_object->IsA<AActor>())
-		return PyErr_Format(ue_PyExc_Exception, "argument is not an Actor");
+		return PyErr_Format(PyExc_Exception, "argument is not an Actor");
 
 	AActor *other = (AActor *)py_obj->ue_object;
 
@@ -219,14 +219,14 @@ PyObject *py_ue_attach_to_component(ue_PyUObject * self, PyObject * args)
 
 	AActor *actor = ue_get_actor(self);
 	if (!actor)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve Actor from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve Actor from uobject");
 
 	ue_PyUObject *py_obj = ue_is_pyuobject(obj);
 	if (!py_obj)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
 
 	if (!py_obj->ue_object->IsA<USceneComponent>())
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a SceneComponent");
+		return PyErr_Format(PyExc_Exception, "argument is not a SceneComponent");
 
 	USceneComponent *other = (USceneComponent *)py_obj->ue_object;
 

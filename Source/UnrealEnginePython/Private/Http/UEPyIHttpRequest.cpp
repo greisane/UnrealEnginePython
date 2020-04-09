@@ -139,7 +139,7 @@ static PyObject *py_ue_ihttp_request_get_response(ue_PyIHttpRequest *self, PyObj
 	FHttpResponsePtr response = self->http_request->GetResponse();
 	if (!response.IsValid())
 	{
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve IHttpResponse");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve IHttpResponse");
 	}
 	return py_ue_new_ihttp_response(response.Get());
 }
@@ -193,7 +193,7 @@ static PyObject *py_ue_ihttp_request_bind_on_process_request_complete(ue_PyIHttp
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a callable");
+		return PyErr_Format(PyExc_Exception, "argument is not a callable");
 	}
 
 	TSharedRef<FPythonSmartHttpDelegate> py_delegate = MakeShareable(new FPythonSmartHttpDelegate);
@@ -218,7 +218,7 @@ static PyObject *py_ue_ihttp_request_bind_on_request_progress(ue_PyIHttpRequest 
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a callable");
+		return PyErr_Format(PyExc_Exception, "argument is not a callable");
 	}
 
 	TSharedRef<FPythonSmartHttpDelegate> py_delegate = MakeShareable(new FPythonSmartHttpDelegate);

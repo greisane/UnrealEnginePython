@@ -1,5 +1,5 @@
 #include "UEPyLambda.h"
-#include "Async/TaskGraphInterfaces.h"
+#include "UnrealEnginePythonPrivatePCH.h"
 
 PyObject * py_ue_run_on_game_thread(PyObject* PyFunction, PyObject* Args)
 {

@@ -24,7 +24,7 @@ static PyObject *py_ue_fvector2d_dot(ue_PyFVector2D *self, PyObject * args)
 		return NULL;
 	ue_PyFVector2D *py_vec = py_ue_is_fvector2d(py_obj);
 	if (!py_vec)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector2D");
+		return PyErr_Format(PyExc_TypeError, "argument is not a FVector2D");
 	return PyFloat_FromDouble(FVector2D::DotProduct(self->vec, py_vec->vec));
 }
 
@@ -35,7 +35,7 @@ static PyObject *py_ue_fvector2d_cross(ue_PyFVector2D *self, PyObject * args)
 		return NULL;
 	ue_PyFVector2D *py_vec = py_ue_is_fvector2d(py_obj);
 	if (!py_vec)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector2D");
+		return PyErr_Format(PyExc_TypeError, "argument is not a FVector2D");
 	return PyFloat_FromDouble(FVector2D::CrossProduct(self->vec, py_vec->vec));
 }
 
@@ -65,7 +65,7 @@ static int py_ue_fvector2d_set_x(ue_PyFVector2D *self, PyObject *value, void *cl
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -83,7 +83,7 @@ static int py_ue_fvector2d_set_y(ue_PyFVector2D *self, PyObject *value, void *cl
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -201,7 +201,7 @@ static PyObject *ue_py_fvector2d_div(ue_PyFVector2D *self, PyObject *value)
 	if (py_vec)
 	{
 		if (py_vec->vec.X == 0 || py_vec->vec.Y == 0)
-			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
 		vec /= py_vec->vec;
 	}
 	else if (PyNumber_Check(value))
@@ -209,7 +209,7 @@ static PyObject *ue_py_fvector2d_div(ue_PyFVector2D *self, PyObject *value)
 		PyObject *f_value = PyNumber_Float(value);
 		float f = PyFloat_AsDouble(f_value);
 		if (f == 0)
-			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
 		vec /= f;
 		Py_DECREF(f_value);
 	}
@@ -224,13 +224,13 @@ static PyObject *ue_py_fvector2d_floor_div(ue_PyFVector2D *self, PyObject *value
 		PyObject *f_value = PyNumber_Float(value);
 		float f = PyFloat_AsDouble(f_value);
 		if (f == 0)
-			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
 		vec.X = floor(vec.X / f);
 		vec.Y = floor(vec.Y / f);
 		Py_DECREF(f_value);
 		return py_ue_new_fvector2d(vec);
 	}
-	return PyErr_Format(ue_PyExc_TypeError, "value is not numeric");
+	return PyErr_Format(PyExc_TypeError, "value is not numeric");
 }
 
 PyNumberMethods ue_PyFVector2D_number_methods;
@@ -249,7 +249,7 @@ static PyObject *ue_py_fvector2d_seq_item(ue_PyFVector2D *self, Py_ssize_t i)
 	case 1:
 		return PyFloat_FromDouble(self->vec.Y);
 	}
-	return PyErr_Format(ue_PyExc_IndexError, "FVector2D has only 2 items");
+	return PyErr_Format(PyExc_IndexError, "FVector2D has only 2 items");
 }
 
 PySequenceMethods ue_PyFVector2D_sequence_methods;
@@ -276,7 +276,7 @@ static PyObject *ue_py_fvector2d_richcompare(ue_PyFVector2D *vec1, PyObject *b, 
 	ue_PyFVector2D *vec2 = py_ue_is_fvector2d(b);
 	if (!vec2 || (op != Py_EQ && op != Py_NE))
 	{
-		return PyErr_Format(ue_PyExc_NotImplementedError, "can only compare with another FVector2D");
+		return PyErr_Format(PyExc_NotImplementedError, "can only compare with another FVector2D");
 	}
 
 	if (op == Py_EQ)
@@ -351,7 +351,7 @@ bool py_ue_vector2d_arg(PyObject *args, FVector2D &vec)
 		ue_PyFVector2D *py_vec = py_ue_is_fvector2d(arg);
 		if (!py_vec)
 		{
-			PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector2D");
+			PyErr_Format(PyExc_TypeError, "argument is not a FVector2D");
 			return false;
 		}
 		vec = py_vec->vec;

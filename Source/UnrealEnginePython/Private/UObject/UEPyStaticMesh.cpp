@@ -6,13 +6,13 @@ PyObject *py_ue_static_mesh_get_bounds(ue_PyUObject *self, PyObject * args)
     ue_py_check(self);
     UStaticMesh *mesh = ue_py_check_type<UStaticMesh>(self);
     if (!mesh)
-        return PyErr_Format(ue_PyExc_Exception, "uobject is not a UStaticMesh");
+        return PyErr_Format(PyExc_Exception, "uobject is not a UStaticMesh");
 
     FBoxSphereBounds bounds = mesh->GetBounds();
     UScriptStruct *u_struct = FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR("BoxSphereBounds"));
     if (!u_struct)
     {
-        return PyErr_Format(ue_PyExc_Exception, "unable to get BoxSphereBounds struct");
+        return PyErr_Format(PyExc_Exception, "unable to get BoxSphereBounds struct");
     }
     return py_ue_new_owned_uscriptstruct(u_struct, (uint8 *)&bounds);
 }
@@ -27,7 +27,7 @@ static PyObject *generate_kdop(ue_PyUObject *self, const FVector *directions, ui
 {
 	UStaticMesh *mesh = ue_py_check_type<UStaticMesh>(self);
 	if (!mesh)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UStaticMesh");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UStaticMesh");
 
 	TArray<FVector> DirArray;
 	for (uint32 i = 0; i < num_directions; i++)
@@ -37,7 +37,7 @@ static PyObject *generate_kdop(ue_PyUObject *self, const FVector *directions, ui
 
 	if (GenerateKDopAsSimpleCollision(mesh, DirArray) == INDEX_NONE)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "unable to generate KDop vectors");
+		return PyErr_Format(PyExc_Exception, "unable to generate KDop vectors");
 	}
 
 	PyObject *py_list = PyList_New(0);
@@ -85,7 +85,7 @@ PyObject *py_ue_static_mesh_build(ue_PyUObject *self, PyObject * args)
 
 	UStaticMesh *mesh = ue_py_check_type<UStaticMesh>(self);
 	if (!mesh)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UStaticMesh");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UStaticMesh");
 
 #if ENGINE_MINOR_VERSION > 13
 	mesh->ImportVersion = EImportStaticMeshVersion::LastVersion;
@@ -102,7 +102,7 @@ PyObject *py_ue_static_mesh_create_body_setup(ue_PyUObject *self, PyObject * arg
 
 	UStaticMesh *mesh = ue_py_check_type<UStaticMesh>(self);
 	if (!mesh)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UStaticMesh");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UStaticMesh");
 
 	mesh->CreateBodySetup();
 
@@ -120,12 +120,12 @@ PyObject *py_ue_static_mesh_get_raw_mesh(ue_PyUObject *self, PyObject * args)
 
 	UStaticMesh *mesh = ue_py_check_type<UStaticMesh>(self);
 	if (!mesh)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UStaticMesh");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UStaticMesh");
 
 	FRawMesh raw_mesh;
 
 	if (lod_index < 0 || lod_index >= mesh->GetSourceModels().Num())
-		return PyErr_Format(ue_PyExc_Exception, "invalid LOD index");
+		return PyErr_Format(PyExc_Exception, "invalid LOD index");
 
 	mesh->GetSourceModel(lod_index).RawMeshBulkData->LoadRawMesh(raw_mesh);
 
@@ -143,7 +143,7 @@ PyObject *py_ue_static_mesh_import_lod(ue_PyUObject *self, PyObject * args)
 
 	UStaticMesh *mesh = ue_py_check_type<UStaticMesh>(self);
 	if (!mesh)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a UStaticMesh");
+		return PyErr_Format(PyExc_Exception, "uobject is not a UStaticMesh");
 
 	if (FbxMeshUtils::ImportStaticMeshLOD(mesh, FString(UTF8_TO_TCHAR(filename)), lod_level))
 	{

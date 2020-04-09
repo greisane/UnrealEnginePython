@@ -134,7 +134,7 @@ static int py_ue_ivoice_capture_init(ue_PyIVoiceCapture *self, PyObject * args)
 	TSharedPtr<IVoiceCapture> voice_capture_ptr = FVoiceModule::Get().CreateVoiceCapture();
 	if (!voice_capture_ptr.IsValid())
 	{
-		PyErr_SetString(ue_PyExc_Exception, "unable to create a new VoiceCapture");
+		PyErr_SetString(PyExc_Exception, "unable to create a new VoiceCapture");
 		return -1;
 	}
 

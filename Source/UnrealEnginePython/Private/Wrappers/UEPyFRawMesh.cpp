@@ -16,7 +16,7 @@ static PyObject *py_ue_fraw_mesh_set_vertex_positions(ue_PyFRawMesh *self, PyObj
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<FVector> vertex;
 
@@ -33,7 +33,7 @@ static PyObject *py_ue_fraw_mesh_set_vertex_positions(ue_PyFRawMesh *self, PyObj
 		else
 		{
 			if (!PyNumber_Check(item_x))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_x = PyNumber_Float(item_x);
 			float x = PyFloat_AsDouble(py_x);
 			Py_DECREF(py_x);
@@ -42,7 +42,7 @@ static PyObject *py_ue_fraw_mesh_set_vertex_positions(ue_PyFRawMesh *self, PyObj
 			if (!item_y)
 				break;
 			if (!PyNumber_Check(item_y))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_y = PyNumber_Float(item_y);
 			float y = PyFloat_AsDouble(py_y);
 			Py_DECREF(py_y);
@@ -51,7 +51,7 @@ static PyObject *py_ue_fraw_mesh_set_vertex_positions(ue_PyFRawMesh *self, PyObj
 			if (!item_z)
 				break;
 			if (!PyNumber_Check(item_z))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_z = PyNumber_Float(item_z);
 			float z = PyFloat_AsDouble(py_z);
 			Py_DECREF(py_z);
@@ -79,7 +79,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tex_coords(ue_PyFRawMesh *self, PyObj
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<FVector2D> uv;
 
@@ -99,7 +99,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tex_coords(ue_PyFRawMesh *self, PyObj
 		else
 		{
 			if (!PyNumber_Check(item_x))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_x = PyNumber_Float(item_x);
 			float x = PyFloat_AsDouble(py_x);
 			Py_DECREF(py_x);
@@ -108,7 +108,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tex_coords(ue_PyFRawMesh *self, PyObj
 			if (!item_y)
 				break;
 			if (!PyNumber_Check(item_y))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_y = PyNumber_Float(item_y);
 			float y = PyFloat_AsDouble(py_y);
 			Py_DECREF(py_y);
@@ -135,7 +135,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_indices(ue_PyFRawMesh *self, PyObject
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<uint32> indices;
 
@@ -145,7 +145,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_indices(ue_PyFRawMesh *self, PyObject
 		if (!item)
 			break;
 		if (!PyNumber_Check(item))
-			return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+			return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 		PyObject *py_value = PyNumber_Long(item);
 		uint32 i = PyLong_AsUnsignedLong(py_value);
 		Py_DECREF(py_value);
@@ -171,7 +171,7 @@ static PyObject *py_ue_fraw_mesh_set_face_material_indices(ue_PyFRawMesh *self, 
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<int32> indices;
 
@@ -181,7 +181,7 @@ static PyObject *py_ue_fraw_mesh_set_face_material_indices(ue_PyFRawMesh *self, 
 		if (!item)
 			break;
 		if (!PyNumber_Check(item))
-			return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+			return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 		PyObject *py_value = PyNumber_Long(item);
 		int32 i = PyLong_AsLong(py_value);
 		Py_DECREF(py_value);
@@ -207,7 +207,7 @@ static PyObject *py_ue_fraw_mesh_save_to_static_mesh_source_model(ue_PyFRawMesh 
 
 	FStaticMeshSourceModel *source_model = ue_py_check_struct<FStaticMeshSourceModel>(model);
 	if (!source_model)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FStaticMeshSourceModel");
+		return PyErr_Format(PyExc_Exception, "argument is not a FStaticMeshSourceModel");
 
 	if (self->raw_mesh.WedgeIndices.Num() >= 3)
 	{
@@ -219,7 +219,7 @@ static PyObject *py_ue_fraw_mesh_save_to_static_mesh_source_model(ue_PyFRawMesh 
 	}
 
 	if (!self->raw_mesh.IsValidOrFixable())
-		return PyErr_Format(ue_PyExc_Exception, "FRawMesh is not valid or fixable");
+		return PyErr_Format(PyExc_Exception, "FRawMesh is not valid or fixable");
 
 	source_model->RawMeshBulkData->SaveRawMesh(self->raw_mesh);
 
@@ -235,7 +235,7 @@ static PyObject *py_ue_fraw_mesh_get_wedge_position(ue_PyFRawMesh *self, PyObjec
 	}
 
 	if (index > self->raw_mesh.WedgeIndices.Num() - 1 || index < 0)
-		return PyErr_Format(ue_PyExc_IndexError, "wedge index error");
+		return PyErr_Format(PyExc_IndexError, "wedge index error");
 
 	FVector vec = self->raw_mesh.GetWedgePosition(index);
 
@@ -252,7 +252,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_x(ue_PyFRawMesh *self, PyObje
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<FVector> vertex;
 
@@ -268,7 +268,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_x(ue_PyFRawMesh *self, PyObje
 		else
 		{
 			if (!PyNumber_Check(item_x))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_x = PyNumber_Float(item_x);
 			float x = PyFloat_AsDouble(py_x);
 			Py_DECREF(py_x);
@@ -277,7 +277,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_x(ue_PyFRawMesh *self, PyObje
 			if (!item_y)
 				break;
 			if (!PyNumber_Check(item_y))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_y = PyNumber_Float(item_y);
 			float y = PyFloat_AsDouble(py_y);
 			Py_DECREF(py_y);
@@ -286,7 +286,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_x(ue_PyFRawMesh *self, PyObje
 			if (!item_z)
 				break;
 			if (!PyNumber_Check(item_z))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_z = PyNumber_Float(item_z);
 			float z = PyFloat_AsDouble(py_z);
 			Py_DECREF(py_z);
@@ -313,7 +313,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_y(ue_PyFRawMesh *self, PyObje
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<FVector> vertex;
 
@@ -329,7 +329,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_y(ue_PyFRawMesh *self, PyObje
 		else
 		{
 			if (!PyNumber_Check(item_x))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_x = PyNumber_Float(item_x);
 			float x = PyFloat_AsDouble(py_x);
 			Py_DECREF(py_x);
@@ -338,7 +338,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_y(ue_PyFRawMesh *self, PyObje
 			if (!item_y)
 				break;
 			if (!PyNumber_Check(item_y))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_y = PyNumber_Float(item_y);
 			float y = PyFloat_AsDouble(py_y);
 			Py_DECREF(py_y);
@@ -347,7 +347,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_y(ue_PyFRawMesh *self, PyObje
 			if (!item_z)
 				break;
 			if (!PyNumber_Check(item_z))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_z = PyNumber_Float(item_z);
 			float z = PyFloat_AsDouble(py_z);
 			Py_DECREF(py_z);
@@ -374,7 +374,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_z(ue_PyFRawMesh *self, PyObje
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<FVector> vertex;
 
@@ -391,7 +391,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_z(ue_PyFRawMesh *self, PyObje
 		else
 		{
 			if (!PyNumber_Check(item_x))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_x = PyNumber_Float(item_x);
 			float x = PyFloat_AsDouble(py_x);
 			Py_DECREF(py_x);
@@ -400,7 +400,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_z(ue_PyFRawMesh *self, PyObje
 			if (!item_y)
 				break;
 			if (!PyNumber_Check(item_y))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_y = PyNumber_Float(item_y);
 			float y = PyFloat_AsDouble(py_y);
 			Py_DECREF(py_y);
@@ -409,7 +409,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_tangent_z(ue_PyFRawMesh *self, PyObje
 			if (!item_z)
 				break;
 			if (!PyNumber_Check(item_z))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_z = PyNumber_Float(item_z);
 			float z = PyFloat_AsDouble(py_z);
 			Py_DECREF(py_z);
@@ -437,7 +437,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_colors(ue_PyFRawMesh *self, PyObject 
 
 	PyObject *iter = PyObject_GetIter(data);
 	if (!iter)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not an iterable");
+		return PyErr_Format(PyExc_TypeError, "argument is not an iterable");
 
 	TArray<FColor> colors;
 
@@ -453,7 +453,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_colors(ue_PyFRawMesh *self, PyObject 
 		else
 		{
 			if (!PyNumber_Check(item_x))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_x = PyNumber_Long(item_x);
 			uint8 x = PyLong_AsUnsignedLong(py_x);
 			Py_DECREF(py_x);
@@ -462,7 +462,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_colors(ue_PyFRawMesh *self, PyObject 
 			if (!item_y)
 				break;
 			if (!PyNumber_Check(item_y))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_y = PyNumber_Long(item_y);
 			uint8 y = PyLong_AsUnsignedLong(py_y);
 			Py_DECREF(py_y);
@@ -471,7 +471,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_colors(ue_PyFRawMesh *self, PyObject 
 			if (!item_z)
 				break;
 			if (!PyNumber_Check(item_z))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_z = PyNumber_Long(item_z);
 			uint8 z = PyLong_AsUnsignedLong(py_z);
 			Py_DECREF(py_z);
@@ -480,7 +480,7 @@ static PyObject *py_ue_fraw_mesh_set_wedge_colors(ue_PyFRawMesh *self, PyObject 
 			if (!item_a)
 				break;
 			if (!PyNumber_Check(item_a))
-				return PyErr_Format(ue_PyExc_Exception, "argument iterable does not contains only numbers");
+				return PyErr_Format(PyExc_Exception, "argument iterable does not contains only numbers");
 			PyObject *py_a = PyNumber_Long(item_a);
 			uint8 a = PyLong_AsUnsignedLong(py_a);
 			Py_DECREF(py_a);
@@ -602,7 +602,7 @@ static PyObject *py_ue_fraw_mesh_get_wedge_tex_coords(ue_PyFRawMesh *self, PyObj
 		return nullptr;
 
 	if (index < 0 || index >= MAX_MESH_TEXTURE_COORDS)
-		return PyErr_Format(ue_PyExc_Exception, "invalid TexCoords index");
+		return PyErr_Format(PyExc_Exception, "invalid TexCoords index");
 
 	PyObject *py_list = PyList_New(0);
 

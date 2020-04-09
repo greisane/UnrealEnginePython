@@ -15,7 +15,7 @@ PyObject* py_ue_create_landscape_info(ue_PyUObject* self, PyObject* args)
 
 	ALandscapeProxy* landscape = ue_py_check_type<ALandscapeProxy>(self);
 	if (!landscape)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a ULandscapeProxy");
+		return PyErr_Format(PyExc_Exception, "uobject is not a ULandscapeProxy");
 
 	Py_RETURN_UOBJECT(landscape->CreateLandscapeInfo());
 }
@@ -27,7 +27,7 @@ PyObject* py_ue_get_landscape_info(ue_PyUObject* self, PyObject* args)
 
 	ALandscapeProxy* landscape = ue_py_check_type<ALandscapeProxy>(self);
 	if (!landscape)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a ULandscapeProxy");
+		return PyErr_Format(PyExc_Exception, "uobject is not a ULandscapeProxy");
 
 	ULandscapeInfo* info = landscape->GetLandscapeInfo();
 	if (!info)
@@ -53,14 +53,14 @@ PyObject* py_ue_landscape_import(ue_PyUObject* self, PyObject* args)
 
 	ALandscapeProxy* landscape = ue_py_check_type<ALandscapeProxy>(self);
 	if (!landscape)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a ULandscapeProxy");
+		return PyErr_Format(PyExc_Exception, "uobject is not a ULandscapeProxy");
 
 	int quads_per_component = sections_per_component * section_size;
 	int size_x = component_x * quads_per_component + 1;
 	int size_y = component_y * quads_per_component + 1;
 
 	if (heightmap_buffer.len < (Py_ssize_t)(size_x * size_y * sizeof(uint16)))
-		return PyErr_Format(ue_PyExc_Exception, "not enough heightmap data, expecting %lu bytes", size_x * size_y * sizeof(uint16));
+		return PyErr_Format(PyExc_Exception, "not enough heightmap data, expecting %lu bytes", size_x * size_y * sizeof(uint16));
 
 	uint16* data = (uint16*)heightmap_buffer.buf;
 
@@ -96,14 +96,14 @@ PyObject* py_ue_landscape_export_to_raw_mesh(ue_PyUObject* self, PyObject* args)
 
 	ALandscapeProxy* landscape = ue_py_check_type<ALandscapeProxy>(self);
 	if (!landscape)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a ULandscapeProxy");
+		return PyErr_Format(PyExc_Exception, "uobject is not a ULandscapeProxy");
 
 #if ENGINE_MINOR_VERSION > 21
-	return PyErr_Format(ue_PyExc_Exception, "MeshDescription struct is still unsupported");;
+	return PyErr_Format(PyExc_Exception, "MeshDescription struct is still unsupported");;
 #else
 	FRawMesh raw_mesh;
 	if (!landscape->ExportToRawMesh(lod, raw_mesh))
-		return PyErr_Format(ue_PyExc_Exception, "unable to export landscape to FRawMesh");
+		return PyErr_Format(PyExc_Exception, "unable to export landscape to FRawMesh");
 
 	return py_ue_new_fraw_mesh(raw_mesh);
 #endif

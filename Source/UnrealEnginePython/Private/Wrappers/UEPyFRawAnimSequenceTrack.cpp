@@ -63,7 +63,7 @@ static int py_ue_fraw_anim_sequence_track_set_pos_keys(ue_PyFRawAnimSequenceTrac
 			}
 		}
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of FVector's");
+	PyErr_SetString(PyExc_TypeError, "value is not an iterable of FVector's");
 	return -1;
 }
 
@@ -94,7 +94,7 @@ static int py_ue_fraw_anim_sequence_track_set_scale_keys(ue_PyFRawAnimSequenceTr
 			}
 		}
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of FVector's");
+	PyErr_SetString(PyExc_TypeError, "value is not an iterable of FVector's");
 	return -1;
 }
 
@@ -125,7 +125,7 @@ static int py_ue_fraw_anim_sequence_track_set_rot_keys(ue_PyFRawAnimSequenceTrac
 			}
 		}
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not an iterable of FQuat's");
+	PyErr_SetString(PyExc_TypeError, "value is not an iterable of FQuat's");
 	return -1;
 }
 

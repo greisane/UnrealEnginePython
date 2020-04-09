@@ -6,7 +6,7 @@ static PyObject *py_ue_fsocket_start_receiver(ue_PyFSocket *self, PyObject * arg
 
 	if (self->udp_receiver)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "receiver already started");
+		return PyErr_Format(PyExc_Exception, "receiver already started");
 	}
 
 	self->udp_receiver = new FUdpSocketReceiver(self->sock, FTimespan::FromMilliseconds(100), *FString::Printf(TEXT("%s Thread"), *self->sock->GetDescription()));
@@ -41,7 +41,7 @@ static PyObject *py_ue_fsocket_stop_receiver(ue_PyFSocket *self, PyObject * args
 {
 	if (!self->udp_receiver)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "receiver not started");
+		return PyErr_Format(PyExc_Exception, "receiver not started");
 	}
 
 	sock_stop_receiver(self);
@@ -55,7 +55,7 @@ static PyObject *py_ue_fsocket_close(ue_PyFSocket *self, PyObject * args)
 
 	if (self->udp_receiver)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "you have to stop its receiver before closing a socket");
+		return PyErr_Format(PyExc_Exception, "you have to stop its receiver before closing a socket");
 	}
 
 	sock_close(self);

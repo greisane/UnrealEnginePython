@@ -68,7 +68,7 @@ static PyObject *py_ue_slevel_viewport_set_exposure_settings(ue_PySLevelViewport
 	FExposureSettings *settings = ue_py_check_struct<FExposureSettings>(py_settings);
 	if (!settings)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FExposureSettings");
+		return PyErr_Format(PyExc_Exception, "argument is not a FExposureSettings");
 	}
 
 	py_SLevelViewport->GetViewportClient()->ExposureSettings = *settings;

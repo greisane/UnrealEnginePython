@@ -36,9 +36,10 @@
 //-----------------------------------------------------------------------------
 
 #include "PythonInterface.h"
-#include "UnrealEnginePython.h"
 #include "HAL/PlatformProcess.h"
 #include "Containers/StringConv.h"
+
+DEFINE_LOG_CATEGORY(LogPython);
 
 bool _CFunction_Check(PyObject* op) { return op->ob_type == _CFunction_Type(); }
 bool _CObject_Check(PyObject* op) { return op->ob_type == _CObject_Type(); }
@@ -62,68 +63,68 @@ bool _Bytes_Check(PyObject* op) { return op->ob_type == _Bytes_Type(); }
 #if DELAYLOAD_PYTHON_DLL
 
 #if PLATFORM_WINDOWS
-static PyObject* ptr__Exc_ArithmeticError = nullptr;
-static PyObject* ptr__Exc_AssertionError = nullptr;
-static PyObject* ptr__Exc_AttributeError = nullptr;
-static PyObject* ptr__Exc_EnvironmentError = nullptr;
-static PyObject* ptr__Exc_EOFError = nullptr;
-static PyObject* ptr__Exc_Exception = nullptr;
-static PyObject* ptr__Exc_FloatingPointError = nullptr;
-static PyObject* ptr__Exc_ImportError = nullptr;
-static PyObject* ptr__Exc_IndexError = nullptr;
-static PyObject* ptr__Exc_IOError = nullptr;
-static PyObject* ptr__Exc_KeyboardInterrupt = nullptr;
-static PyObject* ptr__Exc_KeyError = nullptr;
-static PyObject* ptr__Exc_LookupError = nullptr;
-static PyObject* ptr__Exc_MemoryError = nullptr;
-static PyObject* ptr__Exc_MemoryErrorInst = nullptr;
-static PyObject* ptr__Exc_ModuleNotFoundError = nullptr;
-static PyObject* ptr__Exc_NameError = nullptr;
-static PyObject* ptr__Exc_NotImplementedError = nullptr;
-static PyObject* ptr__Exc_OSError = nullptr;
-static PyObject* ptr__Exc_OverflowError = nullptr;
-static PyObject* ptr__Exc_RuntimeError = nullptr;
-static PyObject* ptr__Exc_StandardError = nullptr;
-static PyObject* ptr__Exc_SyntaxError = nullptr;
-static PyObject* ptr__Exc_SystemError = nullptr;
-static PyObject* ptr__Exc_SystemExit = nullptr;
-static PyObject* ptr__Exc_TypeError = nullptr;
-static PyObject* ptr__Exc_ValueError = nullptr;
-static PyObject* ptr__Exc_ZeroDivisionError = nullptr;
+static PyObject* ptr__Exc_ArithmeticError = NULL;
+static PyObject* ptr__Exc_AssertionError = NULL;
+static PyObject* ptr__Exc_AttributeError = NULL;
+static PyObject* ptr__Exc_EnvironmentError = NULL;
+static PyObject* ptr__Exc_EOFError = NULL;
+static PyObject* ptr__Exc_Exception = NULL;
+static PyObject* ptr__Exc_FloatingPointError = NULL;
+static PyObject* ptr__Exc_ImportError = NULL;
+static PyObject* ptr__Exc_IndexError = NULL;
+static PyObject* ptr__Exc_IOError = NULL;
+static PyObject* ptr__Exc_KeyboardInterrupt = NULL;
+static PyObject* ptr__Exc_KeyError = NULL;
+static PyObject* ptr__Exc_LookupError = NULL;
+static PyObject* ptr__Exc_MemoryError = NULL;
+static PyObject* ptr__Exc_MemoryErrorInst = NULL;
+static PyObject* ptr__Exc_NameError = NULL;
+static PyObject* ptr__Exc_NotImplementedError = NULL;
+static PyObject* ptr__Exc_OSError = NULL;
+static PyObject* ptr__Exc_OverflowError = NULL;
+static PyObject* ptr__Exc_RuntimeError = NULL;
+static PyObject* ptr__Exc_StandardError = NULL;
+static PyObject* ptr__Exc_SyntaxError = NULL;
+static PyObject* ptr__Exc_SystemError = NULL;
+static PyObject* ptr__Exc_SystemExit = NULL;
+static PyObject* ptr__Exc_TypeError = NULL;
+static PyObject* ptr__Exc_ValueError = NULL;
+static PyObject* ptr__Exc_ZeroDivisionError = NULL;
+static PyObject* ptr__Exc_WindowsError = NULL;
 
-static PyObject* ptr__Exc_IndentationError = nullptr;
-static PyObject* ptr__Exc_TabError = nullptr;
-static PyObject* ptr__Exc_UnboundLocalError = nullptr;
-static PyObject* ptr__Exc_UnicodeError = nullptr;
-static PyObject* ptr__PyNone = nullptr;
-static PyObject* ptr__PyFalse = nullptr;
-static PyObject* ptr__PyTrue = nullptr;
-static PyTypeObject* ptr__CFunction_Type = nullptr;
-static PyTypeObject* ptr__CObject_Type = nullptr;
-static PyTypeObject* ptr__Complex_Type = nullptr;
-static PyTypeObject* ptr__Dict_Type = nullptr;
-static PyTypeObject* ptr__Float_Type = nullptr;
-static PyTypeObject* ptr__Function_Type = nullptr;
-static PyTypeObject* ptr__Bool_Type = nullptr;
-static PyTypeObject* ptr__List_Type = nullptr;
-static PyTypeObject* ptr__Long_Type = nullptr;
-static PyTypeObject* ptr__Method_Type = nullptr;
-static PyTypeObject* ptr__Module_Type = nullptr;
-static PyTypeObject* ptr__Range_Type = nullptr;
-static PyTypeObject* ptr__Slice_Type = nullptr;
-static PyTypeObject* ptr__TraceBack_Type = nullptr;
-static PyTypeObject* ptr__Tuple_Type = nullptr;
-static PyTypeObject* ptr__Type_Type = nullptr;
-static PyTypeObject* ptr__Unicode_Type = nullptr;
-static PyTypeObject* ptr__Bytes_Type = nullptr;
+static PyObject* ptr__Exc_IndentationError = NULL;
+static PyObject* ptr__Exc_TabError = NULL;
+static PyObject* ptr__Exc_UnboundLocalError = NULL;
+static PyObject* ptr__Exc_UnicodeError = NULL;
+static PyObject* ptr__PyNone = NULL;
+static PyObject* ptr__PyFalse = NULL;
+static PyObject* ptr__PyTrue = NULL;
+static PyTypeObject* ptr__CFunction_Type = NULL;
+static PyTypeObject* ptr__CObject_Type = NULL;
+static PyTypeObject* ptr__Complex_Type = NULL;
+static PyTypeObject* ptr__Dict_Type = NULL;
+static PyTypeObject* ptr__Float_Type = NULL;
+static PyTypeObject* ptr__Function_Type = NULL;
+static PyTypeObject* ptr__Bool_Type = NULL;
+static PyTypeObject* ptr__List_Type = NULL;
+static PyTypeObject* ptr__Long_Type = NULL;
+static PyTypeObject* ptr__Method_Type = NULL;
+static PyTypeObject* ptr__Module_Type = NULL;
+static PyTypeObject* ptr__Range_Type = NULL;
+static PyTypeObject* ptr__Slice_Type = NULL;
+static PyTypeObject* ptr__TraceBack_Type = NULL;
+static PyTypeObject* ptr__Tuple_Type = NULL;
+static PyTypeObject* ptr__Type_Type = NULL;
+static PyTypeObject* ptr__Unicode_Type = NULL;
+static PyTypeObject* ptr__Bytes_Type = NULL;
 
-static int* ptr_Py_DebugFlag = nullptr;
-static int* ptr_Py_InteractiveFlag = nullptr;
-static int* ptr_Py_OptimizeFlag = nullptr;
-static int* ptr_Py_NoSiteFlag = nullptr;
-static int* ptr_Py_VerboseFlag = nullptr;
+static int* ptr_Py_DebugFlag = NULL;
+static int* ptr_Py_InteractiveFlag = NULL;
+static int* ptr_Py_OptimizeFlag = NULL;
+static int* ptr_Py_NoSiteFlag = NULL;
+static int* ptr_Py_VerboseFlag = NULL;
 
-static char** ptr__Py_PackageContext = nullptr;
+static char** ptr__Py_PackageContext = NULL;
 
 #ifdef Py_REF_DEBUG
 int* ptr_Py_RefTotal;
@@ -226,7 +227,6 @@ void LoadPythonSymbols(void* DllHandle)
     ptr__Exc_LookupError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_LookupError");
     ptr__Exc_MemoryError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_MemoryError");
     ptr__Exc_MemoryErrorInst = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_MemoryErrorInst");
-    ptr__Exc_ModuleNotFoundError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_ModuleNotFoundError");
     ptr__Exc_NameError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_NameError");
     ptr__Exc_NotImplementedError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_NotImplementedError");
     ptr__Exc_OSError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_OSError");
@@ -238,6 +238,9 @@ void LoadPythonSymbols(void* DllHandle)
     ptr__Exc_SystemExit = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_SystemExit");
     ptr__Exc_TypeError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_TypeError");
     ptr__Exc_ValueError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_ValueError");
+#ifdef MS_WINDOWS
+    ptr__Exc_WindowsError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_WindowsError");
+#endif
     ptr__Exc_ZeroDivisionError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_ZeroDivisionError");
     ptr__Exc_IndentationError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_IndentationError");
     ptr__Exc_TabError = GetPyObjectPointer_As_PyObjectPointer(DllHandle, "PyExc_TabError");
@@ -286,7 +289,6 @@ PyObject* _Exc_KeyError() { return ptr__Exc_KeyError; }
 PyObject* _Exc_LookupError() { return ptr__Exc_LookupError; }
 PyObject* _Exc_MemoryError() { return ptr__Exc_MemoryError; }
 PyObject* _Exc_MemoryErrorInst() { return ptr__Exc_MemoryErrorInst; }
-PyObject* _Exc_ModuleNotFoundError() { return ptr__Exc_ModuleNotFoundError; }
 PyObject* _Exc_NameError() { return ptr__Exc_NameError; }
 PyObject* _Exc_NotImplementedError() { return ptr__Exc_NotImplementedError; }
 PyObject* _Exc_OSError() { return ptr__Exc_OSError; }
@@ -298,6 +300,9 @@ PyObject* _Exc_SystemError() { return ptr__Exc_SystemError; }
 PyObject* _Exc_SystemExit() { return ptr__Exc_SystemExit; }
 PyObject* _Exc_TypeError() { return ptr__Exc_TypeError; }
 PyObject* _Exc_ValueError() { return ptr__Exc_ValueError; }
+#ifdef MS_WINDOWS
+PyObject* _Exc_WindowsError() { return ptr__Exc_WindowsError; }
+#endif
 PyObject* _Exc_ZeroDivisionError() { return ptr__Exc_ZeroDivisionError; }
 PyObject* _Exc_IndentationError() { return ptr__Exc_IndentationError; }
 PyObject* _Exc_TabError() { return ptr__Exc_TabError; }
@@ -356,31 +361,31 @@ int& _Py_VerboseFlag() { return *ptr_Py_VerboseFlag; }
         _Py_Dealloc((PyObject *)(op))
 #endif
 
-void ue_Py_XINCREF(void* op)
+void _XINCREF(PyObject* op)
 {
     // This function must match the contents of Py_XINCREF(op)
-    if (op == nullptr)
+    if (op == NULL)
         return;
 
 #ifdef Py_REF_DEBUG
     (*ptr_Py_RefTotal)++;
 #endif
-    ((PyObject*)op)->ob_refcnt++;
+    (op)->ob_refcnt++;
 
 }
 
-void ue_Py_XDECREF(void* op)
+void _XDECREF(PyObject* op)
 {
     // This function must match the contents of Py_XDECREF(op);
-    if (op == nullptr)
+    if (op == NULL)
         return;
 
 #ifdef Py_REF_DEBUG
     (*ptr_Py_RefTotal)--;
 #endif
 
-    if (--((PyObject*)op)->ob_refcnt == 0)
-        _Py_Dealloc((PyObject*)op);
+    if (--(op)->ob_refcnt == 0)
+        _Py_Dealloc((PyObject*)(op));
 }
 
 
@@ -414,8 +419,7 @@ PyObject* _Exc_KeyboardInterrupt() { return ::PyExc_KeyboardInterrupt; }
 PyObject* _Exc_KeyError() { return ::PyExc_KeyError; }
 PyObject* _Exc_LookupError() { return ::PyExc_LookupError; }
 PyObject* _Exc_MemoryError() { return ::PyExc_MemoryError; }
-PyObject* _Exc_MemoryErrorInst() { return ::PyExc_MemoryErrorInst; }
-PyObject* _Exc_ModuleNotFoundError() { return ::PyExc_ModuleNotFoundError; }
+//PyObject* _Exc_MemoryErrorInst() { return ::PyExc_MemoryErrorInst; }
 PyObject* _Exc_NameError() { return ::PyExc_NameError; }
 PyObject* _Exc_NotImplementedError() { return ::PyExc_NotImplementedError; }
 PyObject* _Exc_OSError() { return ::PyExc_OSError; }
@@ -432,6 +436,12 @@ PyObject* _Exc_TabError() { return ::PyExc_TabError; }
 PyObject* _Exc_UnboundLocalError() { return ::PyExc_UnboundLocalError; }
 PyObject* _Exc_UnicodeError() { return ::PyExc_UnicodeError; }
 
+#ifdef MS_WINDOWS
+PyObject* _Exc_WindowsError() { return ::PyExc_WindowsError; }
+#endif
+
+
+
 
 //
 //    wrap items in Object.h
@@ -442,7 +452,7 @@ PyObject* _False() { return Py_False; }
 PyObject* _True() { return Py_True; }
 
 PyTypeObject* _CFunction_Type() { return &PyCFunction_Type; }
-PyTypeObject* _CObject_Type() { return &PyCObject_Type; }
+//PyTypeObject* _CObject_Type() { return &PyCObject_Type; }
 PyTypeObject* _Complex_Type() { return &PyComplex_Type; }
 PyTypeObject* _Dict_Type() { return &PyDict_Type; }
 PyTypeObject* _Float_Type() { return &PyFloat_Type; }
@@ -468,17 +478,17 @@ int& _Py_InteractiveFlag() { return Py_InteractiveFlag; }
 int& _Py_OptimizeFlag() { return Py_OptimizeFlag; }
 int& _Py_NoSiteFlag() { return Py_NoSiteFlag; }
 int& _Py_VerboseFlag() { return Py_VerboseFlag; }
-char* __Py_PackageContext() { return __Py_PackageContext; }
+//char* __Py_PackageContext() { return _Py_PackageContext; }
 
 //
 //    Needed to keep the abstactions for delayload interface
 //
-void ue_Py_XINCREF(void* op)
+void _XINCREF(PyObject* op)
 {
     Py_XINCREF(op);
 }
 
-void ue_Py_XDECREF(void* op)
+void _XDECREF(PyObject* op)
 {
     Py_XDECREF(op);
 }

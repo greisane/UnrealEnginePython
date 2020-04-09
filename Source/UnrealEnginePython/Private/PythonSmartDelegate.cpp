@@ -83,7 +83,7 @@ void FPythonSmartDelegate::PyFOnMainFrameCreationFinished(TSharedPtr<SWindow> In
 FPythonSmartDelegate::~FPythonSmartDelegate()
 {
 	FScopePythonGIL gil;
-	ue_Py_XDECREF(py_callable);
+	Py_XDECREF(py_callable);
 #if defined(UEPY_MEMORY_DEBUG)
 	UE_LOG(LogPython, Warning, TEXT("PythonSmartDelegate callable XDECREF'ed"));
 #endif

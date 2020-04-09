@@ -1,6 +1,5 @@
 #pragma once
 
-#include "UnrealEnginePython.h"
 #include "UEPySEditorViewport.h"
 
 #if WITH_EDITOR

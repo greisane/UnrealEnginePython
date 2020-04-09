@@ -10,7 +10,7 @@ PyObject *py_ue_pawn_get_controller(ue_PyUObject * self, PyObject * args)
 
 	if (!self->ue_object->IsA<APawn>())
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not an APawn");
+		return PyErr_Format(PyExc_Exception, "uobject is not an APawn");
 	}
 
 	APawn *pawn = (APawn *)self->ue_object;

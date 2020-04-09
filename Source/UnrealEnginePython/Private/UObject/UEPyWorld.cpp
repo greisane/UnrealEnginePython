@@ -21,7 +21,7 @@ PyObject *py_ue_world_exec(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	if (world->Exec(world, UTF8_TO_TCHAR(command)))
 		Py_RETURN_TRUE;
@@ -36,12 +36,12 @@ PyObject *py_ue_quit_game(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	// no need to support multiple controllers
 	APlayerController *controller = world->GetFirstPlayerController();
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve the first controller");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve the first controller");
 
 #if ENGINE_MINOR_VERSION > 20
 	UKismetSystemLibrary::QuitGame(world, controller, EQuitPreference::Quit, false);
@@ -59,7 +59,7 @@ PyObject *py_ue_get_world_type(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	return PyLong_FromUnsignedLong(world->WorldType);
 }
@@ -71,7 +71,7 @@ PyObject *py_ue_play(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	world->BeginPlay();
 
@@ -93,7 +93,7 @@ PyObject *py_ue_world_tick(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	world->Tick(LEVELTICK_All, delta_time);
 
@@ -110,7 +110,7 @@ PyObject *py_ue_all_objects(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	PyObject *ret = PyList_New(0);
 
@@ -134,7 +134,7 @@ PyObject *py_ue_all_actors(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	PyObject *ret = PyList_New(0);
 
@@ -165,12 +165,12 @@ PyObject *py_ue_find_object(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	UObject *u_object = FindObject<UObject>(world->GetOutermost(), UTF8_TO_TCHAR(name));
 
 	if (!u_object)
-		return PyErr_Format(ue_PyExc_Exception, "unable to find object %s", name);
+		return PyErr_Format(PyExc_Exception, "unable to find object %s", name);
 
 	Py_RETURN_UOBJECT(u_object);
 }
@@ -182,7 +182,7 @@ PyObject *py_ue_get_world(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	Py_RETURN_UOBJECT(world);
 }
@@ -194,11 +194,11 @@ PyObject *py_ue_get_game_viewport(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	UGameViewportClient *viewport_client = world->GetGameViewport();
 	if (!viewport_client)
-		return PyErr_Format(ue_PyExc_Exception, "world has no GameViewportClient");
+		return PyErr_Format(PyExc_Exception, "world has no GameViewportClient");
 
 	Py_RETURN_UOBJECT((UObject *)viewport_client);
 }
@@ -223,7 +223,7 @@ PyObject *py_ue_set_view_target(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	PyObject *py_obj;
 	int controller_id = 0;
@@ -235,12 +235,12 @@ PyObject *py_ue_set_view_target(ue_PyUObject * self, PyObject * args)
 	AActor *actor = ue_py_check_type<AActor>(py_obj);
 	if (!actor)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not an actor");
+		return PyErr_Format(PyExc_Exception, "argument is not an actor");
 	}
 
 	APlayerController *controller = UGameplayStatics::GetPlayerController(world, controller_id);
 	if (!controller)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve controller %d", controller_id);
+		return PyErr_Format(PyExc_Exception, "unable to retrieve controller %d", controller_id);
 
 	controller->SetViewTarget(actor);
 
@@ -255,7 +255,7 @@ PyObject *py_ue_get_world_delta_seconds(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	return Py_BuildValue("f", UGameplayStatics::GetWorldDeltaSeconds(world));
 }
@@ -267,7 +267,7 @@ PyObject *py_ue_get_levels(ue_PyUObject * self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	PyObject *ret = PyList_New(0);
 
@@ -289,7 +289,7 @@ PyObject *py_ue_get_current_level(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	ULevel *level = world->GetCurrentLevel();
 	if (!level)
@@ -311,11 +311,11 @@ PyObject *py_ue_set_current_level(ue_PyUObject *self, PyObject * args)
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	ULevel *level = ue_py_check_type<ULevel>(py_level);
 	if (!level)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a ULevel");
+		return PyErr_Format(PyExc_Exception, "argument is not a ULevel");
 
 #if WITH_EDITOR || ENGINE_MINOR_VERSION < 22
 
@@ -336,7 +336,7 @@ PyObject *py_ue_get_level_script_blueprint(ue_PyUObject *self, PyObject * args)
 	ULevel *level = ue_py_check_type<ULevel>(self);
 	if (!level)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a ULevel");
+		return PyErr_Format(PyExc_Exception, "uobject is not a ULevel");
 	}
 
 	Py_RETURN_UOBJECT((UObject*)level->GetLevelScriptBlueprint());
@@ -352,11 +352,11 @@ PyObject *py_ue_world_create_folder(ue_PyUObject *self, PyObject * args)
 		return nullptr;
 
 	if (!FActorFolders::IsAvailable())
-		return PyErr_Format(ue_PyExc_Exception, "FActorFolders is not available");
+		return PyErr_Format(PyExc_Exception, "FActorFolders is not available");
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	FName FolderPath = FName(UTF8_TO_TCHAR(path));
 
@@ -375,11 +375,11 @@ PyObject *py_ue_world_delete_folder(ue_PyUObject *self, PyObject * args)
 		return nullptr;
 
 	if (!FActorFolders::IsAvailable())
-		return PyErr_Format(ue_PyExc_Exception, "FActorFolders is not available");
+		return PyErr_Format(PyExc_Exception, "FActorFolders is not available");
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	FName FolderPath = FName(UTF8_TO_TCHAR(path));
 
@@ -399,11 +399,11 @@ PyObject *py_ue_world_rename_folder(ue_PyUObject *self, PyObject * args)
 		return nullptr;
 
 	if (!FActorFolders::IsAvailable())
-		return PyErr_Format(ue_PyExc_Exception, "FActorFolders is not available");
+		return PyErr_Format(PyExc_Exception, "FActorFolders is not available");
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	FName FolderPath = FName(UTF8_TO_TCHAR(path));
 	FName NewFolderPath = FName(UTF8_TO_TCHAR(new_path));
@@ -420,11 +420,11 @@ PyObject *py_ue_world_folders(ue_PyUObject *self, PyObject * args)
 	ue_py_check(self);
 
 	if (!FActorFolders::IsAvailable())
-		return PyErr_Format(ue_PyExc_Exception, "FActorFolders is not available");
+		return PyErr_Format(PyExc_Exception, "FActorFolders is not available");
 
 	UWorld *world = ue_get_uworld(self);
 	if (!world)
-		return PyErr_Format(ue_PyExc_Exception, "unable to retrieve UWorld from uobject");
+		return PyErr_Format(PyExc_Exception, "unable to retrieve UWorld from uobject");
 
 	const TMap<FName, FActorFolderProps> &Folders = FActorFolders::Get().GetFolderPropertiesForWorld(*world);
 

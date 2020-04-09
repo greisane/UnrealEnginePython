@@ -80,7 +80,7 @@ static PyObject *py_ue_frandomstream_vrand_cone(ue_PyFRandomStream *self, PyObje
 		return NULL;
 	ue_PyFVector *py_vec = py_ue_is_fvector(py_obj);
 	if (!py_vec)
-		return PyErr_Format(ue_PyExc_TypeError, "argument is not a FVector");
+		return PyErr_Format(PyExc_TypeError, "argument is not a FVector");
 	if (vertical < 0)
 		vertical = horizontal;
 	return py_ue_new_fvector(self->rstream.VRandCone(py_vec->vec, horizontal, vertical));

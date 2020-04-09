@@ -40,11 +40,11 @@ static PyObject *py_ue_fbx_property_get_curve_node(ue_PyFbxProperty *self, PyObj
 
 	ue_PyFbxObject *py_fbx_object = py_ue_is_fbx_object(py_object);
 	if (!py_fbx_object)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FbxObject");
+		return PyErr_Format(PyExc_Exception, "argument is not a FbxObject");
 
 	FbxAnimLayer *fbx_anim_layer = FbxCast<FbxAnimLayer>(py_fbx_object->fbx_object);
 	if (!fbx_anim_layer)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FbxAnimLayer");
+		return PyErr_Format(PyExc_Exception, "argument is not a FbxAnimLayer");
 
 	FbxAnimCurveNode *fbx_anim_curve_node = self->fbx_property.GetCurveNode(fbx_anim_layer);
 	if (!fbx_anim_curve_node)
@@ -114,7 +114,7 @@ static PyTypeObject ue_PyFbxPropertyType = {
 
 static int py_ue_fbx_property_init(ue_PyFbxProperty *self, PyObject * args)
 {
-	PyErr_SetString(ue_PyExc_Exception, "instantiating a new FbxProperty is currently not supported");
+	PyErr_SetString(PyExc_Exception, "instantiating a new FbxProperty is currently not supported");
 	return -1;
 }
 

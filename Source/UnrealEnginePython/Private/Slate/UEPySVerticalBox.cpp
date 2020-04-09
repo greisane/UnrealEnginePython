@@ -19,7 +19,7 @@ static PyObject *py_ue_svertical_box_add_slot(ue_PySVerticalBox *self, PyObject 
 
 	if (retCode != 0)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "could not add vertical slot");
+		return PyErr_Format(PyExc_Exception, "could not add vertical slot");
 	}
 
 	Py_RETURN_SLATE_SELF;

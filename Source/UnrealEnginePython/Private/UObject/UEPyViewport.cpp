@@ -18,11 +18,11 @@ PyObject *py_ue_game_viewport_client_get_window(ue_PyUObject *self, PyObject *ar
 
 	UGameViewportClient *viewport = ue_py_check_type<UGameViewportClient>(self);
 	if (!viewport)
-		return PyErr_Format(ue_PyExc_Exception, "uobject is not a GameViewportClient");
+		return PyErr_Format(PyExc_Exception, "uobject is not a GameViewportClient");
 
 	TSharedPtr<SWindow> Window = viewport->GetWindow();
 	if (!Window.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "GameViewportClient has no window");
+		return PyErr_Format(PyExc_Exception, "GameViewportClient has no window");
 
 	return (PyObject *)py_ue_new_swindow(Window.ToSharedRef());
 }
@@ -33,7 +33,7 @@ PyObject *py_unreal_engine_get_game_viewport_client(PyObject * self, PyObject * 
 	UGameViewportClient *viewport_client = GEngine->GameViewport;
 	if (!viewport_client)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no engine GameViewport found");
+		return PyErr_Format(PyExc_Exception, "no engine GameViewport found");
 	}
 	Py_RETURN_UOBJECT(GEngine->GameViewport);
 }
@@ -45,7 +45,7 @@ PyObject *py_unreal_engine_get_editor_pie_game_viewport_client(PyObject * self, 
 	UGameViewportClient *viewport_client = GEditor->GameViewport;
 	if (!viewport_client)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no editor GameViewport found");
+		return PyErr_Format(PyExc_Exception, "no editor GameViewport found");
 	}
 	Py_RETURN_UOBJECT(viewport_client);
 }
@@ -64,7 +64,7 @@ PyObject *py_unreal_engine_editor_set_view_mode(PyObject * self, PyObject * args
 	TSharedPtr<SLevelViewport> ActiveLevelViewport = LevelEditorModule.GetFirstActiveLevelViewport();
 
 	if (!ActiveLevelViewport.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "no active LevelEditor Viewport");
+		return PyErr_Format(PyExc_Exception, "no active LevelEditor Viewport");
 
 	FLevelEditorViewportClient& LevelViewportClient = ActiveLevelViewport->GetLevelViewportClient();
 
@@ -87,7 +87,7 @@ PyObject *py_unreal_engine_editor_set_camera_speed(PyObject * self, PyObject * a
 	TSharedPtr<SLevelViewport> ActiveLevelViewport = LevelEditorModule.GetFirstActiveLevelViewport();
 
 	if (!ActiveLevelViewport.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "no active LevelEditor Viewport");
+		return PyErr_Format(PyExc_Exception, "no active LevelEditor Viewport");
 
 	FLevelEditorViewportClient& LevelViewportClient = ActiveLevelViewport->GetLevelViewportClient();
 
@@ -108,13 +108,13 @@ PyObject *py_unreal_engine_editor_set_view_location(PyObject * self, PyObject * 
 
 	ue_PyFVector *vector = py_ue_is_fvector(py_vector);
 	if (!vector)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FVector");
+		return PyErr_Format(PyExc_Exception, "argument is not a FVector");
 
 	FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
 	TSharedPtr<SLevelViewport> ActiveLevelViewport = LevelEditorModule.GetFirstActiveLevelViewport();
 
 	if (!ActiveLevelViewport.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "no active LevelEditor Viewport");
+		return PyErr_Format(PyExc_Exception, "no active LevelEditor Viewport");
 
 	FLevelEditorViewportClient& LevelViewportClient = ActiveLevelViewport->GetLevelViewportClient();
 
@@ -135,13 +135,13 @@ PyObject *py_unreal_engine_editor_set_view_rotation(PyObject * self, PyObject * 
 
 	ue_PyFRotator *rotator = py_ue_is_frotator(py_rotator);
 	if (!rotator)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FRotator");
+		return PyErr_Format(PyExc_Exception, "argument is not a FRotator");
 
 	FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
 	TSharedPtr<SLevelViewport> ActiveLevelViewport = LevelEditorModule.GetFirstActiveLevelViewport();
 
 	if (!ActiveLevelViewport.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "no active LevelEditor Viewport");
+		return PyErr_Format(PyExc_Exception, "no active LevelEditor Viewport");
 
 	FLevelEditorViewportClient& LevelViewportClient = ActiveLevelViewport->GetLevelViewportClient();
 
@@ -170,10 +170,10 @@ PyObject *py_ue_add_viewport_widget_content(ue_PyUObject *self, PyObject * args)
 	{
 		UWorld *world = ue_py_check_type<UWorld>(self);
 		if (!world)
-			return PyErr_Format(ue_PyExc_Exception, "object is not a GameViewportClient or a UWorld");
+			return PyErr_Format(PyExc_Exception, "object is not a GameViewportClient or a UWorld");
 		viewport = world->GetGameViewport();
 		if (!viewport)
-			return PyErr_Format(ue_PyExc_Exception, "cannot retrieve GameViewportClient from UWorld");
+			return PyErr_Format(PyExc_Exception, "cannot retrieve GameViewportClient from UWorld");
 	}
 
 	TSharedPtr<SWidget> content = py_ue_is_swidget<SWidget>(py_widget);
@@ -201,7 +201,7 @@ PyObject *py_ue_remove_viewport_widget_content(ue_PyUObject *self, PyObject * ar
 
 	UGameViewportClient *viewport = ue_py_check_type<UGameViewportClient>(self);
 	if (!viewport)
-		return PyErr_Format(ue_PyExc_Exception, "object is not a GameViewportClient");
+		return PyErr_Format(PyExc_Exception, "object is not a GameViewportClient");
 
 	TSharedPtr<SWidget> content = py_ue_is_swidget<SWidget>(py_widget);
 	if (!content.IsValid())
@@ -221,7 +221,7 @@ PyObject *py_ue_remove_all_viewport_widgets(ue_PyUObject *self, PyObject * args)
 
 	UGameViewportClient *viewport = ue_py_check_type<UGameViewportClient>(self);
 	if (!viewport)
-		return PyErr_Format(ue_PyExc_Exception, "object is not a GameViewportClient");
+		return PyErr_Format(PyExc_Exception, "object is not a GameViewportClient");
 
 
 	viewport->RemoveAllViewportWidgets();
@@ -246,7 +246,7 @@ PyObject *py_ue_game_viewport_client_set_rendering_flag(ue_PyUObject *self, PyOb
 	UGameViewportClient *ViewportClient = ue_py_check_type<UGameViewportClient>(self);
 	if (!ViewportClient)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "object is not a UGameViewportClient");
+		return PyErr_Format(PyExc_Exception, "object is not a UGameViewportClient");
 	}
 
 	ViewportClient->EngineShowFlags.Rendering = bEnabled;

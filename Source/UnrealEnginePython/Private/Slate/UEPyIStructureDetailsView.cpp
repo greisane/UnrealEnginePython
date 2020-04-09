@@ -45,11 +45,11 @@ static PyObject *py_ue_istructure_details_view_set_structure_data(ue_PyIStructur
 	ue_PyUScriptStruct *ue_py_struct = py_ue_is_uscriptstruct(py_object);
 	if (!ue_py_struct)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a UScriptStruct");
+		return PyErr_Format(PyExc_Exception, "argument is not a UScriptStruct");
 	}
 
 
-	ue_Py_XDECREF(self->ue_py_struct);
+	Py_XDECREF(self->ue_py_struct);
 	self->ue_py_struct = ue_py_struct;
 	Py_INCREF(self->ue_py_struct);
 	TSharedPtr<FStructOnScope> struct_scope = MakeShared<FStructOnScope>(ue_py_struct->u_struct, ue_py_struct->u_struct_ptr);
@@ -72,7 +72,7 @@ static PyObject *py_ue_istructure_details_view_get_widget(ue_PyIStructureDetails
 	TSharedPtr<SWidget> ret_widget = self->istructure_details_view->GetWidget();
 	if (!ret_widget.IsValid())
 	{
-		return PyErr_Format(ue_PyExc_Exception, "unable to create SingleProperty widget");
+		return PyErr_Format(PyExc_Exception, "unable to create SingleProperty widget");
 	}
 
 	return (PyObject *)py_ue_new_swidget<ue_PySWidget>(ret_widget->AsShared(), &ue_PySWidgetType);
@@ -158,7 +158,7 @@ static int ue_py_istructure_details_view_init(ue_PyIStructureDetailsView *self, 
 	ue_PyUScriptStruct *ue_py_struct = py_ue_is_uscriptstruct(py_object);
 	if (!ue_py_struct)
 	{
-		PyErr_SetString(ue_PyExc_Exception, "argument is not a UScriptStruct");
+		PyErr_SetString(PyExc_Exception, "argument is not a UScriptStruct");
 		return -1;
 	}
 

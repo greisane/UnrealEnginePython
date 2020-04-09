@@ -30,7 +30,7 @@ static int py_ue_fcolor_set_r(ue_PyFColor *self, PyObject *value, void *closure)
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -48,7 +48,7 @@ static int py_ue_fcolor_set_g(ue_PyFColor *self, PyObject *value, void *closure)
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -66,7 +66,7 @@ static int py_ue_fcolor_set_b(ue_PyFColor *self, PyObject *value, void *closure)
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -84,7 +84,7 @@ static int py_ue_fcolor_set_a(ue_PyFColor *self, PyObject *value, void *closure)
 		Py_DECREF(l_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -178,7 +178,7 @@ static PyObject *ue_py_fcolor_seq_item(ue_PyFColor *self, Py_ssize_t i)
 	case 3:
 		return PyLong_FromLong(self->color.A);
 	}
-	return PyErr_Format(ue_PyExc_IndexError, "FColor has only 4 items");
+	return PyErr_Format(PyExc_IndexError, "FColor has only 4 items");
 }
 
 PySequenceMethods ue_PyFColor_sequence_methods;
@@ -291,7 +291,7 @@ bool py_ue_color_arg(PyObject *args, FColor &color)
 		ue_PyFColor *py_color = py_ue_is_fcolor(arg);
 		if (!py_color)
 		{
-			PyErr_Format(ue_PyExc_TypeError, "argument is not a FColor");
+			PyErr_Format(PyExc_TypeError, "argument is not a FColor");
 			return false;
 		}
 		color = py_color->color;

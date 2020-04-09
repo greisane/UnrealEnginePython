@@ -45,7 +45,7 @@ static int py_ue_frotator_set_pitch(ue_PyFRotator *self, PyObject *value, void *
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -60,7 +60,7 @@ static int py_ue_frotator_set_yaw(ue_PyFRotator *self, PyObject *value, void *cl
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -75,7 +75,7 @@ static int py_ue_frotator_set_roll(ue_PyFRotator *self, PyObject *value, void *c
 		Py_DECREF(f_value);
 		return 0;
 	}
-	PyErr_SetString(ue_PyExc_TypeError, "value is not numeric");
+	PyErr_SetString(PyExc_TypeError, "value is not numeric");
 	return -1;
 }
 
@@ -181,7 +181,7 @@ static PyObject *ue_py_frotator_mul(ue_PyFRotator *self, PyObject *value) {
 		Py_DECREF(f_value);
 		return py_ue_new_frotator(rot);
 	}
-	return PyErr_Format(ue_PyExc_TypeError, "unsupported argument type");
+	return PyErr_Format(PyExc_TypeError, "unsupported argument type");
 }
 
 static PyObject *ue_py_frotator_div(ue_PyFRotator *self, PyObject *value) {
@@ -191,14 +191,14 @@ static PyObject *ue_py_frotator_div(ue_PyFRotator *self, PyObject *value) {
 		PyObject *f_value = PyNumber_Float(value);
 		float f = PyFloat_AsDouble(f_value);
 		if (f == 0)
-			return PyErr_Format(ue_PyExc_ZeroDivisionError, "division by zero");
+			return PyErr_Format(PyExc_ZeroDivisionError, "division by zero");
 		rot.Pitch /= f;
 		rot.Yaw /= f;
 		rot.Roll /= f;
 		Py_DECREF(f_value);
 		return py_ue_new_frotator(rot);
 	}
-	return PyErr_Format(ue_PyExc_TypeError, "unsupported argument type");
+	return PyErr_Format(PyExc_TypeError, "unsupported argument type");
 	
 }
 
@@ -217,7 +217,7 @@ static PyObject *ue_py_frotator_seq_item(ue_PyFRotator *self, Py_ssize_t i) {
 	case 2:
 		return PyFloat_FromDouble(self->rot.Yaw);
 	}
-	return PyErr_Format(ue_PyExc_IndexError, "FRotator has only 3 items");
+	return PyErr_Format(PyExc_IndexError, "FRotator has only 3 items");
 }
 
 PySequenceMethods ue_PyFRotator_sequence_methods;
@@ -289,7 +289,7 @@ bool py_ue_rotator_arg(PyObject *args, FRotator &rot) {
 		PyObject *arg = PyTuple_GetItem(args, 0);
 		ue_PyFRotator *py_rot = py_ue_is_frotator(arg);
 		if (!py_rot) {
-			PyErr_Format(ue_PyExc_TypeError, "argument is not a FRotator");
+			PyErr_Format(PyExc_TypeError, "argument is not a FRotator");
 			return false;
 		}
 		rot = py_rot->rot;

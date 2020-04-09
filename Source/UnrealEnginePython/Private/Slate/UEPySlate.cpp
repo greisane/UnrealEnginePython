@@ -324,7 +324,7 @@ void FPythonSlateDelegate::OnAssetDoubleClicked(const FAssetData& AssetData)
 	{
 		unreal_engine_py_log_error();
 	}
-	ue_Py_XDECREF(ret);
+	Py_XDECREF(ret);
 }
 
 void FPythonSlateDelegate::OnAssetSelected(const FAssetData& AssetData)
@@ -336,7 +336,7 @@ void FPythonSlateDelegate::OnAssetSelected(const FAssetData& AssetData)
 	{
 		unreal_engine_py_log_error();
 	}
-	ue_Py_XDECREF(ret);
+	Py_XDECREF(ret);
 }
 
 void FPythonSlateDelegate::OnAssetChanged(const FAssetData& AssetData)
@@ -348,7 +348,7 @@ void FPythonSlateDelegate::OnAssetChanged(const FAssetData& AssetData)
 	{
 		unreal_engine_py_log_error();
 	}
-	ue_Py_XDECREF(ret);
+	Py_XDECREF(ret);
 }
 
 bool FPythonSlateDelegate::OnShouldFilterAsset(const FAssetData& AssetData)
@@ -542,7 +542,7 @@ void FPythonSlateDelegate::SimpleExecuteAction()
 	{
 		unreal_engine_py_log_error();
 	}
-	ue_Py_XDECREF(ret);
+	Py_XDECREF(ret);
 }
 
 void FPythonSlateDelegate::ExecuteAction(PyObject *py_obj)
@@ -554,7 +554,7 @@ void FPythonSlateDelegate::ExecuteAction(PyObject *py_obj)
 	{
 		unreal_engine_py_log_error();
 	}
-	ue_Py_XDECREF(ret);
+	Py_XDECREF(ret);
 }
 
 FText FPythonSlateDelegate::GetterFText() const
@@ -617,7 +617,7 @@ float FPythonSlateDelegate::GetterFloat() const
 	}
 	if (!PyNumber_Check(ret))
 	{
-		PyErr_SetString(ue_PyExc_ValueError, "returned value is not a number");
+		PyErr_SetString(PyExc_ValueError, "returned value is not a number");
 		Py_DECREF(ret);
 		return 0;
 	}
@@ -641,7 +641,7 @@ TOptional<float> FPythonSlateDelegate::GetterTFloat() const
 	}
 	if (!PyNumber_Check(ret))
 	{
-		PyErr_SetString(ue_PyExc_ValueError, "returned value is not a number");
+		PyErr_SetString(PyExc_ValueError, "returned value is not a number");
 		Py_DECREF(ret);
 		return 0;
 	}
@@ -665,7 +665,7 @@ int FPythonSlateDelegate::GetterInt() const
 	}
 	if (!PyNumber_Check(ret))
 	{
-		PyErr_SetString(ue_PyExc_ValueError, "returned value is not a number");
+		PyErr_SetString(PyExc_ValueError, "returned value is not a number");
 		Py_DECREF(ret);
 		return 0;
 	}
@@ -711,14 +711,14 @@ FVector2D FPythonSlateDelegate::GetterFVector2D() const
 	if (!PyTuple_Check(ret))
 	{
 		Py_DECREF(ret);
-		PyErr_SetString(ue_PyExc_ValueError, "returned value is not a tuple");
+		PyErr_SetString(PyExc_ValueError, "returned value is not a tuple");
 		return FVector2D();
 	}
 
 	if (PyTuple_Size(ret) != 2)
 	{
 		Py_DECREF(ret);
-		PyErr_SetString(ue_PyExc_ValueError, "returned value is not a 2 items tuple");
+		PyErr_SetString(PyExc_ValueError, "returned value is not a 2 items tuple");
 		return FVector2D();
 	}
 
@@ -726,7 +726,7 @@ FVector2D FPythonSlateDelegate::GetterFVector2D() const
 	if (!PyNumber_Check(first_item))
 	{
 		Py_DECREF(ret);
-		PyErr_SetString(ue_PyExc_ValueError, "tuple does not contain numbers");
+		PyErr_SetString(PyExc_ValueError, "tuple does not contain numbers");
 		return FVector2D();
 	}
 
@@ -760,7 +760,7 @@ FLinearColor FPythonSlateDelegate::GetterFLinearColor() const
 	if (!py_color)
 	{
 		Py_DECREF(ret);
-		PyErr_SetString(ue_PyExc_ValueError, "returned value is not a FLinearColor");
+		PyErr_SetString(PyExc_ValueError, "returned value is not a FLinearColor");
 		return FLinearColor();
 	}
 
@@ -828,7 +828,7 @@ void FPythonSlateDelegate::GetChildren(TSharedPtr<FPythonItem> InItem, TArray<TS
 	if (!py_iterable || !PyIter_Check(py_iterable))
 	{
 		UE_LOG(LogPython, Error, TEXT("returned value is not iterable"));
-		ue_Py_XDECREF(py_iterable);
+		Py_XDECREF(py_iterable);
 		Py_DECREF(ret);
 		return;
 	}
@@ -958,7 +958,7 @@ PyObject *py_unreal_engine_get_editor_window(PyObject *self, PyObject *args)
 
 	if (!FGlobalTabmanager::Get()->GetRootWindow().IsValid())
 	{
-		return PyErr_Format(ue_PyExc_Exception, "no RootWindow found");
+		return PyErr_Format(PyExc_Exception, "no RootWindow found");
 	}
 
 	return (PyObject *)ue_py_get_swidget(FGlobalTabmanager::Get()->GetRootWindow().ToSharedRef());
@@ -990,7 +990,7 @@ PyObject *py_unreal_engine_find_icon_for_class(PyObject *self, PyObject *args)
 
 	UClass *u_class = ue_py_check_type<UClass>(py_class);
 	if (!u_class)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a UClass object");
+		return PyErr_Format(PyExc_Exception, "argument is not a UClass object");
 
 	FSlateIcon foundIcon = FSlateIconFinder::FindIconForClass(u_class, FName(UTF8_TO_TCHAR(name)));
 	ue_PyFSlateIcon *ret = py_ue_new_fslate_icon(foundIcon);
@@ -1174,7 +1174,7 @@ PyObject *py_unreal_engine_create_structure_detail_view(PyObject *self, PyObject
 
 	if (py_object && !py_ue_is_uscriptstruct(py_object))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a UScriptStruct");
+		return PyErr_Format(PyExc_Exception, "argument is not a UScriptStruct");
 	}
 
 	FDetailsViewArgs view_args;
@@ -1241,7 +1241,7 @@ PyObject *py_unreal_engine_create_property_view(PyObject *self, PyObject * args,
 	UObject *u_object = ue_py_check_type<UObject>(py_object);
 	if (!u_object)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a UObject");
+		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
 	}
 
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
@@ -1252,7 +1252,7 @@ PyObject *py_unreal_engine_create_property_view(PyObject *self, PyObject * args,
 	auto view_widget = PropertyEditorModule.CreateSingleProperty(u_object, FName(name), params);
 
 	if (!view_widget.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "unable to create SingleProperty widget");
+		return PyErr_Format(PyExc_Exception, "unable to create SingleProperty widget");
 
 	return (PyObject *)py_ue_new_swidget<ue_PySWidget>(view_widget->AsShared(), &ue_PySWidgetType);
 }
@@ -1273,7 +1273,7 @@ PyObject *py_unreal_engine_add_menu_extension(PyObject * self, PyObject * args)
 	}
 
 	if (!FModuleManager::Get().ModuleExists(UTF8_TO_TCHAR(module)))
-		return PyErr_Format(ue_PyExc_Exception, "module %s does not exist", module);
+		return PyErr_Format(PyExc_Exception, "module %s does not exist", module);
 
 	// unfortunately we need to manually check for module names :(
 	IHasMenuExtensibility *menu_extension_interface = nullptr;
@@ -1302,10 +1302,10 @@ PyObject *py_unreal_engine_add_menu_extension(PyObject * self, PyObject * args)
 	}
 
 	if (!menu_extension_interface)
-		return PyErr_Format(ue_PyExc_Exception, "module %s is not supported", module);
+		return PyErr_Format(PyExc_Exception, "module %s is not supported", module);
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
+		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	TSharedRef<FPythonSlateCommands> *commands = new TSharedRef<FPythonSlateCommands>(new FPythonSlateCommands());
 
@@ -1338,7 +1338,7 @@ PyObject *py_unreal_engine_add_menu_bar_extension(PyObject * self, PyObject * ar
 	FLevelEditorModule &ExtensibleModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
+		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 
 	TSharedRef<FPythonSlateCommands> *commands = new TSharedRef<FPythonSlateCommands>(new FPythonSlateCommands());
@@ -1371,7 +1371,7 @@ PyObject *py_unreal_engine_add_tool_bar_extension(PyObject * self, PyObject * ar
 	FLevelEditorModule &ExtensibleModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
+		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	TSharedRef<FPythonSlateCommands> *commands = new TSharedRef<FPythonSlateCommands>(new FPythonSlateCommands());
 
@@ -1399,7 +1399,7 @@ PyObject *py_unreal_engine_add_asset_view_context_menu_extension(PyObject * self
 	}
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
+		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	FContentBrowserModule &ContentBrowser = FModuleManager::LoadModuleChecked<FContentBrowserModule>("ContentBrowser");
 	TArray<FContentBrowserMenuExtender_SelectedAssets> &Extenders = ContentBrowser.GetAllAssetViewContextMenuExtenders();
@@ -1426,7 +1426,7 @@ PyObject *py_unreal_engine_register_nomad_tab_spawner(PyObject * self, PyObject 
 	}
 
 	if (!PyCallable_Check(py_callable))
-		return PyErr_Format(ue_PyExc_Exception, "argument is not callable");
+		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	FOnSpawnTab spawn_tab;
 	TSharedRef<FPythonSlateDelegate> py_delegate = FUnrealEnginePythonHouseKeeper::Get()->NewStaticSlateDelegate(py_callable);
@@ -1443,7 +1443,7 @@ PyObject *py_unreal_engine_register_nomad_tab_spawner(PyObject * self, PyObject 
 		ue_PyFSlateIcon *slate_icon = py_ue_is_fslate_icon(py_icon);
 		if (!slate_icon)
 		{
-			return PyErr_Format(ue_PyExc_Exception, "argument is not a FSlateIcon");
+			return PyErr_Format(PyExc_Exception, "argument is not a FSlateIcon");
 		}
 		Icon = slate_icon->icon;
 	}
@@ -1505,10 +1505,10 @@ PyObject * py_unreal_engine_get_swidget_from_wrapper(PyObject *self, PyObject *a
 
 	FPythonSWidgetWrapper *py_swidget_wrapper = ue_py_check_struct<FPythonSWidgetWrapper>(py_object);
 	if (!py_swidget_wrapper)
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FPythonSWidgetWrapper");
+		return PyErr_Format(PyExc_Exception, "argument is not a FPythonSWidgetWrapper");
 
 	if (!py_swidget_wrapper->Widget.IsValid())
-		return PyErr_Format(ue_PyExc_Exception, "wrapper contained invalid SWidget!");
+		return PyErr_Format(PyExc_Exception, "wrapper contained invalid SWidget!");
 
 	return (PyObject *)py_ue_new_swidget<ue_PySWidget>(py_swidget_wrapper->Widget->AsShared(), &ue_PySWidgetType);
 }
@@ -1549,7 +1549,7 @@ PyObject *py_unreal_engine_open_color_picker(PyObject *self, PyObject *args, PyO
 
 	if (!PyCallable_Check(py_callable))
 	{
-		return PyErr_Format(ue_PyExc_Exception, "on_color_committed must be a callable");
+		return PyErr_Format(PyExc_Exception, "on_color_committed must be a callable");
 	}
 
 	TSharedRef<FPythonSlateDelegate> py_delegate = FUnrealEnginePythonHouseKeeper::Get()->NewStaticSlateDelegate(py_callable);
@@ -1592,7 +1592,7 @@ PyObject *py_unreal_engine_play_sound(PyObject *self, PyObject * args)
 
 	if (!sound)
 	{
-		return PyErr_Format(ue_PyExc_Exception, "argument is not a FSlateColor or a USoundBase");
+		return PyErr_Format(PyExc_Exception, "argument is not a FSlateColor or a USoundBase");
 	}
 
 	FSlateApplication::Get().PlaySound(*sound, user_index);

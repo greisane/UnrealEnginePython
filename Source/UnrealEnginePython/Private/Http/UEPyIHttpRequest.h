@@ -35,7 +35,7 @@ public:
 
 	~FPythonSmartHttpDelegate()
 	{
-		ue_Py_XDECREF(py_http_request);
+		Py_XDECREF(py_http_request);
 	}
 protected:
 	ue_PyIHttpRequest * py_http_request;
