@@ -5,10 +5,13 @@
 #include "PythonBlueprintFunctionLibrary.h"
 #include "HAL/IConsoleManager.h"
 #include "HAL/PlatformFilemanager.h"
+#include "HAL/FileManagerGeneric.h"
 #include "Misc/App.h"
-#if ENGINE_MINOR_VERSION < 13
-#include "ClassIconFinder.h"
-#endif
+#include "Misc/CommandLine.h"
+#include "Misc/ConfigCacheIni.h"
+//#include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
+//#include "Runtime/Core/Public/GenericPlatform/GenericPlatformMisc.h"
+#include <locale.h>
 
 #include "Styling/SlateStyleRegistry.h"
 #include "Interfaces/IPluginManager.h"
@@ -19,36 +22,22 @@
 #define PROJECT_CONTENT_DIR FPaths::GameContentDir()
 #endif
 
-#if PLATFORM_MAC
-#include "Runtime/Core/Public/Mac/CocoaThread.h"
-#endif
-
-void unreal_engine_init_py_module();
-void init_unreal_engine_builtin();
-
-#if PLATFORM_LINUX
-const char *ue4_module_options = "linux_global_symbols";
-#endif
-
-#include "Runtime/Core/Public/Misc/CommandLine.h"
-#include "Runtime/Core/Public/Misc/ConfigCacheIni.h"
-#include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
-#include "Runtime/Core/Public/GenericPlatform/GenericPlatformMisc.h"
-#include "Runtime/Projects/Public/Interfaces/IPluginManager.h"
-#include <locale.h>
-#include "Runtime/Core/Public/HAL/FileManagerGeneric.h"
-
 #if PLATFORM_WINDOWS
 #include <fcntl.h>
 #endif
-
+#if PLATFORM_MAC
+#include "Runtime/Core/Public/Mac/CocoaThread.h"
+#endif
+#if PLATFORM_LINUX
+const char* ue4_module_options = "linux_global_symbols";
+#endif
 #if PLATFORM_ANDROID
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
 #endif
 
-#define SCRIPTS_FOLDER "Python"
-#define TEXT_SCRIPTS_FOLDER TEXT(SCRIPTS_FOLDER)
+void unreal_engine_init_py_module();
+void init_unreal_engine_builtin();
 
 const char *UEPyUnicode_AsUTF8(PyObject *py_str)
 {
@@ -93,6 +82,9 @@ bool PyUnicodeOrString_Check(PyObject *py_obj)
 #endif
 	return false;
 }
+
+#define SCRIPTS_FOLDER "Python"
+#define TEXT_SCRIPTS_FOLDER TEXT(SCRIPTS_FOLDER)
 
 #define LOCTEXT_NAMESPACE "FUnrealEnginePythonModule"
 

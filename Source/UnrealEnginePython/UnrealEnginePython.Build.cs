@@ -129,9 +129,7 @@ public class UnrealEnginePython : ModuleRules
 			string dllFilename = string.Format("python{0}{1}.dll", PythonVersionMajor, PythonVersionMinor);
 			string dllPath = Path.Combine(PythonDir, "bin", "win64", dllFilename);
 			System.Console.WriteLine("Dll path: " + dllPath);
-            PublicDelayLoadDLLs.Add(dllFilename);
             RuntimeDependencies.Add(dllPath);
-			PublicDefinitions.Add("DELAYLOAD_PYTHON_DLL=1");
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
@@ -139,14 +137,14 @@ public class UnrealEnginePython : ModuleRules
 			string libPath = Path.Combine(PythonDir, "libs", libFilename);
 			System.Console.WriteLine("Lib path: " + libPath);
 			PublicSystemLibraryPaths.Add(Path.GetDirectoryName(libPath));
-			PublicDelayLoadDLLs.Add(libFilename);
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Linux)
 		{
-			string libFilename = string.Format("libpython{0}.{1}.so", PythonVersionMajor, PythonVersionMinor);
-			string libPath = Path.Combine(PythonDir, "libs", libFilename);
-			System.Console.WriteLine("Lib path: " + libPath);
-			PublicAdditionalLibraries.Add(libPath);
+			string dllFilename = string.Format("libpython{0}.{1}.so", PythonVersionMajor, PythonVersionMinor);
+			string dllPath = Path.Combine(PythonDir, "bin", "linux", dllFilename);
+			System.Console.WriteLine("Dll path: " + dllPath);
+			PublicAdditionalLibraries.Add(dllPath);
+			RuntimeDependencies.Add(dllPath);
 		}
 #if WITH_FORWARDED_MODULE_RULES_CTOR
 		else if (Target.Platform == UnrealTargetPlatform.Android)

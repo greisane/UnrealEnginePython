@@ -15,7 +15,24 @@
 #include "Runtime/SlateCore/Public/Styling/SlateStyle.h"
 #include "UObject/ScriptMacros.h"
 #include "Runtime/Launch/Resources/Version.h"
-#include "PythonInterface.h"
+
+#if PLATFORM_MAC
+#include <include/Python.h>
+#include <include/structmember.h>
+#elif PLATFORM_LINUX
+#include <include/Python.h>
+#include <include/structmember.h>
+#elif PLATFORM_ANDROID
+#include <include/Python.h>
+#include <include/structmember.h>
+#elif PLATFORM_WINDOWS
+#include <include/pyconfig.h>
+#ifndef SIZEOF_PID_T
+#define SIZEOF_PID_T 4
+#endif
+#include <include/Python.h>
+#include <include/structmember.h>
+#endif
 
 typedef struct
 {
@@ -31,6 +48,8 @@ typedef struct
 	// if owned the life of the UObject is related to the life of PyObject
 	int owned;
 } ue_PyUObject;
+
+DECLARE_LOG_CATEGORY_EXTERN(LogPython, Log, All);
 
 UNREALENGINEPYTHON_API void ue_py_register_magic_module(char *name, PyObject *(*)());
 UNREALENGINEPYTHON_API PyObject *ue_py_register_module(const char *);
