@@ -252,16 +252,22 @@ static void setup_importlib()
 		"class UFSSourcelessFileLoader(UFSFileLoader, importlib.machinery.SourcelessFileLoader):\n"
 		"    pass\n"
 		"\n"
-		"def _reload_ufs_file_loaders():\n"
+		"def _invalidate_file_finders():\n"
 		"    for finder in sys.path_importer_cache.values():\n"
 		"        if isinstance(finder, UFSFileFinder):\n"
 		"            finder.invalidate_caches()\n"
+		"\n"
+		"def _clear_file_finders():\n"
+		"    for path, finder in list(sys.path_importer_cache.items()):\n"
+		"        if isinstance(finder, UFSFileFinder):\n"
+		"            del sys.path_importer_cache[path]\n"
 		"\n"
 		"def _get_supported_file_loaders():\n"
 		"    source = UFSSourceFileLoader, importlib.machinery.SOURCE_SUFFIXES\n"
 		"    bytecode = UFSSourcelessFileLoader, importlib.machinery.BYTECODE_SUFFIXES\n"
 		"    return [source, bytecode]\n"
-		"sys.path_hooks = [UFSFileFinder.path_hook(*_get_supported_file_loaders())]\n";
+		"sys.path_hooks.pop() # Drop FileFinder\n"
+		"sys.path_hooks.append(UFSFileFinder.path_hook(*_get_supported_file_loaders()))\n";
 	PyRun_SimpleString(code);
 }
 
@@ -316,7 +322,7 @@ namespace
 			return;
 		}
 
-		UPythonBlueprintFunctionLibrary::ExecutePythonString(TEXT("_reload_ufs_file_loaders()"));
+		UPythonBlueprintFunctionLibrary::ExecutePythonString(TEXT("_clear_file_finders()"));
 	}
 }
 
