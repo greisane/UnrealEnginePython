@@ -252,6 +252,11 @@ static void setup_importlib()
 		"class UFSSourcelessFileLoader(UFSFileLoader, importlib.machinery.SourcelessFileLoader):\n"
 		"    pass\n"
 		"\n"
+		"def _reload_ufs_file_loaders():\n"
+		"    for finder in sys.path_importer_cache.values():\n"
+		"        if isinstance(finder, UFSFileFinder):\n"
+		"            finder.invalidate_caches()\n"
+		"\n"
 		"def _get_supported_file_loaders():\n"
 		"    source = UFSSourceFileLoader, importlib.machinery.SOURCE_SUFFIXES\n"
 		"    bytecode = UFSSourcelessFileLoader, importlib.machinery.BYTECODE_SUFFIXES\n"
@@ -302,6 +307,17 @@ namespace
 		}
 		UPythonBlueprintFunctionLibrary::ExecutePythonString(cmdString);
 	}
+
+	static void consoleReload(const TArray<FString>& Args)
+	{
+		if (!FUnrealEnginePythonModule::IsAvailable())
+		{
+			UE_LOG(LogPython, Display, TEXT("Python module is not loaded"));
+			return;
+		}
+
+		UPythonBlueprintFunctionLibrary::ExecutePythonString(TEXT("_reload_ufs_file_loaders()"));
+	}
 }
 
 FAutoConsoleCommand ExecPythonScriptCommand(
@@ -313,6 +329,11 @@ FAutoConsoleCommand ExecPythonStringCommand(
 	TEXT("py.cmd"),
 	*NSLOCTEXT("UnrealEnginePython", "CommandText_Cmd", "Execute python string").ToString(),
 	FConsoleCommandWithArgsDelegate::CreateStatic(consoleExecString));
+
+FAutoConsoleCommand ExecPythonReloadCommand(
+	TEXT("py.reload"),
+	*NSLOCTEXT("UnrealEnginePython", "CommandText_Reload", "Reload python import cache").ToString(),
+	FConsoleCommandWithArgsDelegate::CreateStatic(consoleReload));
 
 void FUnrealEnginePythonModule::StartupModule()
 {
