@@ -271,6 +271,21 @@ static void setup_importlib()
 	PyRun_SimpleString(code);
 }
 
+static void setup_misc()
+{
+	char const* code = "import sys\n"
+		"import os\n"
+		"def _reset_modules():\n"
+		"    for module_name, module in list(sys.modules.items()):\n"
+		"        if module_name not in _initial_module_names:\n"
+		"            module_path = os.path.dirname(getattr(module, '__file__', ''))\n"
+		"            if not module_path or any(module_path.startswith(s) for s in sys.path if not s.endswith('Python')):\n"
+		"                continue\n"
+		"            del sys.modules[module_name]\n"
+		"_initial_module_names = list(sys.modules.keys())\n";
+	PyRun_SimpleString(code);
+}
+
 namespace
 {
 	static void consoleExecScript(const TArray<FString>& Args)
@@ -322,7 +337,7 @@ namespace
 			return;
 		}
 
-		UPythonBlueprintFunctionLibrary::ExecutePythonString(TEXT("_clear_file_finders()"));
+		UPythonBlueprintFunctionLibrary::ExecutePythonString(TEXT("_clear_file_finders(); _reset_modules()"));
 	}
 }
 
@@ -465,6 +480,7 @@ void FUnrealEnginePythonModule::StartupModule()
 	local_dict = main_dict;// PyDict_New();
 
 	setup_stdout_stderr();
+	setup_misc();
 
 	if (PyImport_ImportModule("ue_site"))
 	{
