@@ -343,7 +343,7 @@ FAutoConsoleCommand ExecPythonReloadCommand(
 
 void FUnrealEnginePythonModule::StartupModule()
 {
-	BrutalFinalize = false;
+	BrutalFinalize = true;
 	ScriptsFolder = "Python";
 
 	// Save the current locale (should be "C") to restore later. TCharTest::RunTest will fail otherwise
