@@ -143,6 +143,7 @@ void FUnrealEnginePythonModule::SetupSysPaths()
 	TArray<FString> SysPathItems;
 	SysPathItems.Add(ScriptsPath);
 	SysPathItems.Add(ScriptsPath / TEXT("site-packages"));
+	SysPathItems.Add(ScriptsPath / TEXT("DLLs")); // .pyd files should be placed here
 
 	PyObject* py_sys = PyImport_ImportModule("sys");
 	PyObject* py_sys_dict = PyModule_GetDict(py_sys);
