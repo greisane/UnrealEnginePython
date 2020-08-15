@@ -127,9 +127,11 @@ public class UnrealEnginePython : ModuleRules
 			PublicAdditionalLibraries.Add(libPath);
 
 			string dllFilename = string.Format("python{0}{1}.dll", PythonVersionMajor, PythonVersionMinor);
-			string dllPath = Path.Combine(PythonDir, "bin", "win64", dllFilename);
+			string dllDir = Path.Combine(PythonDir, "bin", "win64");
+			string dllPath = Path.Combine(dllDir, dllFilename);
 			System.Console.WriteLine("Dll path: " + dllPath);
 			RuntimeDependencies.Add(dllPath);
+			RuntimeDependencies.Add(Path.Combine(dllDir, "sqlite3.dll"));
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
@@ -147,10 +149,12 @@ public class UnrealEnginePython : ModuleRules
 			PublicAdditionalLibraries.Add(libPath);
 
 			string dllFilename = string.Format("libpython{0}{1}.so", PythonVersionMajor, PythonVersionMinor);
-			string dllPath = Path.Combine(PythonDir, "bin", "linux", dllFilename);
+			string dllDir = Path.Combine(PythonDir, "bin", "linux");
+			string dllPath = Path.Combine(dllDir, dllFilename);
 			System.Console.WriteLine("Dll path: " + dllPath);
 			PublicAdditionalLibraries.Add(dllPath);
 			RuntimeDependencies.Add(dllPath);
+			RuntimeDependencies.Add(Path.Combine(dllDir, "sqlite3.dll"));
 		}
 #if WITH_FORWARDED_MODULE_RULES_CTOR
 		else if (Target.Platform == UnrealTargetPlatform.Android)

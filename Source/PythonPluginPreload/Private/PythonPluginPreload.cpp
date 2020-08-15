@@ -26,27 +26,31 @@ public:
 			});
 
 		// Load python library
-		FString PluginDir = IPluginManager::Get().FindPlugin(TEXT("UnrealEnginePython"))->GetBaseDir();
-		FString PythonDir = FString::Printf(TEXT("Python%d%d"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
+		const FString PluginDir = IPluginManager::Get().FindPlugin(TEXT("UnrealEnginePython"))->GetBaseDir();
+		const FString PythonDir = FString::Printf(TEXT("Python%d%d"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
 
 #if PLATFORM_WINDOWS
-		FString DllFilename = FString::Printf(TEXT("python%d%d.dll"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
-		FString DllPath = PluginDir / TEXT("ThirdParty") / PythonDir / TEXT("bin/win64") / DllFilename;
-		PythonHandle = LoadDll(DllPath);
+		const FString DllDir = PluginDir / TEXT("ThirdParty") / PythonDir / TEXT("bin/win64");
+		const FString DllFilename = FString::Printf(TEXT("python%d%d.dll"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
+		PythonHandle = LoadDll(DllDir / DllFilename);
+		SqliteHandle = LoadDll(DllDir / TEXT("sqlite3.dll"));
 #elif PLATFORM_LINUX
-		FString DllFilename = FString::Printf(TEXT("libpython%d%d.so"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
-		FString DllPath = PluginDir / TEXT("ThirdParty") / PythonDir / TEXT("bin/linux") / DllFilename;
-		PythonHandle = LoadDll(DllPath);
+		const FString DllDir = PluginDir / TEXT("ThirdParty") / PythonDir / TEXT("bin/linux");
+		const FString DllFilename = FString::Printf(TEXT("libpython%d%d.so"), PY_MAJOR_VERSION, PY_MINOR_VERSION);
+		PythonHandle = LoadDll(DllDir / DllFilename);
+		SqliteHandle = LoadDll(DllDir / TEXT("sqlite3.dll"));
 #endif
 	}
 
 	virtual void ShutdownModule() override
 	{
 		FPlatformProcess::FreeDllHandle(PythonHandle);
+		FPlatformProcess::FreeDllHandle(SqliteHandle);
 	}
 
 private:
 	void* PythonHandle = nullptr;
+	void* SqliteHandle = nullptr;
 };
 
 IMPLEMENT_MODULE(FPythonPluginPreload, PythonPluginPreload)
