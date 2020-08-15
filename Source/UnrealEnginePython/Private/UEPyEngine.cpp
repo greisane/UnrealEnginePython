@@ -185,6 +185,16 @@ PyObject *py_unreal_engine_get_content_dir(PyObject * self, PyObject * args)
 #endif
 }
 
+PyObject* py_unreal_engine_get_scripts_dir(PyObject* self, PyObject* args)
+{
+	if (!FUnrealEnginePythonModule::IsAvailable())
+	{
+		return NULL;
+	}
+	FUnrealEnginePythonModule& PythonModule = FUnrealEnginePythonModule::Get();
+	return PyUnicode_FromString(TCHAR_TO_UTF8(*PythonModule.GetScriptsPath()));
+}
+
 PyObject *py_unreal_engine_get_game_saved_dir(PyObject * self, PyObject * args)
 {
 #if ENGINE_MINOR_VERSION >= 18
